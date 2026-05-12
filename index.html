@@ -1199,6 +1199,24 @@
   
   .danger-btn:active { background: var(--bg-elevated); border-color: #cc3333; color: #cc3333; }
   
+  .safe-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--bg-elevated);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.15s;
+  }
+  
+  .safe-btn:active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  
   /* TIMER MODAL */
   .timer-modal {
     position: fixed;
@@ -2312,6 +2330,15 @@
     </div>
     
     <div class="danger-zone">
+      <div class="section-title" style="margin-top: 0;">Sauvegarde</div>
+      <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 12px; font-family: 'JetBrains Mono', monospace; line-height: 1.6;" id="storageDiag">—</div>
+      <button class="safe-btn" id="exportBtn">📤 Exporter mes données</button>
+      <button class="safe-btn" id="importBtn" style="margin-top: 8px;">📥 Importer une sauvegarde</button>
+      <input type="file" id="importFile" accept=".json,application/json" style="display: none;">
+      <div style="font-size: 10px; color: var(--text-faint); margin-top: 8px; font-family: 'JetBrains Mono', monospace; line-height: 1.5;">
+        Astuce : exporte régulièrement et garde le fichier dans tes Notes ou un mail à toi-même
+      </div>
+      <div class="section-title" style="margin-top: 24px;">Zone rouge</div>
       <button class="danger-btn" id="resetBtn">Réinitialiser toutes les données</button>
     </div>
   </section>
@@ -2608,11 +2635,76 @@ function dateKey(d) {
 
 function todayKey() { return dateKey(new Date()); }
 
-async function loadState() {
+// ═══════════════════════════════════════════════════════════
+// STORAGE — Multi-backend for maximum persistence on iOS PWA
+// iOS can purge individual stores aggressively, so we redundantly
+// write to localStorage + IndexedDB and prefer whichever has data
+// ═══════════════════════════════════════════════════════════
+
+const IDB_NAME = "nate-fitness-db";
+const IDB_STORE = "kv";
+
+function idbOpen() {
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) return reject(new Error("no idb"));
+    const req = indexedDB.open(IDB_NAME, 1);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function idbGet(key) {
   try {
-    const r = await window.storage.get(STORAGE_KEY);
-    if (r && r.value) {
-      const parsed = JSON.parse(r.value);
+    const db = await idbOpen();
+    return await new Promise((resolve, reject) => {
+      const tx = db.transaction(IDB_STORE, "readonly");
+      const req = tx.objectStore(IDB_STORE).get(key);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  } catch (e) { return null; }
+}
+
+async function idbSet(key, value) {
+  try {
+    const db = await idbOpen();
+    return await new Promise((resolve, reject) => {
+      const tx = db.transaction(IDB_STORE, "readwrite");
+      const req = tx.objectStore(IDB_STORE).put(value, key);
+      req.onsuccess = () => resolve(true);
+      req.onerror = () => reject(req.error);
+    });
+  } catch (e) { return false; }
+}
+
+async function loadState() {
+  let raw = null;
+  
+  // Try localStorage first (fastest)
+  try {
+    raw = localStorage.getItem(STORAGE_KEY);
+  } catch (e) {}
+  
+  // If empty, try IndexedDB (more durable on iOS PWA)
+  if (!raw) {
+    try { raw = await idbGet(STORAGE_KEY); } catch (e) {}
+  }
+  
+  // Last resort: window.storage (Claude.ai env)
+  if (!raw && window.storage && window.storage.get) {
+    try {
+      const r = await window.storage.get(STORAGE_KEY);
+      if (r && r.value) raw = r.value;
+    } catch (e) {}
+  }
+  
+  if (raw) {
+    try {
+      const parsed = JSON.parse(raw);
       state.days = parsed.days || {};
       state.gels = parsed.gels || 0;
       state.gelsEarnedTotal = parsed.gelsEarnedTotal || 0;
@@ -2622,28 +2714,52 @@ async function loadState() {
       state.unlockedTitles = parsed.unlockedTitles || {};
       state.activeTitleId = parsed.activeTitleId || null;
       state.startDate = parsed.startDate || null;
+    } catch (e) {
+      console.error("Parse failed", e);
     }
-  } catch (e) {
-    state.days = {};
   }
 }
 
+let lastSaveStatus = { localStorage: null, indexedDB: null, lastSaveAt: null };
+
 async function saveState() {
+  const payload = JSON.stringify({
+    days: state.days,
+    gels: state.gels,
+    gelsEarnedTotal: state.gelsEarnedTotal,
+    gelsUsedTotal: state.gelsUsedTotal,
+    lastGelCheckDate: state.lastGelCheckDate,
+    unlockedBadges: state.unlockedBadges,
+    unlockedTitles: state.unlockedTitles,
+    activeTitleId: state.activeTitleId,
+    startDate: state.startDate
+  });
+  
+  // 1. localStorage (sync, fast)
   try {
-    await window.storage.set(STORAGE_KEY, JSON.stringify({
-      days: state.days,
-      gels: state.gels,
-      gelsEarnedTotal: state.gelsEarnedTotal,
-      gelsUsedTotal: state.gelsUsedTotal,
-      lastGelCheckDate: state.lastGelCheckDate,
-      unlockedBadges: state.unlockedBadges,
-      unlockedTitles: state.unlockedTitles,
-      activeTitleId: state.activeTitleId,
-      startDate: state.startDate
-    }));
+    localStorage.setItem(STORAGE_KEY, payload);
+    lastSaveStatus.localStorage = true;
   } catch (e) {
-    console.error("Save failed", e);
+    lastSaveStatus.localStorage = false;
   }
+  
+  // 2. IndexedDB (more durable on iOS)
+  try {
+    const ok = await idbSet(STORAGE_KEY, payload);
+    lastSaveStatus.indexedDB = ok;
+  } catch (e) {
+    lastSaveStatus.indexedDB = false;
+  }
+  
+  // 3. window.storage backup if available
+  try {
+    if (window.storage && window.storage.set) {
+      await window.storage.set(STORAGE_KEY, payload);
+    }
+  } catch (e) {}
+  
+  lastSaveStatus.lastSaveAt = new Date();
+  updateStorageDiag();
 }
 
 function getDayData(key) {
@@ -4520,6 +4636,112 @@ document.getElementById("resetBtn").addEventListener("click", async () => {
   }
 });
 
+// EXPORT data to JSON file
+document.getElementById("exportBtn").addEventListener("click", () => {
+  const payload = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    data: {
+      days: state.days,
+      gels: state.gels,
+      gelsEarnedTotal: state.gelsEarnedTotal,
+      gelsUsedTotal: state.gelsUsedTotal,
+      lastGelCheckDate: state.lastGelCheckDate,
+      unlockedBadges: state.unlockedBadges,
+      unlockedTitles: state.unlockedTitles,
+      activeTitleId: state.activeTitleId,
+      startDate: state.startDate
+    }
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  const today = new Date();
+  const fname = `nate-fitness-backup-${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}.json`;
+  a.download = fname;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showToast("Sauvegarde exportée");
+});
+
+// IMPORT data
+document.getElementById("importBtn").addEventListener("click", () => {
+  document.getElementById("importFile").click();
+});
+
+document.getElementById("importFile").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async (ev) => {
+    try {
+      const payload = JSON.parse(ev.target.result);
+      const data = payload.data || payload;
+      
+      if (!data.days && !data.unlockedTitles) {
+        alert("Fichier de sauvegarde invalide");
+        return;
+      }
+      
+      const dayCount = Object.keys(data.days || {}).length;
+      const titleCount = Object.keys(data.unlockedTitles || {}).length;
+      const badgeCount = Object.keys(data.unlockedBadges || {}).length;
+      
+      if (!confirm(`Importer cette sauvegarde ?\n\n${dayCount} jours · ${titleCount} titres · ${badgeCount} badges\n\nÇa va remplacer tes données actuelles.`)) {
+        e.target.value = "";
+        return;
+      }
+      
+      state.days = data.days || {};
+      state.gels = data.gels || 0;
+      state.gelsEarnedTotal = data.gelsEarnedTotal || 0;
+      state.gelsUsedTotal = data.gelsUsedTotal || 0;
+      state.lastGelCheckDate = data.lastGelCheckDate || null;
+      state.unlockedBadges = data.unlockedBadges || {};
+      state.unlockedTitles = data.unlockedTitles || {};
+      state.activeTitleId = data.activeTitleId || null;
+      state.startDate = data.startDate || null;
+      
+      await saveState();
+      renderAll();
+      showToast("Sauvegarde restaurée");
+    } catch (err) {
+      alert("Erreur import : " + err.message);
+    }
+    e.target.value = "";
+  };
+  reader.readAsText(file);
+});
+
+// Storage diagnostic
+function updateStorageDiag() {
+  const el = document.getElementById("storageDiag");
+  if (!el) return;
+  
+  // Test localStorage availability
+  let lsOk = false;
+  try {
+    localStorage.setItem("__test__", "x");
+    lsOk = localStorage.getItem("__test__") === "x";
+    localStorage.removeItem("__test__");
+  } catch (e) {}
+  
+  const dayCount = Object.keys(state.days).length;
+  const titleCount = Object.keys(state.unlockedTitles).length;
+  const lastSave = lastSaveStatus.lastSaveAt 
+    ? lastSaveStatus.lastSaveAt.toLocaleTimeString('fr-FR') 
+    : "—";
+  
+  el.innerHTML = `
+    LocalStorage: ${lsOk ? "✅" : "❌"} · IndexedDB: ${lastSaveStatus.indexedDB === true ? "✅" : lastSaveStatus.indexedDB === false ? "❌" : "—"}<br>
+    ${dayCount} jours · ${titleCount} titres en mémoire<br>
+    Dernière sauvegarde: ${lastSave}
+  `;
+}
+
 // Period selector for heatmap
 document.querySelectorAll(".period-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -4721,6 +4943,7 @@ timeEditModal.addEventListener("click", (e) => {
 (async () => {
   await loadState();
   renderAll();
+  updateStorageDiag();
 })();
 
 </script>
