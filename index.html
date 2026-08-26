@@ -6861,17 +6861,17 @@ async function holoBoot() {
     renderer.setSize(W, H);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 0.82;
     host.appendChild(renderer.domElement);
     holo.host = host;
 
     scene.add(new THREE.HemisphereLight(0x0b4055, 0x001015, 2));
-    const l1 = new THREE.PointLight(0x00eaff, 8, 8); l1.position.set(2, 3, 3); scene.add(l1);
-    const l2 = new THREE.PointLight(0x0077ff, 6, 8); l2.position.set(-2, 2, -3); scene.add(l2);
+    const l1 = new THREE.PointLight(0x00eaff, 3.2, 8); l1.position.set(2, 3, 3); scene.add(l1);
+    const l2 = new THREE.PointLight(0x0077ff, 2.4, 8); l2.position.set(-2, 2, -3); scene.add(l2);
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 1.15, 0.6, 0.05));
+    composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.42, 0.45, 0.18));
 
     // Particles
     const COUNT = 650;
@@ -6886,7 +6886,7 @@ async function holoBoot() {
     const pg = new THREE.BufferGeometry();
     pg.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     const particles = new THREE.Points(pg, new THREE.PointsMaterial({
-      color: 0x00eaff, size: 0.012, transparent: true, opacity: 0.6,
+      color: 0x00eaff, size: 0.009, transparent: true, opacity: 0.32,
       blending: THREE.AdditiveBlending, depthWrite: false
     }));
     scene.add(particles);
@@ -6894,7 +6894,7 @@ async function holoBoot() {
     // Scanner disc
     const disc = new THREE.Mesh(
       new THREE.RingGeometry(1.3, 2.15, 96),
-      new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.10,
+      new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.055,
         side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false })
     );
     disc.rotation.x = -Math.PI / 2;
@@ -6926,12 +6926,12 @@ async function holoBoot() {
         human.traverse((o) => {
           if (!o.isMesh) return;
           o.material = new THREE.MeshBasicMaterial({
-            color: 0x00eaff, transparent: true, opacity: 0.055,
+            color: 0x00eaff, transparent: true, opacity: 0.028,
             side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending
           });
           const wire = new THREE.LineSegments(
             new THREE.WireframeGeometry(o.geometry),
-            new THREE.LineBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.48, blending: THREE.AdditiveBlending })
+            new THREE.LineBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending })
           );
           wire.scale.setScalar(1.001);
           o.add(wire);
@@ -7081,8 +7081,27 @@ function holoClose() {
 
 const holoBtn = document.getElementById("holoBtn");
 if (holoBtn) holoBtn.addEventListener("click", holoOpen);
-const holoCloseBtn = document.getElementById("holoClose");
-if (holoCloseBtn) holoCloseBtn.addEventListener("click", holoClose);
+// The overlay is injected after this script, so binding directly with
+// getElementById() here can miss the close button. Use event delegation
+// so the close control always works, including after the hologram is mounted.
+document.addEventListener("click", (e) => {
+  const closeBtn = e.target.closest && e.target.closest("#holoClose");
+  if (closeBtn) {
+    e.preventDefault();
+    e.stopPropagation();
+    holoClose();
+  }
+});
+
+// Close with Escape as well.
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && holo.fullscreen) holoClose();
+});
+
+// Clicking the dark area outside the HUD also closes fullscreen mode.
+document.addEventListener("click", (e) => {
+  if (e.target && e.target.id === "holoOverlay") holoClose();
+});
 
 // Tapping the inline hologram also goes fullscreen
 const holoInlineWrap = document.getElementById("holoInlineWrap");
