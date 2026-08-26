@@ -5214,8 +5214,10 @@ function rebuildHudTelemetry() {
     (day.activities || []).forEach(a => {
       if (a.frozen) return;
       const t = a.type;
-      if (t === "anytime" || t === "bodyweight") {
+      if (t === "anytime") {
         stats.anytime++;
+        stats.force++;
+      } else if (t === "bodyweight") {
         stats.bodyweight++;
         stats.force++;
       } else if (t === "run") {
@@ -5267,6 +5269,11 @@ function renderHudModules() {
 
   const level = document.getElementById("coreLevel");
   if (level) level.textContent = Math.min(99, Math.floor(analytics.operations / 10));
+
+  const rStreak = document.getElementById("rStreak");
+  if (rStreak) rStreak.textContent = computeCurrentStreak() + " J";
+  const rBest = document.getElementById("rBest");
+  if (rBest) rBest.textContent = computeBestStreak() + " J";
 
   const total = analytics.force + analytics.cardio + analytics.mobilite;
   const setDonut = (id, textId, value) => {
