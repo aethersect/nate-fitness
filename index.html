@@ -2176,7 +2176,68 @@
   }
 
   
-  /* TOAST */
+  /* LOG STREAM — fixed HUD footer readout */
+  .log-stream {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px calc(env(safe-area-inset-right) + 14px) calc(env(safe-area-inset-bottom) + 10px) calc(env(safe-area-inset-left) + 14px);
+    background: linear-gradient(to top, rgba(7, 10, 17, 0.96), rgba(7, 10, 17, 0.82));
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden;
+  }
+
+  .log-prefix {
+    flex-shrink: 0;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    text-shadow: 0 0 6px var(--gold-soft);
+  }
+
+  .log-text {
+    flex: 1;
+    min-width: 0;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .log-sfx {
+    flex-shrink: 0;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 9px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .log-sfx.on {
+    color: var(--arc);
+    border-color: var(--border-strong);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.25);
+  }
+
+
   .toast {
     position: fixed;
     bottom: calc(env(safe-area-inset-bottom) + 100px);
