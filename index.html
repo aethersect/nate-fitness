@@ -3568,8 +3568,9 @@
   .holo-overlay {
     position: fixed;
     inset: 0;
-    z-index: 500;
+    z-index: 50000;
     display: none;
+    pointer-events: auto;
     background:
       radial-gradient(circle at center, #061820 0%, #02080b 45%, #000204 100%);
   }
@@ -3799,11 +3800,13 @@
   }
 
   .holo-close {
-    position: absolute;
+    position: fixed;
     right: 20px;
     top: calc(env(safe-area-inset-top) + 74px);
-    z-index: 30;
-    pointer-events: auto;
+    z-index: 99999 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     background: rgba(0, 240, 255, 0.08);
     border: 1px solid var(--arc);
     color: var(--arc);
@@ -6861,17 +6864,17 @@ async function holoBoot() {
     renderer.setSize(W, H);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.82;
+    renderer.toneMappingExposure = 0.48;
     host.appendChild(renderer.domElement);
     holo.host = host;
 
-    scene.add(new THREE.HemisphereLight(0x0b4055, 0x001015, 2));
-    const l1 = new THREE.PointLight(0x00eaff, 3.2, 8); l1.position.set(2, 3, 3); scene.add(l1);
-    const l2 = new THREE.PointLight(0x0077ff, 2.4, 8); l2.position.set(-2, 2, -3); scene.add(l2);
+    scene.add(new THREE.HemisphereLight(0x0b4055, 0x001015, 0.8));
+    const l1 = new THREE.PointLight(0x00eaff, 1.15, 8); l1.position.set(2, 3, 3); scene.add(l1);
+    const l2 = new THREE.PointLight(0x0077ff, 0.8, 8); l2.position.set(-2, 2, -3); scene.add(l2);
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.42, 0.45, 0.18));
+    composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.12, 0.28, 0.22));
 
     // Particles
     const COUNT = 650;
@@ -6886,7 +6889,7 @@ async function holoBoot() {
     const pg = new THREE.BufferGeometry();
     pg.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     const particles = new THREE.Points(pg, new THREE.PointsMaterial({
-      color: 0x00eaff, size: 0.009, transparent: true, opacity: 0.32,
+      color: 0x00eaff, size: 0.007, transparent: true, opacity: 0.16,
       blending: THREE.AdditiveBlending, depthWrite: false
     }));
     scene.add(particles);
@@ -6894,7 +6897,7 @@ async function holoBoot() {
     // Scanner disc
     const disc = new THREE.Mesh(
       new THREE.RingGeometry(1.3, 2.15, 96),
-      new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.055,
+      new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.025,
         side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false })
     );
     disc.rotation.x = -Math.PI / 2;
@@ -6904,7 +6907,7 @@ async function holoBoot() {
     const grid = new THREE.GridHelper(7, 32, 0x00eaff, 0x00333d);
     grid.position.y = -1.75;
     grid.material.transparent = true;
-    grid.material.opacity = 0.18;
+    grid.material.opacity = 0.09;
     scene.add(grid);
 
     Object.assign(holo, { scene, camera, renderer, composer, particles, disc, grid, clock: new THREE.Clock() });
@@ -6926,12 +6929,12 @@ async function holoBoot() {
         human.traverse((o) => {
           if (!o.isMesh) return;
           o.material = new THREE.MeshBasicMaterial({
-            color: 0x00eaff, transparent: true, opacity: 0.028,
+            color: 0x00eaff, transparent: true, opacity: 0.012,
             side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending
           });
           const wire = new THREE.LineSegments(
             new THREE.WireframeGeometry(o.geometry),
-            new THREE.LineBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending })
+            new THREE.LineBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.085, blending: THREE.AdditiveBlending })
           );
           wire.scale.setScalar(1.001);
           o.add(wire);
@@ -7012,7 +7015,7 @@ function holoLoop() {
   holo.particles.rotation.y = t * 0.03;
   holo.disc.position.y = Math.sin(t * 1.25) * 2.0;
   holo.disc.scale.setScalar(0.95 + Math.sin(t * 2) * 0.05);
-  holo.grid.material.opacity = 0.13 + Math.sin(t * 0.8) * 0.04;
+  holo.grid.material.opacity = 0.07 + Math.sin(t * 0.8) * 0.02;
 
   holo.camera.position.x += (holo.tilt.x * 0.45 - holo.camera.position.x) * 0.08;
   holo.camera.position.y += ((1.6 - holo.tilt.y * 0.25) - holo.camera.position.y) * 0.08;
@@ -7081,17 +7084,24 @@ function holoClose() {
 
 const holoBtn = document.getElementById("holoBtn");
 if (holoBtn) holoBtn.addEventListener("click", holoOpen);
-// The overlay is injected after this script, so binding directly with
-// getElementById() here can miss the close button. Use event delegation
-// so the close control always works, including after the hologram is mounted.
-document.addEventListener("click", (e) => {
-  const closeBtn = e.target.closest && e.target.closest("#holoClose");
+// Robust close handling: direct handler on the button + capture-phase fallback.
+// This survives the WebGL canvas, HUD layers, dynamic mounting and script timing.
+window.addEventListener("pointerdown", (e) => {
+  const closeBtn = e.target && e.target.closest ? e.target.closest("#holoClose") : null;
   if (closeBtn) {
     e.preventDefault();
     e.stopPropagation();
     holoClose();
   }
-});
+}, true);
+
+window.addEventListener("click", (e) => {
+  const closeBtn = e.target && e.target.closest ? e.target.closest("#holoClose") : null;
+  if (closeBtn) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+}, true);
 
 // Close with Escape as well.
 document.addEventListener("keydown", (e) => {
@@ -7101,7 +7111,7 @@ document.addEventListener("keydown", (e) => {
 // Clicking the dark area outside the HUD also closes fullscreen mode.
 document.addEventListener("click", (e) => {
   if (e.target && e.target.id === "holoOverlay") holoClose();
-});
+}, true);
 
 // Tapping the inline hologram also goes fullscreen
 const holoInlineWrap = document.getElementById("holoInlineWrap");
@@ -7242,7 +7252,7 @@ setInterval(() => {
     <div class="holo-vignette"></div>
   </div>
 
-  <button class="holo-close" id="holoClose">✕ FERMER</button>
+  <button type="button" class="holo-close" id="holoClose" onpointerdown="holoClose(); return false;" onclick="holoClose(); return false;">✕ FERMER</button>
 </div>
 
 </body>
