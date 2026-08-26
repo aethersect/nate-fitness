@@ -3923,6 +3923,7 @@ function applyLoadedData(parsed) {
   state.unlockedTitles = parsed.unlockedTitles || {};
   state.activeTitleId = parsed.activeTitleId || null;
   state.startDate = parsed.startDate || null;
+  rebuildHudTelemetry();
 }
 
 async function saveState() {
@@ -5221,6 +5222,13 @@ function rebuildHudTelemetry() {
     });
   });
   state.telemetry = stats;
+  state.analytics = {
+    operations: Object.values(state.days || {}).filter(d => d.activities && d.activities.length).length,
+    charge: stats.force * 3 + stats.cardio * 2 + stats.mobilite,
+    force: stats.force,
+    cardio: stats.cardio,
+    mobilite: stats.mobilite
+  };
   return stats;
 }
 
@@ -5242,6 +5250,31 @@ function renderHudModules() {
   set("teleRun", "teleRunV", run);
   set("teleStretch", "teleStretchV", stretch);
   set("teleBw", "teleBwV", bw);
+
+  const analytics = state.analytics || {operations:0,charge:0,force:0,cardio:0,mobilite:0};
+
+  const load = document.getElementById("vitalsLoad");
+  if (load) load.textContent = analytics.charge;
+
+  const ops = document.getElementById("rOps");
+  if (ops) ops.textContent = analytics.operations;
+
+  const level = document.getElementById("coreLevel");
+  if (level) level.textContent = Math.min(99, Math.floor(analytics.operations / 10));
+
+  const total = analytics.force + analytics.cardio + analytics.mobilite;
+  const setDonut = (id, textId, value) => {
+    const p = total ? Math.round(value * 100 / total) : 0;
+    const el = document.getElementById(id);
+    const txt = document.getElementById(textId);
+    if (el) el.setAttribute("stroke-dasharray", `${p} ${100-p}`);
+    if (txt) txt.textContent = p + "%";
+  };
+  setDonut("donutForce", "donutForceT", analytics.force);
+  setDonut("donutCardio", "donutCardioT", analytics.cardio);
+  setDonut("donutMob", "donutMobT", analytics.mobilite);
+  const dist = document.getElementById("distTotal");
+  if (dist) dist.textContent = total;
 
   const cycle = document.getElementById("teleCycle");
   if (cycle) cycle.textContent = String(Object.keys(state.days).length).padStart(3, "0");
