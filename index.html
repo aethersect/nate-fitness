@@ -2932,7 +2932,8 @@
   .scan-figure {
     position: relative;
     padding: 0;
-    height: 300px;
+    height: 410px;
+    min-height: 410px;
     border-bottom: 1px solid var(--border);
     background:
       radial-gradient(ellipse at 50% 45%, rgba(0, 136, 204, 0.07), transparent 68%),
@@ -3575,7 +3576,7 @@
       radial-gradient(circle at center, #061820 0%, #02080b 45%, #000204 100%);
   }
 
-  .holo-overlay.active { display: block; }
+  .holo-overlay.active { display: none !important; }
 
   .holo-canvas-host { position: absolute; inset: 0; }
   .holo-canvas-host canvas { position: absolute; inset: 0; display: block; }
@@ -4045,7 +4046,7 @@
     <div class="hud-module" id="scanModule"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
       <div class="hud-module-head">
         <div class="hud-module-title">Body Scan</div>
-        <button class="holo-btn" id="holoBtn">⛶ Plein écran</button>
+        
       </div>
 
       <div class="scan-modes">
@@ -6781,7 +6782,8 @@ const holo = {
   grid: null,
   clock: null,
   rotation: 0,
-  tilt: { x: 0, y: 0 }
+  tilt: { x: 0, y: 0 },
+  baseHumanY: -1.62
 };
 
 function holoSetLoading(txt, pctNum) {
@@ -6854,9 +6856,9 @@ async function holoBoot() {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x02070a);
 
-    const camera = new THREE.PerspectiveCamera(42, W / H, 0.01, 100);
-    camera.position.set(0, 1.6, 5.3);
-    camera.lookAt(0, 1.25, 0);
+    const camera = new THREE.PerspectiveCamera(40, W / H, 0.01, 100);
+    camera.position.set(0, 0.25, 5.8);
+    camera.lookAt(0, 0.25, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     // Capped for battery on mobile
@@ -6864,13 +6866,13 @@ async function holoBoot() {
     renderer.setSize(W, H);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.48;
+    renderer.toneMappingExposure = 0.34;
     host.appendChild(renderer.domElement);
     holo.host = host;
 
-    scene.add(new THREE.HemisphereLight(0x0b4055, 0x001015, 0.8));
-    const l1 = new THREE.PointLight(0x00eaff, 1.15, 8); l1.position.set(2, 3, 3); scene.add(l1);
-    const l2 = new THREE.PointLight(0x0077ff, 0.8, 8); l2.position.set(-2, 2, -3); scene.add(l2);
+    scene.add(new THREE.HemisphereLight(0x0b4055, 0x001015, 0.35));
+    const l1 = new THREE.PointLight(0x00eaff, 0.45, 8); l1.position.set(2, 3, 3); scene.add(l1);
+    const l2 = new THREE.PointLight(0x0077ff, 0.25, 8); l2.position.set(-2, 2, -3); scene.add(l2);
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
@@ -6889,7 +6891,7 @@ async function holoBoot() {
     const pg = new THREE.BufferGeometry();
     pg.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     const particles = new THREE.Points(pg, new THREE.PointsMaterial({
-      color: 0x00eaff, size: 0.007, transparent: true, opacity: 0.16,
+      color: 0x00eaff, size: 0.006, transparent: true, opacity: 0.09,
       blending: THREE.AdditiveBlending, depthWrite: false
     }));
     scene.add(particles);
@@ -6897,7 +6899,7 @@ async function holoBoot() {
     // Scanner disc
     const disc = new THREE.Mesh(
       new THREE.RingGeometry(1.3, 2.15, 96),
-      new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.025,
+      new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.012,
         side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false })
     );
     disc.rotation.x = -Math.PI / 2;
@@ -6907,7 +6909,7 @@ async function holoBoot() {
     const grid = new THREE.GridHelper(7, 32, 0x00eaff, 0x00333d);
     grid.position.y = -1.75;
     grid.material.transparent = true;
-    grid.material.opacity = 0.09;
+    grid.material.opacity = 0.045;
     scene.add(grid);
 
     Object.assign(holo, { scene, camera, renderer, composer, particles, disc, grid, clock: new THREE.Clock() });
@@ -6921,20 +6923,24 @@ async function holoBoot() {
         const human = gltf.scene;
         const box = new THREE.Box3().setFromObject(human);
         const size = box.getSize(new THREE.Vector3());
-        const scale = 3.8 / size.y;
+        const scale = 3.55 / size.y;
         human.scale.setScalar(scale);
         const c = box.getCenter(new THREE.Vector3());
-        human.position.set(-c.x * scale, -1.65, -c.z * scale);
+        // Center X/Z and place the feet just above the scan floor.
+        const floorY = -1.62;
+        const baseY = floorY - (box.min.y * scale);
+        human.position.set(-c.x * scale, baseY, -c.z * scale);
+        holo.baseHumanY = baseY;
 
         human.traverse((o) => {
           if (!o.isMesh) return;
           o.material = new THREE.MeshBasicMaterial({
-            color: 0x00eaff, transparent: true, opacity: 0.012,
+            color: 0x00eaff, transparent: true, opacity: 0.006,
             side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending
           });
           const wire = new THREE.LineSegments(
             new THREE.WireframeGeometry(o.geometry),
-            new THREE.LineBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.085, blending: THREE.AdditiveBlending })
+            new THREE.LineBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.045, blending: THREE.AdditiveBlending })
           );
           wire.scale.setScalar(1.001);
           o.add(wire);
@@ -7003,7 +7009,7 @@ function holoLoop() {
   if (holo.human) {
     holo.rotation += 0.0045;
     holo.human.rotation.y = holo.rotation;
-    holo.human.position.y = -1.65 + Math.sin(t * 1.2) * 0.025;
+    holo.human.position.y = holo.baseHumanY + Math.sin(t * 1.2) * 0.018;
     const deg = (holo.rotation * 180 / Math.PI) % 360;
     const txt = deg.toFixed(1).padStart(5, "0") + "°";
     const a = document.getElementById("holoRot");
@@ -7017,9 +7023,9 @@ function holoLoop() {
   holo.disc.scale.setScalar(0.95 + Math.sin(t * 2) * 0.05);
   holo.grid.material.opacity = 0.07 + Math.sin(t * 0.8) * 0.02;
 
-  holo.camera.position.x += (holo.tilt.x * 0.45 - holo.camera.position.x) * 0.08;
-  holo.camera.position.y += ((1.6 - holo.tilt.y * 0.25) - holo.camera.position.y) * 0.08;
-  holo.camera.lookAt(0, 1.2, 0);
+  holo.camera.position.x += (holo.tilt.x * 0.35 - holo.camera.position.x) * 0.08;
+  holo.camera.position.y += ((0.25 - holo.tilt.y * 0.18) - holo.camera.position.y) * 0.08;
+  holo.camera.lookAt(0, 0.25, 0);
 
   holo.composer.render();
 }
@@ -7060,62 +7066,17 @@ function holoFillPanel() {
 }
 
 function holoOpen() {
-  const ov = document.getElementById("holoOverlay");
-  if (!ov || !holo.booted) { if (!holo.booted) showToast("Hologramme en cours de chargement"); return; }
-  holo.fullscreen = true;
-  ov.classList.add("active");
-  document.body.style.overflow = "hidden";
-  holoFillPanel();
-  holoMount("holoHost");
-  hudAudio.select();
-  hudLog("BIO-SCAN PLEIN ÉCRAN");
+  // Fullscreen mode intentionally disabled. The hologram stays in the Body Scan module.
+  return false;
 }
 
 function holoClose() {
-  const ov = document.getElementById("holoOverlay");
-  if (!ov) return;
+  // Kept as a harmless compatibility function. There is no fullscreen overlay anymore.
   holo.fullscreen = false;
-  ov.classList.remove("active");
   document.body.style.overflow = "";
-  holoMount("holoInlineHost");
-  hudAudio.cancel();
-  hudLog("RETOUR MODULE BODY SCAN");
 }
 
-const holoBtn = document.getElementById("holoBtn");
-if (holoBtn) holoBtn.addEventListener("click", holoOpen);
-// Robust close handling: direct handler on the button + capture-phase fallback.
-// This survives the WebGL canvas, HUD layers, dynamic mounting and script timing.
-window.addEventListener("pointerdown", (e) => {
-  const closeBtn = e.target && e.target.closest ? e.target.closest("#holoClose") : null;
-  if (closeBtn) {
-    e.preventDefault();
-    e.stopPropagation();
-    holoClose();
-  }
-}, true);
-
-window.addEventListener("click", (e) => {
-  const closeBtn = e.target && e.target.closest ? e.target.closest("#holoClose") : null;
-  if (closeBtn) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-}, true);
-
-// Close with Escape as well.
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && holo.fullscreen) holoClose();
-});
-
-// Clicking the dark area outside the HUD also closes fullscreen mode.
-document.addEventListener("click", (e) => {
-  if (e.target && e.target.id === "holoOverlay") holoClose();
-}, true);
-
-// Tapping the inline hologram also goes fullscreen
-const holoInlineWrap = document.getElementById("holoInlineWrap");
-if (holoInlineWrap) holoInlineWrap.addEventListener("click", () => { if (!holo.fullscreen) holoOpen(); });
+// Fullscreen mode intentionally disabled. No button or tap on the inline hologram can open it.
 
 // Touch parallax on both hosts
 function holoBindTilt(el) {
@@ -7177,82 +7138,6 @@ setInterval(() => {
   <span class="log-prefix">[SYS]</span>
   <span class="log-text" id="logText">SYSTÈME INITIALISÉ // EN ATTENTE DE DONNÉES</span>
   <button class="log-sfx on" id="sfxBtn">SFX ON</button>
-</div>
-
-<!-- ═══ HOLO 3D OVERLAY ═══ -->
-<div class="holo-overlay" id="holoOverlay">
-  <div class="holo-canvas-host" id="holoHost"></div>
-
-  <div class="holo-loading" id="holoLoading">
-    INITIALISATION DU BIO-SCAN
-    <span class="pct" id="holoPct">0%</span>
-  </div>
-
-  <div class="holo-hud">
-    <div class="holo-grid"></div>
-    <div class="holo-reticle"></div>
-    <div class="holo-ring"></div>
-    <div class="holo-scan"></div>
-
-    <div class="holo-header">
-      <div class="holo-title">NATE // ANALYSE BIOMÉTRIQUE</div>
-      <div class="holo-subtitle">SYSTÈME DE VISUALISATION HOLOGRAPHIQUE</div>
-    </div>
-
-    <div class="holo-markers">
-      <div class="holo-marker">CRÂNE</div>
-      <div class="holo-marker">CHAÎNE SUP. <b id="holoMkUpper"></b></div>
-      <div class="holo-marker">CHAÎNE INF. <b id="holoMkLower"></b></div>
-    </div>
-
-    <div class="holo-panel">
-      <div class="holo-panel-title">DONNÉES SUJET</div>
-
-      <div class="holo-row">
-        <div class="holo-row-label">SUJET</div>
-        <div class="holo-row-value">NATE-001</div>
-      </div>
-
-      <div class="holo-row">
-        <div class="holo-row-label">NIVEAU</div>
-        <div class="holo-row-value gold" id="holoLevel">0</div>
-      </div>
-
-      <div class="holo-row">
-        <div class="holo-row-label">CHAÎNE SUPÉRIEURE</div>
-        <div class="holo-bar"><span id="holoBarUpper" style="width:0%"></span></div>
-      </div>
-
-      <div class="holo-row">
-        <div class="holo-row-label">CHAÎNE INFÉRIEURE</div>
-        <div class="holo-bar"><span id="holoBarLower" style="width:0%"></span></div>
-      </div>
-
-      <div class="holo-row">
-        <div class="holo-row-label">CARDIO</div>
-        <div class="holo-bar gold"><span id="holoBarCardio" style="width:0%"></span></div>
-      </div>
-
-      <div class="holo-row">
-        <div class="holo-row-label">ROTATION</div>
-        <div class="holo-row-value" id="holoRot">000.0°</div>
-      </div>
-    </div>
-
-    <div class="holo-status">
-      <span class="holo-dot"></span><span id="holoStatusTxt">SYSTÈME EN LIGNE // RENDU 3D TEMPS RÉEL</span>
-    </div>
-
-    <div class="holo-corner tl"></div>
-    <div class="holo-corner tr"></div>
-    <div class="holo-corner bl"></div>
-    <div class="holo-corner br"></div>
-
-    <div class="holo-scanlines"></div>
-    <div class="holo-vignette"></div>
-  </div>
-
-  <button type="button" class="holo-close" id="holoClose" onpointerdown="holoClose(); return false;" onclick="holoClose(); return false;">✕ FERMER</button>
 </div>
 
 </body>
