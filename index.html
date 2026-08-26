@@ -5315,7 +5315,6 @@ const hudAudio = {
   select() { this.beep(980, "triangle", 0.05, 0.04); },
   confirm() { this.beep(660, "sine", 0.09, 0.05); setTimeout(() => this.beep(990, "sine", 0.11, 0.045), 70); },
   cancel() { this.beep(320, "sine", 0.1, 0.04); },
-  },
 
   unlock() {
     if (!this.enabled) return;
