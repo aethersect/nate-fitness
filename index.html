@@ -5214,11 +5214,19 @@ function rebuildHudTelemetry() {
   const stats = { anytime:0, run:0, stretch:0, bodyweight:0, force:0, cardio:0, mobilite:0 };
   Object.values(state.days || {}).forEach(day => {
     (day.activities || []).forEach(a => {
-      const t = String(a.type || a.category || a.name || "").toLowerCase();
-      if (t.includes("anytime")) stats.anytime++;
-      if (t.includes("run") || t.includes("course") || t.includes("cardio")) { stats.run++; stats.cardio++; }
-      if (t.includes("stretch") || t.includes("mobil")) { stats.stretch++; stats.mobilite++; }
-      if (t.includes("body") || t.includes("poids") || t.includes("squat") || t.includes("pompe")) { stats.bodyweight++; stats.force++; }
+      if (a.frozen) return;
+      const t = a.type;
+      if (t === "anytime" || t === "bodyweight") {
+        stats.anytime++;
+        stats.bodyweight++;
+        stats.force++;
+      } else if (t === "run") {
+        stats.run++;
+        stats.cardio++;
+      } else if (t === "stretch") {
+        stats.stretch++;
+        stats.mobilite++;
+      }
     });
   });
   state.telemetry = stats;
