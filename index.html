@@ -3243,6 +3243,69 @@
     transition: width 0.25s ease;
   }
 
+
+/* RESTAURATION NOYAU DIAGNOSTIC - HUD */
+.reactor-block{
+  display:grid;
+  grid-template-columns:110px 1fr;
+  gap:18px;
+  align-items:center;
+  padding:14px;
+}
+.reactor-widget{
+  width:90px;
+  height:90px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.reactor-outer,.reactor-middle,.reactor-inner{
+  position:absolute;
+  border-radius:50%;
+  inset:0;
+  border:1px solid var(--border);
+}
+.reactor-middle{inset:10px;border-color:rgba(255,190,0,.55);}
+.reactor-inner{inset:22px;border-color:rgba(0,240,255,.7);}
+.reactor-glowcore{
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(0,240,255,.35);
+  box-shadow:0 0 20px rgba(0,240,255,.8);
+}
+.reactor-core-txt{
+  position:absolute;
+  text-align:center;
+  font-family:"Share Tech Mono",monospace;
+}
+.core-number{font-size:22px;color:#e8faff;line-height:1;}
+.core-sub{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+.reactor-stats{display:flex;flex-direction:column;gap:6px;}
+.r-stat-row{
+ display:flex;
+ justify-content:space-between;
+ font-family:"Share Tech Mono",monospace;
+ font-size:12px;
+ color:var(--muted);
+ border-bottom:1px solid rgba(255,255,255,.05);
+ padding-bottom:4px;
+}
+.r-stat-row b{color:#e8faff;}
+.r-stat-row .gold{color:#ffc400;}
+.r-stat-row .ok{color:#00f0ff;}
+
+.donut-row{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ padding:16px;
+}
+.donut-cell{text-align:center;font-family:"Share Tech Mono",monospace;}
+.donut-cell svg{width:70px;height:70px;}
+.donut-track{fill:none;stroke:rgba(255,255,255,.08);}
+.donut-fill{fill:none;stroke:#00f0ff;stroke-width:5;stroke-linecap:round;}
+.donut-val{font-size:16px;color:#e8faff;}
+.donut-label{font-size:8px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;}
 </style>
 <script type="importmap">
 {
