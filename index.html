@@ -1,15 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#070a11">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#070a11" name="theme-color"/>
 <title>NATE FITNESS</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700;800;900&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@400;500;600;700;800;900&amp;family=Share+Tech+Mono&amp;family=Barlow+Condensed:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   
@@ -55,7 +56,7 @@
   html, body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: "Barlow Condensed", sans-serif;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
@@ -76,7 +77,7 @@
 
   /* Fine technical grid + hex mesh */
   body::before {
-    content: '';
+    content: "";
     position: fixed;
     inset: 0;
     background-image:
@@ -95,7 +96,7 @@
 
   /* Scanline sweep + subtle CRT */
   body::after {
-    content: '';
+    content: "";
     position: fixed;
     inset: 0;
     background: linear-gradient(
@@ -238,7 +239,7 @@
 
   .hud-frame::before,
   .hud-frame::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 26px; height: 26px;
     border-color: var(--arc);
@@ -302,8 +303,8 @@
     to { background-position: 340px -340px; }
   }
 
-  .mono { font-family: 'Share Tech Mono', monospace; font-feature-settings: 'tnum' on; }
-  .orbitron { font-family: 'Saira Condensed', sans-serif; }
+  .mono { font-family: "Share Tech Mono", monospace; font-feature-settings: "tnum" on; }
+  .orbitron { font-family: "Saira Condensed", sans-serif; }
   
   /* HEADER */
   header {
@@ -317,7 +318,7 @@
   }
   
   header::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0; left: 20px; right: 20px;
     height: 1px;
@@ -342,7 +343,7 @@
   .logo-block { flex: 1; min-width: 0; }
   
   .logo {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 900;
     font-size: 26px;
     letter-spacing: 0.02em;
@@ -389,7 +390,7 @@
   
   .active-title {
     font-size: 10px;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     color: var(--neon-cyan);
     margin-top: 6px;
     letter-spacing: 0.15em;
@@ -429,7 +430,7 @@
     color: var(--neon-purple);
     padding: 5px 10px;
     border-radius: 20px;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
@@ -446,7 +447,7 @@
   }
   
   .streak {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 12px;
     color: var(--text-dim);
     display: flex;
@@ -463,7 +464,7 @@
   .streak strong { 
     color: var(--neon-orange); 
     font-size: 14px;
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     text-shadow: 0 0 8px rgba(255, 119, 0, 0.8), 0 0 16px rgba(255, 119, 0, 0.4);
     animation: streakGlow 2.5s ease-in-out infinite;
   }
@@ -491,7 +492,7 @@
     background: transparent;
     border: none;
     color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     font-weight: 700;
     border-radius: 8px;
@@ -537,7 +538,7 @@
   .date-hero { margin: 12px 0 20px; }
   
   .date-day {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     color: var(--neon-cyan);
     text-transform: uppercase;
@@ -548,7 +549,7 @@
   }
   
   .date-title {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 900;
     font-size: 50px;
     letter-spacing: -0.01em;
@@ -573,7 +574,7 @@
   }
   
   .date-sub {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     color: var(--text-dim);
     margin-top: 10px;
@@ -600,7 +601,7 @@
   }
   
   .today-summary::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(135deg, transparent, rgba(0, 240, 255, 0.08), transparent);
@@ -610,7 +611,7 @@
   
   /* HUD corner brackets */
   .today-summary::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 6px;
     pointer-events: none;
@@ -641,7 +642,7 @@
   }
   
   .summary-number {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 900;
     font-size: 52px;
     line-height: 1;
@@ -659,7 +660,7 @@
   }
   
   .summary-label {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 12px;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -668,7 +669,7 @@
   }
   
   .summary-detail {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     color: var(--text-dim);
     letter-spacing: 0.05em;
@@ -684,7 +685,7 @@
     clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
     border-radius: 16px;
     color: var(--neon-cyan);
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
@@ -703,7 +704,7 @@
   }
   
   .add-activity-btn::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0; left: -100%;
     width: 60%; height: 100%;
@@ -749,7 +750,7 @@
   
   /* Neon edge strip on every card */
   .activity-card::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0; top: 12%; bottom: 12%;
     width: 3px;
@@ -834,7 +835,7 @@
   }
   
   .activity-name {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 14px;
     font-weight: 700;
     line-height: 1.1;
@@ -843,7 +844,7 @@
   }
   
   .activity-meta {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 10px;
     color: var(--text-dim);
     margin-top: 4px;
@@ -877,7 +878,7 @@
   }
   
   .activity-tag {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     padding: 2px 8px;
     background: rgba(0, 240, 255, 0.1);
@@ -940,7 +941,7 @@
   }
   
   .empty-state-title { 
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 16px; 
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -949,7 +950,7 @@
   }
   
   .empty-state-text { 
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px; 
     color: var(--text-faint);
     text-transform: uppercase;
@@ -959,7 +960,7 @@
   
   /* SECTION TITLES */
   .section-title {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 10px;
     color: var(--neon-cyan);
     text-transform: uppercase;
@@ -973,14 +974,14 @@
   }
   
   .section-title::before {
-    content: '◆';
+    content: "◆";
     color: var(--gold);
     font-size: 9px;
     text-shadow: 0 0 8px var(--gold);
   }
   
   .section-title::after {
-    content: '';
+    content: "";
     flex: 1;
     height: 1px;
     background: linear-gradient(to right, var(--arc), var(--gold) 55%, transparent);
@@ -1029,7 +1030,7 @@
   }
   
   .modal-content::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0; left: 15%; right: 15%;
     height: 2px;
@@ -1047,7 +1048,7 @@
   }
   
   .modal-title {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 18px;
     font-weight: 700;
     text-transform: uppercase;
@@ -1057,7 +1058,7 @@
   }
   
   .modal-subtitle {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -1068,7 +1069,7 @@
   }
   
   .modal-label {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 10px;
     color: var(--neon-cyan);
     text-transform: uppercase;
@@ -1091,7 +1092,7 @@
     border: 1.5px solid var(--border-strong);
     border-radius: 14px;
     color: var(--text-dim);
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 11px;
     font-weight: 700;
     cursor: pointer;
@@ -1151,7 +1152,7 @@
     border: 1.5px solid var(--border-strong);
     border-radius: 12px;
     color: var(--text-dim);
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
@@ -1191,7 +1192,7 @@
     border: 1.5px solid var(--border-strong);
     border-radius: 12px;
     color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     font-weight: 700;
     cursor: pointer;
@@ -1234,7 +1235,7 @@
     background: var(--bg);
     border: 1.5px solid var(--border-strong);
     color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
@@ -1248,7 +1249,7 @@
   }
   
   .duration-value {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 36px;
     font-weight: 900;
     color: var(--neon-cyan);
@@ -1260,7 +1261,7 @@
   .duration-unit {
     font-size: 12px;
     color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-left: 4px;
@@ -1279,7 +1280,7 @@
     border-radius: 3px;
     clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
     border: 1.5px solid var(--border-strong);
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
@@ -1329,7 +1330,7 @@
     background: transparent;
     border: none;
     color: var(--neon-cyan);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 20px;
     font-weight: 700;
     cursor: pointer;
@@ -1350,7 +1351,7 @@
   }
   
   .week-nav-label {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -1358,7 +1359,7 @@
   }
   
   .week-nav-range {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 10px;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -1402,7 +1403,7 @@
   }
   
   .week-day.today::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 3px;
@@ -1420,7 +1421,7 @@
   }
   
   .week-day-name {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.02em;
@@ -1432,7 +1433,7 @@
   }
   
   .week-day-date {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     color: var(--text-dim);
     font-weight: 700;
@@ -1446,7 +1447,7 @@
   }
   
   .day-tag {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     padding: 3px 7px;
     border-radius: 2px;
@@ -1511,7 +1512,7 @@
   }
   
   .week-day-expand-hint {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     color: var(--text-faint);
     text-transform: uppercase;
@@ -1545,7 +1546,7 @@
   }
   
   .stat-card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -20px; right: -20px;
     width: 90px; height: 90px;
@@ -1556,7 +1557,7 @@
   
   /* Corner tick */
   .stat-card::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 8px; right: 8px;
     width: 12px; height: 12px;
@@ -1580,7 +1581,7 @@
   .stats-grid .stat-card:nth-child(4) .stat-value { color: var(--steel); text-shadow: 0 0 15px rgba(0, 162, 255, 0.5); }
   
   .stat-label {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -1590,7 +1591,7 @@
   }
   
   .stat-value {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 38px;
     font-weight: 900;
     line-height: 1;
@@ -1604,7 +1605,7 @@
     color: var(--text-dim);
     font-weight: 400;
     margin-left: 2px;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     text-shadow: none;
   }
   
@@ -1612,7 +1613,7 @@
     font-size: 9px;
     color: var(--text-dim);
     margin-top: 4px;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-weight: 700;
@@ -1638,7 +1639,7 @@
   }
   
   .heatmap-title {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 10px;
     color: var(--neon-cyan);
     text-transform: uppercase;
@@ -1663,7 +1664,7 @@
     background: transparent;
     border: none;
     color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 10px;
     font-weight: 700;
     border-radius: 7px;
@@ -1738,7 +1739,7 @@
     margin-top: 12px;
     font-size: 9px;
     color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-weight: 700;
@@ -1774,7 +1775,7 @@
   .breakdown-row:last-child { border-bottom: none; }
   
   .breakdown-label {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 13px;
     font-weight: 700;
     display: flex;
@@ -1801,7 +1802,7 @@
   .breakdown-icon.bodyweight { border-color: var(--bronze); box-shadow: 0 0 8px rgba(201, 138, 58, 0.3); }
   
   .breakdown-value {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 16px;
     font-weight: 700;
     color: var(--neon-cyan);
@@ -1839,7 +1840,7 @@
   }
   
   .badge.unlocked::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: -50%;
     background: conic-gradient(
@@ -1879,7 +1880,7 @@
   }
   
   .badge-name {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 10px;
     font-weight: 700;
     line-height: 1.2;
@@ -1889,7 +1890,7 @@
   }
   
   .badge-progress {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -1941,7 +1942,7 @@
   }
   
   .titles-progress-text {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     color: var(--neon-cyan);
     text-align: right;
@@ -1967,7 +1968,7 @@
     background: transparent;
     border: none;
     color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 10px;
     font-weight: 700;
     border-radius: 7px;
@@ -2022,7 +2023,7 @@
   
   /* Rarity edge strips */
   .title-card.unlocked::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0; top: 15%; bottom: 15%;
     width: 3px;
@@ -2071,7 +2072,7 @@
   .title-card-info { flex: 1; min-width: 0; }
   
   .title-card-name {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
@@ -2080,14 +2081,14 @@
   }
   
   .title-card-desc {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 10px;
     color: var(--text-dim);
     line-height: 1.4;
   }
   
   .title-card-progress {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     color: var(--neon-cyan);
     margin-top: 4px;
@@ -2126,7 +2127,7 @@
     right: 0;
     padding: 3px 9px 3px 11px;
     font-size: 8px;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     border-bottom-left-radius: 10px;
@@ -2145,7 +2146,7 @@
   }
   
   .titles-section-header {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 10px;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -2158,7 +2159,7 @@
   }
   
   .titles-section-header::after {
-    content: '';
+    content: "";
     flex: 1;
     height: 1px;
     background: var(--border);
@@ -2168,7 +2169,7 @@
     text-align: center;
     padding: 30px 20px;
     color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -2186,7 +2187,7 @@
     padding: 12px 20px;
     border-radius: 2px;
     clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 700;
     font-size: 13px;
     z-index: 100;
@@ -2217,7 +2218,7 @@
     color: var(--steel);
     padding: 14px 22px;
     border-radius: 2px;
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 700;
     font-size: 12px;
     z-index: 250;
@@ -2275,7 +2276,7 @@
   }
   
   .unlock-banner {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     color: var(--neon-cyan);
     text-transform: uppercase;
@@ -2305,7 +2306,7 @@
   }
   
   .unlock-name {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 900;
     font-size: 32px;
     letter-spacing: -0.02em;
@@ -2320,7 +2321,7 @@
   }
   
   .unlock-desc {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 12px;
     color: var(--text-dim);
     margin-bottom: 32px;
@@ -2337,7 +2338,7 @@
     padding: 16px 44px;
     border-radius: 2px;
     clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 700;
     font-size: 12px;
     cursor: pointer;
@@ -2378,7 +2379,7 @@
     border: 1px solid var(--border-strong);
     border-radius: 12px;
     color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     font-weight: 700;
     cursor: pointer;
@@ -2402,7 +2403,7 @@
     border: 1px solid var(--border-strong);
     border-radius: 12px;
     color: var(--text-dim);
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     font-weight: 700;
     cursor: pointer;
@@ -2443,7 +2444,7 @@
   }
   
   .badge-modal-name {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 900;
     font-size: 24px;
     margin-bottom: 8px;
@@ -2452,7 +2453,7 @@
   }
   
   .badge-modal-desc {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     color: var(--text-dim);
     margin-bottom: 18px;
@@ -2462,7 +2463,7 @@
   }
   
   .badge-modal-progress {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     color: var(--neon-cyan);
     margin-bottom: 14px;
@@ -2503,7 +2504,7 @@
   }
   
   .confirm-title {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 700;
     font-size: 16px;
     text-transform: uppercase;
@@ -2511,7 +2512,7 @@
   }
   
   .confirm-text {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 11px;
     color: var(--text-dim);
     line-height: 1.6;
@@ -2528,7 +2529,7 @@
     align-items: center;
     gap: 8px;
     margin-top: 10px;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 8px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -2571,7 +2572,7 @@
   }
 
   .date-hero::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0; top: 4px; bottom: 12px;
     width: 2px;
@@ -2581,7 +2582,7 @@
 
   /* Reticle marks flanking the big number */
   .summary-count::before {
-    content: '';
+    content: "";
     position: absolute;
     left: -14px; top: 50%;
     width: 6px; height: 6px;
@@ -2596,7 +2597,7 @@
   }
 
   .heatmap::before, .breakdown::before, .titles-progress-card::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -1px; left: 16px;
     width: 42px; height: 2px;
@@ -2665,7 +2666,7 @@
 
   .empty-state::before,
   .empty-state::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 18px; height: 18px;
     border-color: var(--border-strong);
@@ -2698,7 +2699,7 @@
   }
 
   .hud-module::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -1px; left: 14px;
     width: 46px; height: 2px;
@@ -2717,7 +2718,7 @@
   }
 
   .hud-module-title {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 10px;
     color: var(--arc);
     text-transform: uppercase;
@@ -2728,7 +2729,7 @@
   }
 
   .hud-module-title::before {
-    content: '';
+    content: "";
     width: 5px; height: 5px;
     background: var(--gold);
     box-shadow: 0 0 6px var(--gold);
@@ -2736,7 +2737,7 @@
   }
 
   .hud-module-tag {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     color: var(--text-faint);
     text-transform: uppercase;
@@ -2770,7 +2771,7 @@
   }
 
   .hud-mini-title {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 8px;
     color: var(--text-faint);
     text-transform: uppercase;
@@ -2814,7 +2815,7 @@
   }
 
   .tele-label {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 8px;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -2846,7 +2847,7 @@
   }
 
   .tele-track::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: repeating-linear-gradient(90deg,
@@ -2855,7 +2856,7 @@
   }
 
   .tele-val {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     color: var(--arc);
     width: 32px;
@@ -2893,7 +2894,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -2919,192 +2920,6 @@
     opacity: 0.4;
     margin-top: 8px;
   }
-
-  /* ═══════════════════════════════════════════ */
-  /* BODY SCAN MODULE                             */
-  /* ═══════════════════════════════════════════ */
-
-  .scan-body {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .scan-figure {
-    position: relative;
-    padding: 0;
-    height: 410px;
-    min-height: 410px;
-    border-bottom: 1px solid var(--border);
-    background:
-      radial-gradient(ellipse at 50% 45%, rgba(0, 136, 204, 0.07), transparent 68%),
-      repeating-linear-gradient(0deg, transparent 0 13px, rgba(0,240,255,0.035) 13px 14px);
-    overflow: hidden;
-  }
-
-  /* Scanning beam sweeping down the body */
-  .scan-beam {
-    position: absolute;
-    left: 0; right: 0;
-    height: 3px;
-    top: 0;
-    background: linear-gradient(90deg, transparent, var(--arc), transparent);
-    box-shadow: 0 0 14px var(--arc), 0 0 28px rgba(0, 240, 255, 0.5);
-    pointer-events: none;
-    animation: scanBeam 3.6s ease-in-out infinite;
-    z-index: 5;
-  }
-
-  /* Soft trailing wash under the laser */
-  .scan-beam::after {
-    content: '';
-    position: absolute;
-    left: 0; right: 0; bottom: 0;
-    height: 46px;
-    background: linear-gradient(to top, transparent, rgba(0, 240, 255, 0.10));
-    transform: translateY(-100%);
-  }
-
-  @keyframes scanBeam {
-    0% { top: 0%; opacity: 0; }
-    6% { opacity: 1; }
-    50% { top: 100%; opacity: 1; }
-    56% { opacity: 0; }
-    100% { top: 0%; opacity: 0; }
-  }
-
-  /* Wireframe body */
-  .bd-outline {
-    fill: rgba(0, 136, 204, 0.045);
-    stroke: var(--arc);
-    stroke-width: 1.15;
-    stroke-linejoin: round;
-    stroke-linecap: round;
-    filter: drop-shadow(0 0 3px rgba(0, 240, 255, 0.35));
-  }
-
-  .bd-mesh { stroke: var(--arc-dim); stroke-width: 0.55; fill: none; opacity: 0.5; stroke-linecap: round; }
-
-  /* Muscle groups — intensity driven by training data */
-  .muscle {
-    stroke-width: 0.85;
-    stroke-linejoin: round;
-    stroke: var(--arc);
-    fill: var(--arc);
-    fill-opacity: 0.08;
-    transition: fill-opacity 0.8s ease, stroke 0.8s ease, filter 0.8s ease;
-  }
-
-  .muscle.lit-1 { fill-opacity: 0.22; }
-  .muscle.lit-2 {
-    fill-opacity: 0.4;
-    stroke: var(--gold);
-    fill: var(--gold);
-    filter: drop-shadow(0 0 5px rgba(255,183,0,0.6));
-  }
-  .muscle.lit-3 {
-    fill-opacity: 0.62;
-    stroke: var(--gold);
-    fill: var(--gold);
-    filter: drop-shadow(0 0 9px rgba(255,183,0,0.9));
-    animation: musclePulse 2.2s ease-in-out infinite;
-  }
-
-  @keyframes musclePulse {
-    0%, 100% { fill-opacity: 0.5; }
-    50% { fill-opacity: 0.75; }
-  }
-
-  .bd-joint { fill: var(--arc); opacity: 0.9; filter: drop-shadow(0 0 3px var(--arc)); }
-  .bd-core { fill: none; stroke: var(--gold); stroke-width: 0.65; opacity: 0.6; stroke-linecap: round; }
-
-  /* Callout annotations */
-  .bd-lead { stroke: var(--arc-dim); stroke-width: 0.55; opacity: 0.75; }
-  .bd-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 8.5px;
-    fill: var(--text-dim);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .bd-tag.hot { fill: var(--gold); }
-  .bd-dot { fill: var(--gold); }
-
-  /* Right-side muscle readout */
-  .scan-panel {
-    padding: 11px 13px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px 14px;
-  }
-
-  .mg-row {
-    cursor: pointer;
-    padding: 3px;
-    margin: -3px;
-    border-radius: 2px;
-    transition: background 0.15s;
-  }
-
-  .mg-row.sel { background: rgba(0, 240, 255, 0.09); }
-  .mg-row.sel .mg-head span { color: var(--arc); }
-
-  .scan-verdict {
-    grid-column: 1 / -1;
-  }
-
-  .mg-row { display: flex; flex-direction: column; gap: 3px; }
-
-  .mg-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--text-dim);
-  }
-
-  .mg-head b {
-    font-weight: 400;
-    color: var(--arc);
-    font-size: 10px;
-  }
-
-  .mg-head b.hot { color: var(--gold); }
-
-  .mg-bar {
-    height: 4px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .mg-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--arc-deep), var(--arc));
-    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .mg-fill.hot {
-    background: linear-gradient(90deg, var(--amber), var(--gold));
-    box-shadow: 0 0 7px rgba(255,183,0,0.6);
-  }
-
-  .scan-verdict {
-    margin-top: 2px;
-    padding-top: 8px;
-    border-top: 1px dotted var(--border);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    line-height: 1.5;
-  }
-
-  .scan-verdict b { color: var(--gold); font-weight: 400; }
 
   /* ═══ VITALS STRIP ═══ */
   .vitals {
@@ -3145,7 +2960,7 @@
   }
 
   .vitals-k {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 8px;
     color: var(--text-faint);
     text-transform: uppercase;
@@ -3153,7 +2968,7 @@
   }
 
   .vitals-v {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 900;
     font-size: 30px;
     line-height: 1;
@@ -3165,7 +2980,7 @@
   }
 
   .vitals-v small {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     font-weight: 400;
     color: var(--text-dim);
@@ -3212,7 +3027,7 @@
   .donut-arc.c3 { stroke: var(--steel); filter: drop-shadow(0 0 5px rgba(0,162,255,0.6)); }
 
   .donut-mid {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 900;
     font-size: 15px;
     fill: var(--text);
@@ -3220,7 +3035,7 @@
   }
 
   .donut-label {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 8px;
     color: var(--text-dim);
     text-transform: uppercase;
@@ -3248,263 +3063,6 @@
   .cnr.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
 
   /* ═══════════════════════════════════════════ */
-  /* SCAN MODE SELECTOR                           */
-  /* ═══════════════════════════════════════════ */
-
-  .scan-modes {
-    display: flex;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .scan-mode-btn {
-    flex: 1;
-    padding: 8px 4px;
-    background: transparent;
-    border: none;
-    border-right: 1px solid var(--border);
-    color: var(--text-faint);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .scan-mode-btn:last-child { border-right: none; }
-
-  .scan-mode-btn.active {
-    color: var(--bg);
-    background: var(--arc);
-    text-shadow: none;
-  }
-
-  .scan-mode-btn.active[data-mode="cardio"] { background: var(--gold); }
-  .scan-mode-btn.active[data-mode="mobility"] { background: var(--steel); }
-
-  /* ═══════════════════════════════════════════ */
-  /* INTERACTIVE BODY ZONES                       */
-  /* ═══════════════════════════════════════════ */
-
-  .muscle { cursor: pointer; }
-
-  .muscle.selected {
-    stroke: var(--hud-white) !important;
-    stroke-width: 1.4;
-    filter: drop-shadow(0 0 8px var(--hud-white));
-  }
-
-  .zone-readout {
-    padding: 8px 12px;
-    border-top: 1px solid var(--border);
-    background: rgba(0, 240, 255, 0.03);
-    min-height: 46px;
-  }
-
-  .zone-title {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 9px;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    margin-bottom: 3px;
-  }
-
-  .zone-desc {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 9px;
-    color: var(--text-dim);
-    line-height: 1.5;
-    letter-spacing: 0.05em;
-  }
-
-  .zone-desc b { color: var(--arc); font-weight: 400; }
-
-  /* ═══════════════════════════════════════════ */
-  /* LOG STREAM FOOTER                            */
-  /* ═══════════════════════════════════════════ */
-
-  .log-stream {
-    position: fixed;
-    left: 0; right: 0;
-    bottom: 0;
-    background: rgba(8, 9, 12, 0.92);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-top: 1px solid var(--border-strong);
-    padding: 7px 14px calc(env(safe-area-inset-bottom) + 7px);
-    z-index: 60;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    overflow: hidden;
-  }
-
-  .log-stream::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--arc) 30%, var(--gold) 70%, transparent);
-    opacity: 0.6;
-  }
-
-  .log-prefix {
-    color: var(--gold);
-    flex-shrink: 0;
-  }
-
-  .log-text {
-    color: var(--text-dim);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1;
-  }
-
-  .log-text.flash { animation: logFlash 0.6s ease; }
-
-  @keyframes logFlash {
-    0% { color: var(--arc); text-shadow: 0 0 8px var(--arc); }
-    100% { color: var(--text-dim); text-shadow: none; }
-  }
-
-  .log-sfx {
-    background: none;
-    border: 1px solid var(--border-strong);
-    color: var(--text-faint);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.12em;
-    padding: 3px 7px;
-    cursor: pointer;
-    border-radius: 2px;
-    flex-shrink: 0;
-    transition: all 0.15s;
-  }
-
-  .log-sfx.on { color: var(--arc); border-color: var(--arc); }
-  .log-sfx:active { transform: scale(0.94); }
-
-  /* Push content above the log bar */
-  body { padding-bottom: calc(env(safe-area-inset-bottom) + 132px) !important; }
-
-  /* ═══════════════════════════════════════════ */
-  /* REACTOR WIDGET (data-bearing)                */
-  /* ═══════════════════════════════════════════ */
-
-  .reactor-block {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 14px;
-  }
-
-  .reactor-widget {
-    width: 118px;
-    height: 118px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .reactor-outer {
-    position: absolute;
-    inset: 0;
-    border: 2px dashed var(--arc-dim);
-    border-radius: 50%;
-    animation: spin 12s linear infinite;
-  }
-
-  .reactor-middle {
-    position: absolute;
-    inset: 11px;
-    border: 2px solid var(--arc);
-    border-right-color: transparent;
-    border-left-color: transparent;
-    border-radius: 50%;
-    animation: spin 6s linear infinite reverse;
-    box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
-  }
-
-  .reactor-inner {
-    position: absolute;
-    inset: 22px;
-    border: 1px dotted var(--gold);
-    border-radius: 50%;
-    animation: spin 18s linear infinite;
-  }
-
-  .reactor-glowcore {
-    position: absolute;
-    inset: 34px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,240,255,0.28), transparent 70%);
-    animation: reactorPulse 2.8s ease-in-out infinite;
-  }
-
-  .reactor-core-txt {
-    text-align: center;
-    z-index: 2;
-    position: relative;
-  }
-
-  .core-number {
-    font-family: 'Saira Condensed', sans-serif;
-    font-size: 32px;
-    font-weight: 900;
-    color: var(--gold);
-    text-shadow: 0 0 12px var(--gold-soft), 0 0 24px rgba(255,183,0,0.4);
-    line-height: 1;
-  }
-
-  .core-sub {
-    font-size: 8px;
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--text-dim);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    margin-top: 3px;
-  }
-
-  .reactor-stats {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    min-width: 0;
-  }
-
-  .r-stat-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid rgba(0, 240, 255, 0.12);
-    background: rgba(0, 240, 255, 0.03);
-    padding: 5px 8px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 8.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.11em;
-    color: var(--text-dim);
-  }
-
-  .r-stat-row b {
-    font-weight: 400;
-    color: var(--arc);
-    white-space: nowrap;
-  }
-
-  .r-stat-row b.gold { color: var(--gold); }
-  .r-stat-row b.ok { color: var(--green-ok); }
 
   /* ═══ TELEMETRY NODES ON BODY ═══ */
   .node-dot {
@@ -3529,7 +3087,7 @@
   }
 
   .bd-tag {
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 8.5px;
     fill: var(--text);
     letter-spacing: 0.06em;
@@ -3543,331 +3101,59 @@
   .logo { text-shadow: 0 0 12px rgba(0, 240, 255, 0.5); }
   .hud-module-title { text-shadow: 0 0 8px rgba(0, 240, 255, 0.5); }
 
-  /* ═══════════════════════════════════════════ */
-  /* HOLO OVERLAY — fullscreen 3D bio-scan        */
-  /* ═══════════════════════════════════════════ */
+  
 
-  .holo-btn {
-    background: rgba(0, 240, 255, 0.08);
-    border: 1px solid var(--arc);
-    color: var(--arc);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    padding: 4px 10px;
-    cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.15s;
-    white-space: nowrap;
-    text-shadow: 0 0 6px var(--arc);
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
   }
 
-  .holo-btn:active { background: var(--arc); color: #02121c; text-shadow: none; }
-  .holo-btn.busy { opacity: 0.5; }
-
-  .holo-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 50000;
-    display: none;
-    pointer-events: auto;
-    background:
-      radial-gradient(circle at center, #061820 0%, #02080b 45%, #000204 100%);
-  }
-
-  .holo-overlay.active { display: none !important; }
-
-  .holo-canvas-host { position: absolute; inset: 0; }
-  .holo-canvas-host canvas { position: absolute; inset: 0; display: block; }
-
-  .holo-hud {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 20;
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--arc);
-  }
-
-  .holo-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0, 220, 255, 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 220, 255, 0.045) 1px, transparent 1px);
-    background-size: 45px 45px;
-    -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 78%);
-    mask-image: radial-gradient(circle at center, black 20%, transparent 78%);
-  }
-
-  .holo-reticle {
-    position: absolute;
-    left: 50%; top: 50%;
-    width: 76vw; height: 76vw;
-    max-width: 480px; max-height: 480px;
-    transform: translate(-50%, -50%);
-    border: 1px solid rgba(0, 220, 255, 0.15);
-    border-radius: 50%;
-  }
-
-  .holo-reticle::before, .holo-reticle::after {
-    content: "";
-    position: absolute;
-    left: 50%; top: 50%;
-    background: rgba(0, 220, 255, 0.22);
-  }
-  .holo-reticle::before { width: 100%; height: 1px; transform: translate(-50%, -50%); }
-  .holo-reticle::after { height: 100%; width: 1px; transform: translate(-50%, -50%); }
-
-  .holo-ring {
-    position: absolute;
-    left: 50%; top: 50%;
-    width: 68vw; height: 68vw;
-    max-width: 430px; max-height: 430px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    border: 1px dashed rgba(0, 225, 255, 0.28);
-    animation: holoRing 18s linear infinite;
-  }
-
-  .holo-ring::before {
-    content: "";
-    position: absolute;
-    inset: 22px;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 225, 255, 0.12);
-  }
-
-  @keyframes holoRing {
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-  }
-
-  .holo-scan {
-    position: absolute;
-    left: 50%; top: 50%;
-    width: 62vw; max-width: 380px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--arc), #b9fbff, var(--arc), transparent);
-    box-shadow: 0 0 8px var(--arc), 0 0 25px rgba(0, 220, 255, 0.8);
-    animation: holoScan 4s ease-in-out infinite;
-  }
-
-  @keyframes holoScan {
-    0%   { transform: translate(-50%, -50%) translateY(-32vh); opacity: 0; }
+  
     15%  { opacity: 1; }
     85%  { opacity: 1; }
     100% { transform: translate(-50%, -50%) translateY(32vh); opacity: 0; }
-  }
+  
+  
 
-  .holo-corner {
-    position: absolute;
-    width: 44px; height: 44px;
-    border-color: rgba(0, 235, 255, 0.75);
-    border-style: solid;
-    filter: drop-shadow(0 0 5px rgba(0, 220, 255, 0.6));
-  }
+  
 
-  .holo-corner.tl { left: 20px; top: calc(env(safe-area-inset-top) + 20px); border-width: 2px 0 0 2px; }
-  .holo-corner.tr { right: 20px; top: calc(env(safe-area-inset-top) + 20px); border-width: 2px 2px 0 0; }
-  .holo-corner.bl { left: 20px; bottom: calc(env(safe-area-inset-bottom) + 20px); border-width: 0 0 2px 2px; }
-  .holo-corner.br { right: 20px; bottom: calc(env(safe-area-inset-bottom) + 20px); border-width: 0 2px 2px 0; }
+  
 
-  .holo-header {
-    position: absolute;
-    left: 34px;
-    top: calc(env(safe-area-inset-top) + 30px);
-  }
+  
 
-  .holo-title {
-    font-size: 12px;
-    letter-spacing: 0.32em;
-    text-shadow: 0 0 8px var(--arc), 0 0 20px rgba(0, 220, 255, 0.5);
-  }
+  
 
-  .holo-subtitle {
-    margin-top: 6px;
-    font-size: 9px;
-    letter-spacing: 0.14em;
-    opacity: 0.5;
-  }
+  
+  
+  
 
-  .holo-markers {
-    position: absolute;
-    left: 22px; top: 50%;
-    transform: translateY(-50%);
-    font-size: 9px;
-    letter-spacing: 0.14em;
-  }
+  
 
-  .holo-marker {
-    position: relative;
-    margin: 46px 0;
-    width: 130px;
-    color: rgba(0, 225, 255, 0.72);
-  }
-
-  .holo-marker::after {
-    content: "";
-    position: absolute;
-    left: 86px; top: 50%;
-    width: 42px; height: 1px;
-    background: rgba(0, 225, 255, 0.5);
-    box-shadow: 0 0 8px var(--arc);
-  }
-
-  .holo-marker b { color: var(--gold); font-weight: 400; }
-
-  .holo-panel {
-    position: absolute;
-    right: 22px; top: 50%;
-    transform: translateY(-50%);
-    width: 152px;
-    font-size: 9px;
-    letter-spacing: 0.12em;
-  }
-
-  .holo-panel-title {
-    font-size: 10px;
-    border-bottom: 1px solid rgba(0, 220, 255, 0.3);
-    padding-bottom: 6px;
-    margin-bottom: 12px;
-    letter-spacing: 0.2em;
-  }
-
-  .holo-row { margin-bottom: 12px; }
-  .holo-row-label { opacity: 0.45; margin-bottom: 3px; }
-  .holo-row-value { font-size: 11px; text-shadow: 0 0 7px var(--arc); }
-  .holo-row-value.gold { color: var(--gold); text-shadow: 0 0 7px var(--gold); }
-
-  .holo-bar {
-    width: 100%; height: 3px;
-    margin-top: 6px;
-    background: rgba(0, 230, 255, 0.08);
-  }
-
-  .holo-bar span {
-    display: block; height: 100%;
-    background: var(--arc);
-    box-shadow: 0 0 8px var(--arc);
-    animation: holoBar 2s ease-in-out infinite alternate;
-    transition: width 0.9s ease;
-  }
-
-  .holo-bar.gold span { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
-
-  @keyframes holoBar {
-    from { opacity: 0.45; }
+  
     to { opacity: 1; }
-  }
+  
 
-  .holo-status {
-    position: absolute;
-    left: 50%;
-    bottom: calc(env(safe-area-inset-bottom) + 26px);
-    transform: translateX(-50%);
-    font-size: 9px;
-    letter-spacing: 0.22em;
-    opacity: 0.6;
-    white-space: nowrap;
-  }
-
-  .holo-dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    margin-right: 7px;
-    border-radius: 50%;
-    background: var(--arc);
-    box-shadow: 0 0 8px var(--arc);
-    animation: holoBlink 1.2s infinite alternate;
-  }
-
-  @keyframes holoBlink {
-    from { opacity: 0.3; }
+  
     to { opacity: 1; }
-  }
+  
 
-  .holo-scanlines {
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(to bottom,
-      transparent 0px, transparent 3px, rgba(0, 255, 255, 0.025) 4px);
-  }
+  
 
-  .holo-vignette {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.65) 100%);
-  }
-
-  .holo-close {
-    position: fixed;
-    right: 20px;
-    top: calc(env(safe-area-inset-top) + 74px);
-    z-index: 99999 !important;
-    pointer-events: auto !important;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    background: rgba(0, 240, 255, 0.08);
-    border: 1px solid var(--arc);
-    color: var(--arc);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    padding: 7px 13px;
-    cursor: pointer;
-    border-radius: 2px;
-    text-shadow: 0 0 6px var(--arc);
-  }
-
-  .holo-close:active { background: var(--arc); color: #02121c; }
-
-  .holo-loading {
-    position: absolute;
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 40;
-    text-align: center;
-    font-size: 10px;
-    letter-spacing: 0.24em;
-    color: var(--arc);
-    text-shadow: 0 0 10px var(--arc);
-  }
-
-  .holo-loading .pct {
-    display: block;
-    font-family: 'Saira Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 34px;
-    letter-spacing: 0;
-    margin-top: 8px;
-  }
-
-  .holo-err {
-    color: var(--alert);
-    max-width: 260px;
-    line-height: 1.7;
-    text-shadow: none;
-  }
+  
 
   @media (max-width: 380px) {
-    .holo-markers { display: none; }
-    .holo-panel { width: 128px; }
+    
   }
-
-  /* ═══════════════════════════════════════════ */
-  /* INLINE HOLOGRAM                              */
-  /* ═══════════════════════════════════════════ */
-
-  .holo-inline-host { position: absolute; inset: 0; }
-  .holo-inline-host canvas { position: absolute; inset: 0; display: block; }
-
-  .holo-inline-chrome {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 3;
-  }
+  
 
   .hi-reticle {
     position: absolute;
@@ -3894,7 +3180,7 @@
     transform: translate(-50%, -50%);
     border-radius: 50%;
     border: 1px dashed rgba(0, 225, 255, 0.26);
-    animation: holoRing 18s linear infinite;
+    animation: none;
   }
 
   .hi-corner {
@@ -3913,7 +3199,7 @@
   .hi-rot {
     position: absolute;
     right: 12px; bottom: 12px;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: "Share Tech Mono", monospace;
     font-size: 9px;
     color: var(--arc);
     letter-spacing: 0.12em;
@@ -3921,20 +3207,7 @@
     opacity: 0.75;
   }
 
-  .holo-inline-loading {
-    position: absolute;
-    inset: 0;
-    z-index: 6;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    background: rgba(7, 10, 17, 0.9);
-    font-family: 'Share Tech Mono', monospace;
-  }
-
-  .holo-inline-loading.done { display: none; }
+  
 
   .hil-txt {
     font-size: 9px;
@@ -3949,7 +3222,7 @@
   .hil-txt.err { color: var(--alert); text-shadow: none; letter-spacing: 0.1em; }
 
   .hil-pct {
-    font-family: 'Saira Condensed', sans-serif;
+    font-family: "Saira Condensed", sans-serif;
     font-weight: 900;
     font-size: 38px;
     color: var(--arc);
@@ -3981,7 +3254,6 @@
 </script>
 </head>
 <body>
-
 <!-- JARVIS HUD ENVIRONMENT -->
 <div class="hud-dust"></div>
 <div class="hud-reactor"><i></i><i></i><i></i><i></i></div>
@@ -3989,575 +3261,479 @@
 <div class="hud-traces"><span></span><span></span><span></span><span></span></div>
 <div class="hud-sweep"></div>
 <div class="hud-frame"><i></i><i></i></div>
-
 <header>
-  <div class="brand">
-    <div class="logo-block">
-      <div class="logo">
-        <span class="logo-dot"></span>
+<div class="brand">
+<div class="logo-block">
+<div class="logo">
+<span class="logo-dot"></span>
         NATE FITNESS
       </div>
-      <div class="active-title empty" id="activeTitle">Choisis un titre →</div>
-    </div>
-    <div class="header-rewards">
-      <div class="gel-counter empty" id="gelCounter">
-        <span>❄</span>
-        <span id="gelCount">0</span>
-      </div>
-      <div class="streak">
+<div class="active-title empty" id="activeTitle">Choisis un titre →</div>
+</div>
+<div class="header-rewards">
+<div class="gel-counter empty" id="gelCounter">
+<span>❄</span>
+<span id="gelCount">0</span>
+</div>
+<div class="streak">
         ⚡ <strong id="streakDays">0</strong>
-      </div>
-    </div>
-  </div>
-  <div class="tabs">
-    <button class="tab active" data-view="today">Aujourd'hui</button>
-    <button class="tab" data-view="week">Semaine</button>
-    <button class="tab" data-view="stats">Stats</button>
-    <button class="tab" data-view="titles">Titres</button>
-  </div>
-  <div class="hud-status">
-    <span class="dot-live"></span>
-    <span class="seg">SYS ONLINE</span>
-    <span class="bar"></span>
-    <span class="gold-seg" id="hudSessions">— OPS</span>
-    <span class="bar"></span>
-    <span class="seg" id="hudClock">--:--</span>
-  </div>
+</div>
+</div>
+</div>
+<div class="tabs">
+<button class="tab active" data-view="today">Aujourd'hui</button>
+<button class="tab" data-view="week">Semaine</button>
+<button class="tab" data-view="stats">Stats</button>
+<button class="tab" data-view="titles">Titres</button>
+</div>
+<div class="hud-status">
+<span class="dot-live"></span>
+<span class="seg">SYS ONLINE</span>
+<span class="bar"></span>
+<span class="gold-seg" id="hudSessions">— OPS</span>
+<span class="bar"></span>
+<span class="seg" id="hudClock">--:--</span>
+</div>
 </header>
-
 <main>
-  <!-- TODAY VIEW -->
-  <section class="view active" id="view-today">
-    <div class="date-hero">
-      <div class="date-day mono" id="todayDay">—</div>
-      <h1 class="date-title" id="todayTitle">—</h1>
-      <div class="date-sub" id="todaySub">—</div>
-    </div>
-    
-    <div class="today-summary">
-      <div class="summary-count">
-        <div class="summary-number" id="todayCount">0</div>
-        <div class="summary-label" id="todayLabel">activité aujourd'hui</div>
-      </div>
-      <div class="summary-detail" id="todayDetail">Ajoute ta première activité →</div>
-    </div>
-    
-    <!-- BODY SCAN -->
-    <div class="hud-module" id="scanModule"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
-      <div class="hud-module-head">
-        <div class="hud-module-title">Body Scan</div>
-        
-      </div>
-
-      <div class="scan-modes">
-        <button class="scan-mode-btn active" data-mode="all">Global</button>
-        <button class="scan-mode-btn" data-mode="force">Force</button>
-        <button class="scan-mode-btn" data-mode="cardio">Cardio</button>
-        <button class="scan-mode-btn" data-mode="mobility">Mobilité</button>
-      </div>
-
-      <div class="scan-body">
-        <div class="scan-figure" id="holoInlineWrap">
-          <div class="holo-inline-host" id="holoInlineHost"></div>
-          <div class="holo-inline-chrome">
-            <div class="hi-reticle"></div>
-            <div class="hi-ring"></div>
-            <div class="hi-corner tl"></div>
-            <div class="hi-corner tr"></div>
-            <div class="hi-corner bl"></div>
-            <div class="hi-corner br"></div>
-            <div class="hi-rot" id="holoInlineRot">000.0°</div>
-          </div>
-          <div class="scan-beam"></div>
-          <div class="holo-inline-loading" id="holoInlineLoading">
-            <div class="hil-txt" id="holoInlineTxt">INITIALISATION BIO-SCAN</div>
-            <div class="hil-pct" id="holoInlinePct">0%</div>
-            <div class="hil-track"><div class="hil-fill" id="holoInlineFill"></div></div>
-          </div>
-        </div>
-
-        <div class="scan-panel">
-          <div class="mg-row" data-mg="upper">
-            <div class="mg-head"><span>Haut</span><b id="mgUpperV">0</b></div>
-            <div class="mg-bar"><div class="mg-fill" id="mgUpper" style="width:0%"></div></div>
-          </div>
-          <div class="mg-row" data-mg="lower">
-            <div class="mg-head"><span>Bas</span><b id="mgLowerV">0</b></div>
-            <div class="mg-bar"><div class="mg-fill" id="mgLower" style="width:0%"></div></div>
-          </div>
-          <div class="mg-row" data-mg="cardio">
-            <div class="mg-head"><span>Cardio</span><b class="hot" id="mgCardioV">0</b></div>
-            <div class="mg-bar"><div class="mg-fill hot" id="mgCardio" style="width:0%"></div></div>
-          </div>
-          <div class="mg-row" data-mg="mobility">
-            <div class="mg-head"><span>Mobilité</span><b id="mgMobV">0</b></div>
-            <div class="mg-bar"><div class="mg-fill" id="mgMob" style="width:0%"></div></div>
-          </div>
-          <div class="scan-verdict" id="scanVerdict">ANALYSE...</div>
-        </div>
-      </div>
-
-      <div class="zone-readout">
-        <div class="zone-title" id="zoneTitle">Zone d'analyse</div>
-        <div class="zone-desc" id="zoneDesc">Tape un groupe musculaire sur le scan pour lire son détail.</div>
-      </div>
-
-      <!-- VITALS -->
-      <div class="vitals">
-        <div class="vitals-ecg">
-          <svg viewBox="0 0 200 40" preserveAspectRatio="none">
-            <line class="ecg-grid" x1="0" y1="10" x2="200" y2="10"/>
-            <line class="ecg-grid" x1="0" y1="20" x2="200" y2="20"/>
-            <line class="ecg-grid" x1="0" y1="30" x2="200" y2="30"/>
-            <polyline class="ecg-line" points="0,20 14,20 18,20 22,12 26,28 30,6 34,32 38,20 52,20 66,20 70,20 74,12 78,28 82,6 86,32 90,20 104,20 118,20 122,20 126,12 130,28 134,6 138,32 142,20 156,20 170,20 174,12 178,28 182,6 186,32 190,20 200,20"/>
-          </svg>
-        </div>
-        <div class="vitals-num">
-          <div class="vitals-k">Charge / 7j</div>
-          <div class="vitals-v"><span id="vitalsLoad">0</span><small id="vitalsUnit">OPS</small></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DNA + DONUTS -->
-    <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
-      <div class="hud-module-head">
-        <div class="hud-module-title">Noyau de diagnostic</div>
-        <div class="hud-module-tag">CYCLE SYNC</div>
-      </div>
-      <div class="reactor-block">
-        <div class="reactor-widget">
-          <div class="reactor-outer"></div>
-          <div class="reactor-middle"></div>
-          <div class="reactor-inner"></div>
-          <div class="reactor-glowcore"></div>
-          <div class="reactor-core-txt">
-            <div class="core-number" id="coreLevel">0</div>
-            <div class="core-sub">Niveau</div>
-          </div>
-        </div>
-        <div class="reactor-stats">
-          <div class="r-stat-row"><span>Opérations</span><b id="rOps">0</b></div>
-          <div class="r-stat-row"><span>Streak actif</span><b class="gold" id="rStreak">0 J</b></div>
-          <div class="r-stat-row"><span>Record</span><b id="rBest">0 J</b></div>
-          <div class="r-stat-row"><span>Intégrité</span><b class="ok" id="rIntegrity">100%</b></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
-      <div class="hud-module-head">
-        <div class="hud-module-title">Répartition</div>
-        <div class="hud-module-tag">TOTAL <b id="distTotal">0</b></div>
-      </div>
-      <div class="donut-row">
-        <div class="donut-cell">
-          <svg viewBox="0 0 44 44">
-            <circle class="donut-track" cx="22" cy="22" r="16"/>
-            <circle class="donut-arc c1" id="donutForce" cx="22" cy="22" r="16" stroke-dasharray="0 100.5"/>
-            <text class="donut-mid" x="22" y="27" id="donutForceT">0%</text>
-          </svg>
-          <div class="donut-label">Force</div>
-        </div>
-        <div class="donut-cell">
-          <svg viewBox="0 0 44 44">
-            <circle class="donut-track" cx="22" cy="22" r="16"/>
-            <circle class="donut-arc c2" id="donutCardio" cx="22" cy="22" r="16" stroke-dasharray="0 100.5"/>
-            <text class="donut-mid" x="22" y="27" id="donutCardioT">0%</text>
-          </svg>
-          <div class="donut-label">Cardio</div>
-        </div>
-        <div class="donut-cell">
-          <svg viewBox="0 0 44 44">
-            <circle class="donut-track" cx="22" cy="22" r="16"/>
-            <circle class="donut-arc c3" id="donutMob" cx="22" cy="22" r="16" stroke-dasharray="0 100.5"/>
-            <text class="donut-mid" x="22" y="27" id="donutMobT">0%</text>
-          </svg>
-          <div class="donut-label">Mobilité</div>
-        </div>
-      </div>
-      <svg class="dna-svg" viewBox="0 0 200 60" preserveAspectRatio="none">
-        <g class="dna-shift" id="dnaGroup"></g>
-      </svg>
-    </div>
-
-    <div class="hud-duo">
-      <div class="hud-mini"><span class="cnr tl"></span><span class="cnr br"></span>
-        <div class="hud-mini-title">Core / Unit-01</div>
-        <svg viewBox="0 0 100 100">
-          <g class="wf-spin">
-            <ellipse class="wf-line" cx="50" cy="50" rx="34" ry="13"/>
-            <ellipse class="wf-line dim" cx="50" cy="50" rx="34" ry="13" transform="rotate(60 50 50)"/>
-            <ellipse class="wf-line dim" cx="50" cy="50" rx="34" ry="13" transform="rotate(120 50 50)"/>
-          </g>
-          <g class="wf-spin-rev">
-            <ellipse class="wf-hot" cx="50" cy="50" rx="24" ry="24" opacity="0.5"/>
-            <path class="wf-hot" d="M50,26 A24,24 0 0 1 74,50" />
-          </g>
-          <g class="wf-spin-fast">
-            <polygon class="wf-line" points="50,36 62,50 50,64 38,50"/>
-          </g>
-          <circle cx="50" cy="50" r="4" fill="var(--gold)" filter="drop-shadow(0 0 8px var(--gold))"/>
-          <circle class="wf-line dim" cx="50" cy="50" r="44" stroke-dasharray="2 5"/>
-        </svg>
-      </div>
-
-      <div class="hud-mini"><span class="cnr tl"></span><span class="cnr br"></span>
-        <div class="hud-mini-title">Orbit / Cycle</div>
-        <svg viewBox="0 0 100 100">
-          <ellipse class="orb-path" cx="50" cy="50" rx="18" ry="18"/>
-          <ellipse class="orb-path" cx="50" cy="50" rx="30" ry="30"/>
-          <ellipse class="orb-path hot" cx="50" cy="50" rx="42" ry="42"/>
-          <circle class="orb-sun" cx="50" cy="50" r="4.5"/>
-          <g class="orbit-1"><circle class="orb-body" cx="68" cy="50" r="2.4"/></g>
-          <g class="orbit-2"><circle class="orb-body" cx="80" cy="50" r="3"/></g>
-          <g class="orbit-3"><circle class="orb-body hot" cx="92" cy="50" r="2.6"/></g>
-          <line class="map-crosshair" x1="4" y1="50" x2="12" y2="50" opacity="0.5"/>
-          <line class="map-crosshair" x1="88" y1="50" x2="96" y2="50" opacity="0.5"/>
-        </svg>
-      </div>
-    </div>
-
-    <button class="add-activity-btn" id="addActivityBtn">
-      <span class="plus">+</span>
-      <span>Ajouter une activité</span>
-    </button>
-    
-    <div id="todayActivities"></div>
-  </section>
-  
-  <!-- WEEK VIEW -->
-  <section class="view" id="view-week">
-    <div class="date-hero">
-      <div class="date-day mono">PLANNING</div>
-      <h1 class="date-title">Ta <span class="accent">semaine</span></h1>
-      <div class="date-sub">Tape un jour pour voir ses activités</div>
-    </div>
-    <div class="week-nav">
-      <button class="week-nav-btn" id="weekNavPrev">←</button>
-      <div class="week-nav-info">
-        <div class="week-nav-label" id="weekNavLabel">Cette semaine</div>
-        <div class="week-nav-range" id="weekNavRange">—</div>
-      </div>
-      <button class="week-nav-btn" id="weekNavNext">→</button>
-    </div>
-    <div class="week-grid" id="weekGrid"></div>
-  </section>
-  
-  <!-- STATS VIEW -->
-  <section class="view" id="view-stats">
-    <div class="date-hero">
-      <div class="date-day mono">PROGRÈS</div>
-      <h1 class="date-title">Tes <span class="accent">stats</span></h1>
-      <div class="date-sub">Depuis le début</div>
-    </div>
-    
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-label">Total activités</div>
-        <div class="stat-value mono" id="totalSessions">0</div>
-        <div class="stat-sub" id="totalSessionsSub">—</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Streak record</div>
-        <div class="stat-value mono" id="bestStreak">0<span class="stat-unit">j</span></div>
-        <div class="stat-sub">Meilleure série</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Cette semaine</div>
-        <div class="stat-value mono" id="weekDone">0<span class="stat-unit">/7</span></div>
-        <div class="stat-sub">Jours actifs</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Étirements</div>
-        <div class="stat-value mono" id="stretchTotal">0</div>
-        <div class="stat-sub">Sessions</div>
-      </div>
-    </div>
-    
-    <div class="heatmap">
-      <div class="heatmap-head">
-        <div class="heatmap-title" id="heatmapTitle">30 derniers jours</div>
-      </div>
-      <div class="period-selector">
-        <button class="period-btn active" data-period="30">30j</button>
-        <button class="period-btn" data-period="90">90j</button>
-        <button class="period-btn" data-period="180">6m</button>
-        <button class="period-btn" data-period="365">1a</button>
-        <button class="period-btn" data-period="all">Tout</button>
-      </div>
-      <div class="heatmap-grid" id="heatmap"></div>
-      <div class="heatmap-legend">
-        <span>Moins</span>
-        <div class="legend-cells">
-          <div class="heat-cell"></div>
-          <div class="heat-cell l1"></div>
-          <div class="heat-cell l2"></div>
-          <div class="heat-cell l3"></div>
-        </div>
-        <span>Plus</span>
-      </div>
-    </div>
-    
-    <div class="breakdown">
-      <div class="breakdown-row">
-        <div class="breakdown-label">
-          <div class="breakdown-icon anytime">💪</div>
+<!-- TODAY VIEW -->
+<section class="view active" id="view-today">
+<div class="date-hero">
+<div class="date-day mono" id="todayDay">—</div>
+<h1 class="date-title" id="todayTitle">—</h1>
+<div class="date-sub" id="todaySub">—</div>
+</div>
+<div class="today-summary">
+<div class="summary-count">
+<div class="summary-number" id="todayCount">0</div>
+<div class="summary-label" id="todayLabel">activité aujourd'hui</div>
+</div>
+<div class="summary-detail" id="todayDetail">Ajoute ta première activité →</div>
+</div>
+<!-- VITALS -->
+<div class="vitals">
+<div class="vitals-ecg">
+<svg preserveaspectratio="none" viewbox="0 0 200 40">
+<line class="ecg-grid" x1="0" x2="200" y1="10" y2="10"></line>
+<line class="ecg-grid" x1="0" x2="200" y1="20" y2="20"></line>
+<line class="ecg-grid" x1="0" x2="200" y1="30" y2="30"></line>
+<polyline class="ecg-line" points="0,20 14,20 18,20 22,12 26,28 30,6 34,32 38,20 52,20 66,20 70,20 74,12 78,28 82,6 86,32 90,20 104,20 118,20 122,20 126,12 130,28 134,6 138,32 142,20 156,20 170,20 174,12 178,28 182,6 186,32 190,20 200,20"></polyline>
+</svg>
+</div>
+<div class="vitals-num">
+<div class="vitals-k">Charge / 7j</div>
+<div class="vitals-v"><span id="vitalsLoad">0</span><small id="vitalsUnit">OPS</small></div>
+</div>
+</div>
+</div>
+<!-- DNA + DONUTS -->
+<div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+<div class="hud-module-head">
+<div class="hud-module-title">Noyau de diagnostic</div>
+<div class="hud-module-tag">CYCLE SYNC</div>
+</div>
+<div class="reactor-block">
+<div class="reactor-widget">
+<div class="reactor-outer"></div>
+<div class="reactor-middle"></div>
+<div class="reactor-inner"></div>
+<div class="reactor-glowcore"></div>
+<div class="reactor-core-txt">
+<div class="core-number" id="coreLevel">0</div>
+<div class="core-sub">Niveau</div>
+</div>
+</div>
+<div class="reactor-stats">
+<div class="r-stat-row"><span>Opérations</span><b id="rOps">0</b></div>
+<div class="r-stat-row"><span>Streak actif</span><b class="gold" id="rStreak">0 J</b></div>
+<div class="r-stat-row"><span>Record</span><b id="rBest">0 J</b></div>
+<div class="r-stat-row"><span>Intégrité</span><b class="ok" id="rIntegrity">100%</b></div>
+</div>
+</div>
+</div>
+<div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+<div class="hud-module-head">
+<div class="hud-module-title">Répartition</div>
+<div class="hud-module-tag">TOTAL <b id="distTotal">0</b></div>
+</div>
+<div class="donut-row">
+<div class="donut-cell">
+<svg viewbox="0 0 44 44">
+<circle class="donut-track" cx="22" cy="22" r="16"></circle>
+<circle class="donut-arc c1" cx="22" cy="22" id="donutForce" r="16" stroke-dasharray="0 100.5"></circle>
+<text class="donut-mid" id="donutForceT" x="22" y="27">0%</text>
+</svg>
+<div class="donut-label">Force</div>
+</div>
+<div class="donut-cell">
+<svg viewbox="0 0 44 44">
+<circle class="donut-track" cx="22" cy="22" r="16"></circle>
+<circle class="donut-arc c2" cx="22" cy="22" id="donutCardio" r="16" stroke-dasharray="0 100.5"></circle>
+<text class="donut-mid" id="donutCardioT" x="22" y="27">0%</text>
+</svg>
+<div class="donut-label">Cardio</div>
+</div>
+<div class="donut-cell">
+<svg viewbox="0 0 44 44">
+<circle class="donut-track" cx="22" cy="22" r="16"></circle>
+<circle class="donut-arc c3" cx="22" cy="22" id="donutMob" r="16" stroke-dasharray="0 100.5"></circle>
+<text class="donut-mid" id="donutMobT" x="22" y="27">0%</text>
+</svg>
+<div class="donut-label">Mobilité</div>
+</div>
+</div>
+<svg class="dna-svg" preserveaspectratio="none" viewbox="0 0 200 60">
+<g class="dna-shift" id="dnaGroup"></g>
+</svg>
+</div>
+<div class="hud-duo">
+<div class="hud-mini"><span class="cnr tl"></span><span class="cnr br"></span>
+<div class="hud-mini-title">Core / Unit-01</div>
+<svg viewbox="0 0 100 100">
+<g class="wf-spin">
+<ellipse class="wf-line" cx="50" cy="50" rx="34" ry="13"></ellipse>
+<ellipse class="wf-line dim" cx="50" cy="50" rx="34" ry="13" transform="rotate(60 50 50)"></ellipse>
+<ellipse class="wf-line dim" cx="50" cy="50" rx="34" ry="13" transform="rotate(120 50 50)"></ellipse>
+</g>
+<g class="wf-spin-rev">
+<ellipse class="wf-hot" cx="50" cy="50" opacity="0.5" rx="24" ry="24"></ellipse>
+<path class="wf-hot" d="M50,26 A24,24 0 0 1 74,50"></path>
+</g>
+<g class="wf-spin-fast">
+<polygon class="wf-line" points="50,36 62,50 50,64 38,50"></polygon>
+</g>
+<circle cx="50" cy="50" fill="var(--gold)" filter="drop-shadow(0 0 8px var(--gold))" r="4"></circle>
+<circle class="wf-line dim" cx="50" cy="50" r="44" stroke-dasharray="2 5"></circle>
+</svg>
+</div>
+<div class="hud-mini"><span class="cnr tl"></span><span class="cnr br"></span>
+<div class="hud-mini-title">Orbit / Cycle</div>
+<svg viewbox="0 0 100 100">
+<ellipse class="orb-path" cx="50" cy="50" rx="18" ry="18"></ellipse>
+<ellipse class="orb-path" cx="50" cy="50" rx="30" ry="30"></ellipse>
+<ellipse class="orb-path hot" cx="50" cy="50" rx="42" ry="42"></ellipse>
+<circle class="orb-sun" cx="50" cy="50" r="4.5"></circle>
+<g class="orbit-1"><circle class="orb-body" cx="68" cy="50" r="2.4"></circle></g>
+<g class="orbit-2"><circle class="orb-body" cx="80" cy="50" r="3"></circle></g>
+<g class="orbit-3"><circle class="orb-body hot" cx="92" cy="50" r="2.6"></circle></g>
+<line class="map-crosshair" opacity="0.5" x1="4" x2="12" y1="50" y2="50"></line>
+<line class="map-crosshair" opacity="0.5" x1="88" x2="96" y1="50" y2="50"></line>
+</svg>
+</div>
+</div>
+<button class="add-activity-btn" id="addActivityBtn">
+<span class="plus">+</span>
+<span>Ajouter une activité</span>
+</button>
+<div id="todayActivities"></div>
+</section>
+<!-- WEEK VIEW -->
+<section class="view" id="view-week">
+<div class="date-hero">
+<div class="date-day mono">PLANNING</div>
+<h1 class="date-title">Ta <span class="accent">semaine</span></h1>
+<div class="date-sub">Tape un jour pour voir ses activités</div>
+</div>
+<div class="week-nav">
+<button class="week-nav-btn" id="weekNavPrev">←</button>
+<div class="week-nav-info">
+<div class="week-nav-label" id="weekNavLabel">Cette semaine</div>
+<div class="week-nav-range" id="weekNavRange">—</div>
+</div>
+<button class="week-nav-btn" id="weekNavNext">→</button>
+</div>
+<div class="week-grid" id="weekGrid"></div>
+</section>
+<!-- STATS VIEW -->
+<section class="view" id="view-stats">
+<div class="date-hero">
+<div class="date-day mono">PROGRÈS</div>
+<h1 class="date-title">Tes <span class="accent">stats</span></h1>
+<div class="date-sub">Depuis le début</div>
+</div>
+<div class="stats-grid">
+<div class="stat-card">
+<div class="stat-label">Total activités</div>
+<div class="stat-value mono" id="totalSessions">0</div>
+<div class="stat-sub" id="totalSessionsSub">—</div>
+</div>
+<div class="stat-card">
+<div class="stat-label">Streak record</div>
+<div class="stat-value mono" id="bestStreak">0<span class="stat-unit">j</span></div>
+<div class="stat-sub">Meilleure série</div>
+</div>
+<div class="stat-card">
+<div class="stat-label">Cette semaine</div>
+<div class="stat-value mono" id="weekDone">0<span class="stat-unit">/7</span></div>
+<div class="stat-sub">Jours actifs</div>
+</div>
+<div class="stat-card">
+<div class="stat-label">Étirements</div>
+<div class="stat-value mono" id="stretchTotal">0</div>
+<div class="stat-sub">Sessions</div>
+</div>
+</div>
+<div class="heatmap">
+<div class="heatmap-head">
+<div class="heatmap-title" id="heatmapTitle">30 derniers jours</div>
+</div>
+<div class="period-selector">
+<button class="period-btn active" data-period="30">30j</button>
+<button class="period-btn" data-period="90">90j</button>
+<button class="period-btn" data-period="180">6m</button>
+<button class="period-btn" data-period="365">1a</button>
+<button class="period-btn" data-period="all">Tout</button>
+</div>
+<div class="heatmap-grid" id="heatmap"></div>
+<div class="heatmap-legend">
+<span>Moins</span>
+<div class="legend-cells">
+<div class="heat-cell"></div>
+<div class="heat-cell l1"></div>
+<div class="heat-cell l2"></div>
+<div class="heat-cell l3"></div>
+</div>
+<span>Plus</span>
+</div>
+</div>
+<div class="breakdown">
+<div class="breakdown-row">
+<div class="breakdown-label">
+<div class="breakdown-icon anytime">💪</div>
           Anytime
         </div>
-        <div class="breakdown-value" id="bdAnytime">0</div>
-      </div>
-      <div class="breakdown-row">
-        <div class="breakdown-label">
-          <div class="breakdown-icon bodyweight">🏠</div>
+<div class="breakdown-value" id="bdAnytime">0</div>
+</div>
+<div class="breakdown-row">
+<div class="breakdown-label">
+<div class="breakdown-icon bodyweight">🏠</div>
           Poids du corps
         </div>
-        <div class="breakdown-value" id="bdBodyweight">0</div>
-      </div>
-      <div class="breakdown-row">
-        <div class="breakdown-label">
-          <div class="breakdown-icon anytime">🦵</div>
+<div class="breakdown-value" id="bdBodyweight">0</div>
+</div>
+<div class="breakdown-row">
+<div class="breakdown-label">
+<div class="breakdown-icon anytime">🦵</div>
           Bas du corps
         </div>
-        <div class="breakdown-value" id="bdLower">0</div>
-      </div>
-      <div class="breakdown-row">
-        <div class="breakdown-label">
-          <div class="breakdown-icon anytime">🏋️</div>
+<div class="breakdown-value" id="bdLower">0</div>
+</div>
+<div class="breakdown-row">
+<div class="breakdown-label">
+<div class="breakdown-icon anytime">🏋️</div>
           Haut du corps
         </div>
-        <div class="breakdown-value" id="bdUpper">0</div>
-      </div>
-      <div class="breakdown-row">
-        <div class="breakdown-label">
-          <div class="breakdown-icon run">🏃</div>
+<div class="breakdown-value" id="bdUpper">0</div>
+</div>
+<div class="breakdown-row">
+<div class="breakdown-label">
+<div class="breakdown-icon run">🏃</div>
           Course
         </div>
-        <div class="breakdown-value" id="bdRun">0</div>
-      </div>
-      <div class="breakdown-row">
-        <div class="breakdown-label">
-          <div class="breakdown-icon stretch">🧘</div>
+<div class="breakdown-value" id="bdRun">0</div>
+</div>
+<div class="breakdown-row">
+<div class="breakdown-label">
+<div class="breakdown-icon stretch">🧘</div>
           Étirements
         </div>
-        <div class="breakdown-value" id="bdStretch">0</div>
-      </div>
-    </div>
-    
-
-    <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
-      <div class="hud-module-head">
-        <div class="hud-module-title">Telemetry</div>
-        <div class="hud-module-tag">CYCLE <b id="teleCycle">--</b></div>
-      </div>
-      <div style="padding: 12px 14px;">
-        <div class="telemetry">
-          <div class="tele-row">
-            <div class="tele-label">Anytime</div>
-            <div class="tele-track"><div class="tele-fill" id="teleAnytime" style="width:0%"></div></div>
-            <div class="tele-val" id="teleAnytimeV">0</div>
-          </div>
-          <div class="tele-row">
-            <div class="tele-label">Course</div>
-            <div class="tele-track"><div class="tele-fill hot" id="teleRun" style="width:0%"></div></div>
-            <div class="tele-val hot" id="teleRunV">0</div>
-          </div>
-          <div class="tele-row">
-            <div class="tele-label">Étirements</div>
-            <div class="tele-track"><div class="tele-fill" id="teleStretch" style="width:0%"></div></div>
-            <div class="tele-val" id="teleStretchV">0</div>
-          </div>
-          <div class="tele-row">
-            <div class="tele-label">Poids corps</div>
-            <div class="tele-track"><div class="tele-fill hot" id="teleBw" style="width:0%"></div></div>
-            <div class="tele-val hot" id="teleBwV">0</div>
-          </div>
-        </div>
-        <div class="barcode"></div>
-      </div>
-    </div>
-
-    <div class="hud-duo">
-      <div class="hud-mini"><span class="cnr tl"></span><span class="cnr br"></span>
-        <div class="hud-mini-title">Signal / 14j</div>
-        <svg viewBox="0 0 100 46">
-          <line class="wave-grid" x1="0" y1="11.5" x2="100" y2="11.5"/>
-          <line class="wave-grid" x1="0" y1="23" x2="100" y2="23"/>
-          <line class="wave-grid" x1="0" y1="34.5" x2="100" y2="34.5"/>
-          <polyline class="wave-line" id="wavePath" points=""/>
-        </svg>
-      </div>
-      <div class="hud-mini"><span class="cnr tl"></span><span class="cnr br"></span>
-        <div class="hud-mini-title">Diagnostics</div>
-        <div class="diag-list">
-          <div class="diag-row"><span class="dk">Streak</span><span class="dv ok" id="diagStreak">--</span></div>
-          <div class="diag-row"><span class="dk">Gels</span><span class="dv warn" id="diagGels">--</span></div>
-          <div class="diag-row"><span class="dk">Titres</span><span class="dv ok" id="diagTitles">--</span></div>
-          <div class="diag-row"><span class="dk">Uptime</span><span class="dv ok" id="diagUptime">--</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-title">Badges</div>
-    <div class="badges-grid" id="badgesGrid"></div>
-    
-    <div class="danger-zone">
-      <div class="section-title" style="margin-top: 0;">Sauvegarde</div>
-      <button class="safe-btn" id="exportBtn">📤 Exporter mes données</button>
-      <button class="safe-btn" id="importBtn" style="margin-top: 8px;">📥 Importer une sauvegarde</button>
-      <input type="file" id="importFile" accept=".json,application/json" style="display: none;">
-      <div style="font-size: 10px; color: var(--text-faint); margin-top: 10px; font-family: 'Share Tech Mono', monospace; line-height: 1.5; text-transform: uppercase; letter-spacing: 0.05em;">
+<div class="breakdown-value" id="bdStretch">0</div>
+</div>
+</div>
+<div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+<div class="hud-module-head">
+<div class="hud-module-title">Telemetry</div>
+<div class="hud-module-tag">CYCLE <b id="teleCycle">--</b></div>
+</div>
+<div style="padding: 12px 14px;">
+<div class="telemetry">
+<div class="tele-row">
+<div class="tele-label">Anytime</div>
+<div class="tele-track"><div class="tele-fill" id="teleAnytime" style="width:0%"></div></div>
+<div class="tele-val" id="teleAnytimeV">0</div>
+</div>
+<div class="tele-row">
+<div class="tele-label">Course</div>
+<div class="tele-track"><div class="tele-fill hot" id="teleRun" style="width:0%"></div></div>
+<div class="tele-val hot" id="teleRunV">0</div>
+</div>
+<div class="tele-row">
+<div class="tele-label">Étirements</div>
+<div class="tele-track"><div class="tele-fill" id="teleStretch" style="width:0%"></div></div>
+<div class="tele-val" id="teleStretchV">0</div>
+</div>
+<div class="tele-row">
+<div class="tele-label">Poids corps</div>
+<div class="tele-track"><div class="tele-fill hot" id="teleBw" style="width:0%"></div></div>
+<div class="tele-val hot" id="teleBwV">0</div>
+</div>
+</div>
+<div class="barcode"></div>
+</div>
+</div>
+<div class="hud-duo">
+<div class="hud-mini"><span class="cnr tl"></span><span class="cnr br"></span>
+<div class="hud-mini-title">Signal / 14j</div>
+<svg viewbox="0 0 100 46">
+<line class="wave-grid" x1="0" x2="100" y1="11.5" y2="11.5"></line>
+<line class="wave-grid" x1="0" x2="100" y1="23" y2="23"></line>
+<line class="wave-grid" x1="0" x2="100" y1="34.5" y2="34.5"></line>
+<polyline class="wave-line" id="wavePath" points=""></polyline>
+</svg>
+</div>
+<div class="hud-mini"><span class="cnr tl"></span><span class="cnr br"></span>
+<div class="hud-mini-title">Diagnostics</div>
+<div class="diag-list">
+<div class="diag-row"><span class="dk">Streak</span><span class="dv ok" id="diagStreak">--</span></div>
+<div class="diag-row"><span class="dk">Gels</span><span class="dv warn" id="diagGels">--</span></div>
+<div class="diag-row"><span class="dk">Titres</span><span class="dv ok" id="diagTitles">--</span></div>
+<div class="diag-row"><span class="dk">Uptime</span><span class="dv ok" id="diagUptime">--</span></div>
+</div>
+</div>
+</div>
+<div class="section-title">Badges</div>
+<div class="badges-grid" id="badgesGrid"></div>
+<div class="danger-zone">
+<div class="section-title" style="margin-top: 0;">Sauvegarde</div>
+<button class="safe-btn" id="exportBtn">📤 Exporter mes données</button>
+<button class="safe-btn" id="importBtn" style="margin-top: 8px;">📥 Importer une sauvegarde</button>
+<input accept=".json,application/json" id="importFile" style="display: none;" type="file"/>
+<div style="font-size: 10px; color: var(--text-faint); margin-top: 10px; font-family: 'Share Tech Mono', monospace; line-height: 1.5; text-transform: uppercase; letter-spacing: 0.05em;">
         Exporte régulièrement dans tes Notes ou par mail
       </div>
-      <div class="section-title" style="margin-top: 24px;">Zone rouge</div>
-      <button class="danger-btn" id="resetBtn">Réinitialiser toutes les données</button>
-    </div>
-  </section>
-  
-  <!-- TITLES VIEW -->
-  <section class="view" id="view-titles">
-    <div class="date-hero">
-      <div class="date-day mono">COLLECTION</div>
-      <h1 class="date-title">Tes <span class="accent">titres</span></h1>
-      <div class="date-sub" id="titlesSub">— / — débloqués</div>
-    </div>
-    
-    <div class="titles-progress-card">
-      <div class="titles-progress-bar">
-        <div class="titles-progress-fill" id="titlesProgressFill"></div>
-      </div>
-      <div class="titles-progress-text" id="titlesProgressText">0%</div>
-    </div>
-    
-    <div class="titles-filter">
-      <button class="title-filter-btn active" data-filter="all">Tous</button>
-      <button class="title-filter-btn" data-filter="unlocked">Débloqués</button>
-      <button class="title-filter-btn" data-filter="locked">À débloquer</button>
-    </div>
-    
-    <div class="titles-list" id="titlesList"></div>
-  </section>
+<div class="section-title" style="margin-top: 24px;">Zone rouge</div>
+<button class="danger-btn" id="resetBtn">Réinitialiser toutes les données</button>
+</div>
+</section>
+<!-- TITLES VIEW -->
+<section class="view" id="view-titles">
+<div class="date-hero">
+<div class="date-day mono">COLLECTION</div>
+<h1 class="date-title">Tes <span class="accent">titres</span></h1>
+<div class="date-sub" id="titlesSub">— / — débloqués</div>
+</div>
+<div class="titles-progress-card">
+<div class="titles-progress-bar">
+<div class="titles-progress-fill" id="titlesProgressFill"></div>
+</div>
+<div class="titles-progress-text" id="titlesProgressText">0%</div>
+</div>
+<div class="titles-filter">
+<button class="title-filter-btn active" data-filter="all">Tous</button>
+<button class="title-filter-btn" data-filter="unlocked">Débloqués</button>
+<button class="title-filter-btn" data-filter="locked">À débloquer</button>
+</div>
+<div class="titles-list" id="titlesList"></div>
+</section>
 </main>
-
 <div class="toast" id="toast">Bien joué</div>
-
 <!-- ADD ACTIVITY MODAL -->
 <div class="modal" id="addActivityModal">
-  <div class="modal-content">
-    <div class="modal-handle"></div>
-    <div class="modal-title" id="addModalTitle">Nouvelle activité</div>
-    <div class="modal-subtitle" id="addModalSubtitle">Que veux-tu ajouter ?</div>
-    
-    <div class="modal-label">Type</div>
-    <div class="type-picker">
-      <button class="type-btn type-anytime" data-type="anytime">
-        <span class="type-icon">💪</span>
+<div class="modal-content">
+<div class="modal-handle"></div>
+<div class="modal-title" id="addModalTitle">Nouvelle activité</div>
+<div class="modal-subtitle" id="addModalSubtitle">Que veux-tu ajouter ?</div>
+<div class="modal-label">Type</div>
+<div class="type-picker">
+<button class="type-btn type-anytime" data-type="anytime">
+<span class="type-icon">💪</span>
         Anytime
       </button>
-      <button class="type-btn type-run" data-type="run">
-        <span class="type-icon">🏃</span>
+<button class="type-btn type-run" data-type="run">
+<span class="type-icon">🏃</span>
         Course
       </button>
-      <button class="type-btn type-stretch" data-type="stretch">
-        <span class="type-icon">🧘</span>
+<button class="type-btn type-stretch" data-type="stretch">
+<span class="type-icon">🧘</span>
         Étirements
       </button>
-    </div>
-    
-    <div id="subtypeSection" style="display: none;">
-      <div class="modal-label">Groupes musculaires</div>
-      <div class="subtype-picker">
-        <button class="subtype-btn" data-subtype="upper">
-          <span class="sub-icon">🏋️</span>
+</div>
+<div id="subtypeSection" style="display: none;">
+<div class="modal-label">Groupes musculaires</div>
+<div class="subtype-picker">
+<button class="subtype-btn" data-subtype="upper">
+<span class="sub-icon">🏋️</span>
           Haut du corps
         </button>
-        <button class="subtype-btn" data-subtype="lower">
-          <span class="sub-icon">🦵</span>
+<button class="subtype-btn" data-subtype="lower">
+<span class="sub-icon">🦵</span>
           Bas du corps
         </button>
-      </div>
-    </div>
-    
-    <div id="slotSection" style="display: none;">
-      <div class="modal-label">Moment de la journée</div>
-      <div class="slot-picker">
-        <button class="slot-btn" data-slot="morning">
-          <span class="slot-icon">🌅</span>
+</div>
+</div>
+<div id="slotSection" style="display: none;">
+<div class="modal-label">Moment de la journée</div>
+<div class="slot-picker">
+<button class="slot-btn" data-slot="morning">
+<span class="slot-icon">🌅</span>
           Matin
         </button>
-        <button class="slot-btn" data-slot="midday">
-          <span class="slot-icon">☀️</span>
+<button class="slot-btn" data-slot="midday">
+<span class="slot-icon">☀️</span>
           Midi
         </button>
-        <button class="slot-btn" data-slot="evening">
-          <span class="slot-icon">🌙</span>
+<button class="slot-btn" data-slot="evening">
+<span class="slot-icon">🌙</span>
           Soir
         </button>
-      </div>
-    </div>
-    
-    <div id="durationSection" style="display: none;">
-      <div class="modal-label">Durée</div>
-      <div class="duration-input">
-        <button class="duration-btn" id="durationMinus">−5</button>
-        <div class="duration-value mono"><span id="durationValue">30</span><span class="duration-unit">min</span></div>
-        <button class="duration-btn" id="durationPlus">+5</button>
-      </div>
-    </div>
-    
-    <div class="modal-actions">
-      <button class="modal-btn secondary" id="addCancel">Annuler</button>
-      <button class="modal-btn primary" id="addSave" disabled>Ajouter</button>
-    </div>
-  </div>
 </div>
-
+</div>
+<div id="durationSection" style="display: none;">
+<div class="modal-label">Durée</div>
+<div class="duration-input">
+<button class="duration-btn" id="durationMinus">−5</button>
+<div class="duration-value mono"><span id="durationValue">30</span><span class="duration-unit">min</span></div>
+<button class="duration-btn" id="durationPlus">+5</button>
+</div>
+</div>
+<div class="modal-actions">
+<button class="modal-btn secondary" id="addCancel">Annuler</button>
+<button class="modal-btn primary" disabled="" id="addSave">Ajouter</button>
+</div>
+</div>
+</div>
 <!-- CONFIRM MODAL -->
 <div class="modal" id="confirmModal">
-  <div class="modal-content confirm-content">
-    <div class="modal-handle"></div>
-    <div class="confirm-icon" id="confirmIcon">❓</div>
-    <div class="confirm-title" id="confirmTitle">Confirmer ?</div>
-    <div class="confirm-text" id="confirmText">Es-tu sûr ?</div>
-    <div class="modal-actions">
-      <button class="modal-btn secondary" id="confirmCancel">Annuler</button>
-      <button class="modal-btn primary" id="confirmOk">Confirmer</button>
-    </div>
-  </div>
+<div class="modal-content confirm-content">
+<div class="modal-handle"></div>
+<div class="confirm-icon" id="confirmIcon">❓</div>
+<div class="confirm-title" id="confirmTitle">Confirmer ?</div>
+<div class="confirm-text" id="confirmText">Es-tu sûr ?</div>
+<div class="modal-actions">
+<button class="modal-btn secondary" id="confirmCancel">Annuler</button>
+<button class="modal-btn primary" id="confirmOk">Confirmer</button>
 </div>
-
+</div>
+</div>
 <!-- BADGE MODAL -->
 <div class="modal" id="badgeModal">
-  <div class="modal-content badge-modal-content" id="badgeModalContent">
-    <div class="modal-handle"></div>
-    <div class="badge-modal-icon" id="badgeModalIcon">🏆</div>
-    <div class="badge-modal-name" id="badgeModalName">Badge</div>
-    <div class="badge-modal-desc" id="badgeModalDesc">Description</div>
-    <div class="badge-modal-bar">
-      <div class="badge-modal-bar-fill" id="badgeModalBarFill"></div>
-    </div>
-    <div class="badge-modal-progress" id="badgeModalProgress">0 / 0</div>
-    <button class="modal-btn secondary" id="badgeModalClose" style="width: 100%;">Fermer</button>
-  </div>
+<div class="modal-content badge-modal-content" id="badgeModalContent">
+<div class="modal-handle"></div>
+<div class="badge-modal-icon" id="badgeModalIcon">🏆</div>
+<div class="badge-modal-name" id="badgeModalName">Badge</div>
+<div class="badge-modal-desc" id="badgeModalDesc">Description</div>
+<div class="badge-modal-bar">
+<div class="badge-modal-bar-fill" id="badgeModalBarFill"></div>
 </div>
-
+<div class="badge-modal-progress" id="badgeModalProgress">0 / 0</div>
+<button class="modal-btn secondary" id="badgeModalClose" style="width: 100%;">Fermer</button>
+</div>
+</div>
 <!-- UNLOCK CELEBRATION -->
 <div class="unlock-celebration" id="unlockCelebration">
-  <div class="unlock-content">
-    <div class="unlock-banner" id="unlockBanner">⚡ DÉBLOQUÉ ⚡</div>
-    <div class="unlock-icon" id="unlockIcon">🏆</div>
-    <div class="unlock-name" id="unlockName">Nom</div>
-    <div class="unlock-desc" id="unlockDesc">Description</div>
-    <button class="unlock-btn" id="unlockClose">Continuer</button>
-  </div>
+<div class="unlock-content">
+<div class="unlock-banner" id="unlockBanner">⚡ DÉBLOQUÉ ⚡</div>
+<div class="unlock-icon" id="unlockIcon">🏆</div>
+<div class="unlock-name" id="unlockName">Nom</div>
+<div class="unlock-desc" id="unlockDesc">Description</div>
+<button class="unlock-btn" id="unlockClose">Continuer</button>
 </div>
-
+</div>
 <!-- GEL EARNED TOAST -->
 <div class="gel-earned-toast" id="gelEarnedToast">
-  <span class="gel-emoji">❄</span>
-  <span>Nouveau gel débloqué</span>
+<span class="gel-emoji">❄</span>
+<span>Nouveau gel débloqué</span>
 </div>
-
 <script>
 // ═══════════════════════════════════════════════════════════
 // STATE
@@ -4821,7 +3997,7 @@ function countByType(type) {
   return n;
 }
 
-// Counts a muscle group across BOTH legacy bodyweight sessions and new Anytime sessions
+// Counts training groups across sessions
 function countBySubtype(sub) {
   let n = 0;
   for (const [dk, dd] of Object.entries(state.days)) {
@@ -5962,7 +5138,6 @@ function renderAll() {
   document.getElementById("streakDays").textContent = computeCurrentStreak();
   renderHudStatus();
   renderHudModules();
-  renderBodyScan();
   renderReactor();
 }
 
@@ -6077,24 +5252,6 @@ const hudAudio = {
   select() { this.beep(980, "triangle", 0.05, 0.04); },
   confirm() { this.beep(660, "sine", 0.09, 0.05); setTimeout(() => this.beep(990, "sine", 0.11, 0.045), 70); },
   cancel() { this.beep(320, "sine", 0.1, 0.04); },
-
-  scan() {
-    if (!this.enabled) return;
-    this.init();
-    if (!this.ctx) return;
-    try {
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = "sawtooth";
-      osc.frequency.setValueAtTime(220, this.ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1300, this.ctx.currentTime + 0.5);
-      gain.gain.setValueAtTime(0.022, this.ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.0005, this.ctx.currentTime + 0.5);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(this.ctx.currentTime + 0.5);
-    } catch (e) {}
   },
 
   unlock() {
@@ -6131,251 +5288,6 @@ if (sfxBtn) {
   });
 }
 
-// ═══════════════════════════════════════════════════════════
-// SCAN MODE + INTERACTIVE ZONES
-// ═══════════════════════════════════════════════════════════
-
-let scanMode = "all";
-let selectedZone = null;
-
-document.querySelectorAll(".scan-mode-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".scan-mode-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    scanMode = btn.dataset.mode;
-    hudAudio.scan();
-    hudLog(`MODE SCAN → ${btn.textContent.toUpperCase()}`);
-    renderBodyScan();
-  });
-});
-
-const ZONE_INFO = {
-  upper:    { title: "Chaîne supérieure" },
-  lower:    { title: "Chaîne inférieure" },
-  cardio:   { title: "Système cardio" },
-  mobility: { title: "Mobilité" }
-};
-
-function bindZoneTaps() {
-  document.querySelectorAll(".mg-row[data-mg]").forEach(el => {
-    if (el.dataset.bound) return;
-    el.dataset.bound = "1";
-    el.addEventListener("click", () => {
-      const mg = el.dataset.mg;
-      selectedZone = (selectedZone === mg) ? null : mg;
-      hudAudio.tick();
-      renderBodyScan();
-      if (selectedZone && ZONE_INFO[mg]) hudLog(`ZONE VERROUILLÉE → ${ZONE_INFO[mg].title.toUpperCase()}`);
-    });
-  });
-}
-
-// ═══════════════════════════════════════════════════════════
-// BODY SCAN — muscle activation from training data
-// ═══════════════════════════════════════════════════════════
-
-const SCAN_WINDOW = 14; // days analysed
-
-function countInWindow(predicate, days) {
-  const cutoff = new Date();
-  cutoff.setHours(0,0,0,0);
-  cutoff.setDate(cutoff.getDate() - (days - 1));
-  let n = 0;
-  for (const [dk, dd] of Object.entries(state.days)) {
-    if (!dd.activities) continue;
-    const d = new Date(dk + "T00:00:00");
-    if (d < cutoff) continue;
-    for (const a of dd.activities) {
-      if (a.frozen) continue;
-      if (predicate(a)) n++;
-    }
-  }
-  return n;
-}
-
-function isStrength(a) { return a.type === 'anytime' || a.type === 'bodyweight'; }
-
-function buildDna() {
-  const g = document.getElementById("dnaGroup");
-  if (!g) return;
-  let out = "";
-  const steps = 34;
-  for (let i = 0; i < steps; i++) {
-    const x = i * 8;
-    const phase = (i / steps) * Math.PI * 6;
-    const y1 = 30 + Math.sin(phase) * 20;
-    const y2 = 30 - Math.sin(phase) * 20;
-    out += `<line class="dna-rung" x1="${x}" y1="${y1.toFixed(1)}" x2="${x}" y2="${y2.toFixed(1)}"/>`;
-    out += `<circle class="dna-node${i % 3 === 0 ? ' b' : ''}" cx="${x}" cy="${y1.toFixed(1)}" r="1.6"/>`;
-    out += `<circle class="dna-node${i % 3 === 1 ? ' b' : ''}" cx="${x}" cy="${y2.toFixed(1)}" r="1.6"/>`;
-  }
-  // rails
-  let p1 = "", p2 = "";
-  for (let i = 0; i < steps; i++) {
-    const x = i * 8;
-    const phase = (i / steps) * Math.PI * 6;
-    p1 += `${i === 0 ? 'M' : 'L'}${x},${(30 + Math.sin(phase) * 20).toFixed(1)}`;
-    p2 += `${i === 0 ? 'M' : 'L'}${x},${(30 - Math.sin(phase) * 20).toFixed(1)}`;
-  }
-  out = `<path class="dna-rail" d="${p1}"/><path class="dna-rail b" d="${p2}"/>` + out;
-  g.innerHTML = out;
-}
-
-function renderBodyScan() {
-  const upper = countInWindow(a => isStrength(a) && (a.subtypes || []).includes('upper'), SCAN_WINDOW);
-  const lower = countInWindow(a => isStrength(a) && (a.subtypes || []).includes('lower'), SCAN_WINDOW);
-  const cardio = countInWindow(a => a.type === 'run', SCAN_WINDOW);
-  const mob = countInWindow(a => a.type === 'stretch', SCAN_WINDOW);
-
-  const max = Math.max(1, upper, lower, cardio, mob);
-
-  const setBar = (barId, valId, n) => {
-    const bar = document.getElementById(barId);
-    const val = document.getElementById(valId);
-    if (bar) bar.style.width = Math.round((n / max) * 100) + "%";
-    if (val) val.textContent = n;
-  };
-  setBar("mgUpper", "mgUpperV", upper);
-  setBar("mgLower", "mgLowerV", lower);
-  setBar("mgCardio", "mgCardioV", cardio);
-  setBar("mgMob", "mgMobV", mob);
-
-  // Light up the muscle groups: 0 = idle, 1-2 = warm, 3-4 = active, 5+ = hot
-  const level = (n) => n >= 5 ? 3 : n >= 3 ? 2 : n >= 1 ? 1 : 0;
-  const lvlUpper = level(upper);
-  const lvlLower = level(lower);
-  const lvlCore = level(Math.max(upper, Math.round((upper + lower) / 2)));
-
-  document.querySelectorAll('.mg-row[data-mg]').forEach(el => {
-    el.classList.toggle('sel', selectedZone === el.dataset.mg);
-  });
-  holoTint();
-  bindZoneTaps();
-
-  // Zone readout
-  const zT = document.getElementById("zoneTitle");
-  const zD = document.getElementById("zoneDesc");
-  if (zT && zD) {
-    if (!selectedZone) {
-      zT.textContent = "Zone d'analyse";
-      zD.textContent = "Tape un groupe musculaire sur le scan pour lire son détail.";
-    } else {
-      const map = {
-        upper:    { t: "Chaîne supérieure", n: upper, all: countBySubtype("upper"),
-                    m: "Pectoraux · deltoïdes · biceps · avant-bras" },
-        lower:    { t: "Chaîne inférieure", n: lower, all: countBySubtype("lower"),
-                    m: "Quadriceps · fessiers · ischios · mollets" },
-        cardio:   { t: "Système cardio", n: cardio, all: countByType("run"),
-                    m: "Course · endurance · capacité aérobie" },
-        mobility: { t: "Mobilité", n: mob, all: countByType("stretch"),
-                    m: "Étirements · amplitude articulaire" }
-      };
-      const z = map[selectedZone] || map.upper;
-      const lv = level(z.n);
-      const statut = lv === 0 ? "DORMANT" : lv === 1 ? "TIÈDE" : lv === 2 ? "ACTIF" : "SATURÉ";
-      zT.textContent = z.t;
-      zD.innerHTML = `${z.m}<br>${SCAN_WINDOW}J: <b>${z.n}</b> · TOTAL: <b>${z.all}</b> · ÉTAT: <b>${statut}</b>`;
-    }
-  }
-
-  // Verdict line
-  const verdict = document.getElementById("scanVerdict");
-  if (verdict) {
-    let msg;
-    const total = upper + lower + cardio + mob;
-    if (total === 0) {
-      msg = "AUCUN SIGNAL<br>DÉMARRE UNE SÉANCE";
-    } else if (upper === 0 && lower > 0) {
-      msg = "DÉSÉQUILIBRE<br>CIBLE LE <b>HAUT</b>";
-    } else if (lower === 0 && upper > 0) {
-      msg = "DÉSÉQUILIBRE<br>CIBLE LE <b>BAS</b>";
-    } else if (cardio === 0) {
-      msg = "CARDIO À ZÉRO<br>AJOUTE UNE <b>COURSE</b>";
-    } else if (Math.abs(upper - lower) >= 3) {
-      msg = upper > lower ? "REÉQUILIBRE<br>VERS LE <b>BAS</b>" : "REÉQUILIBRE<br>VERS LE <b>HAUT</b>";
-    } else {
-      msg = "SYSTÈME<br><b>ÉQUILIBRÉ</b>";
-    }
-    verdict.innerHTML = msg;
-  }
-
-  // Vitals: load over the last 7 days
-  const load = countInWindow(() => true, 7);
-  const vl = document.getElementById("vitalsLoad");
-  if (vl) vl.textContent = load;
-
-  const sw = document.getElementById("scanWindow");
-  if (sw) sw.textContent = SCAN_WINDOW + "J";
-
-  // Donuts: all-time distribution
-  const force = countByType("anytime") + countByType("bodyweight");
-  const run = countByType("run");
-  const stretch = countByType("stretch");
-  const grand = Math.max(1, force + run + stretch);
-  const C = 2 * Math.PI * 16; // circumference
-
-  const setDonut = (arcId, txtId, n) => {
-    const pct = Math.round((n / grand) * 100);
-    const arc = document.getElementById(arcId);
-    const txt = document.getElementById(txtId);
-    if (arc) arc.setAttribute("stroke-dasharray", `${(C * pct / 100).toFixed(2)} ${C.toFixed(2)}`);
-    if (txt) txt.textContent = pct + "%";
-  };
-  setDonut("donutForce", "donutForceT", force);
-  setDonut("donutCardio", "donutCardioT", run);
-  setDonut("donutMob", "donutMobT", stretch);
-
-  const dt = document.getElementById("distTotal");
-  if (dt) dt.textContent = force + run + stretch;
-}
-
-buildDna();
-
-
-function renderReactor() {
-  const ops = totalCompletedSessions();
-  const streak = computeCurrentStreak();
-  const best = computeBestStreak();
-
-  // Level curve: every level costs progressively more ops
-  let lvl = 1, need = 5, acc = 0;
-  while (acc + need <= ops) { acc += need; lvl++; need = Math.round(need * 1.35); }
-
-  const el = (id) => document.getElementById(id);
-  if (el("coreLevel")) el("coreLevel").textContent = lvl;
-  if (el("rOps")) el("rOps").textContent = ops;
-  if (el("rStreak")) el("rStreak").textContent = streak + " J";
-  if (el("rBest")) el("rBest").textContent = best + " J";
-
-  // Integrity = share of the last 14 days that were active
-  let active = 0;
-  for (let i = 0; i < 14; i++) {
-    const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() - i);
-    if (dayCountsForStreak(dateKey(d))) active++;
-  }
-  const pct = Math.round((active / 14) * 100);
-  const ri = el("rIntegrity");
-  if (ri) {
-    ri.textContent = pct + "%";
-    ri.className = "b " + (pct >= 70 ? "ok" : pct >= 40 ? "gold" : "");
-    ri.style.color = pct >= 70 ? "var(--green-ok)" : pct >= 40 ? "var(--gold)" : "var(--alert)";
-  }
-}
-
-function renderHudStatus() {
-  const ops = document.getElementById("hudSessions");
-  if (ops) ops.textContent = `${totalCompletedSessions()} OPS`;
-  updateHudClock();
-}
-
-function updateHudClock() {
-  const el = document.getElementById("hudClock");
-  if (!el) return;
-  const d = new Date();
-  el.textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
-}
-
-setInterval(updateHudClock, 1000);
 
 // ═══════════════════════════════════════════════════════════
 // TABS
@@ -6754,357 +5666,6 @@ document.getElementById("importFile").addEventListener("change", (e) => {
 
 
 // ═══════════════════════════════════════════════════════════
-// HOLO 3D — lazy-loaded holographic bio-scan
-// Nothing below is downloaded until the HOLO button is tapped.
-// ═══════════════════════════════════════════════════════════
-
-// Local copy first (put human.glb at your repo root), external fallback second.
-const HOLO_MODEL_SOURCES = [
-  "./human.glb",
-  "https://raw.githubusercontent.com/hmthanh/3d-human-model/main/Thanh.glb"
-];
-
-const holo = {
-  booted: false,
-  loading: false,
-  fullscreen: false,
-  inView: true,
-  host: null,
-  raf: null,
-  THREE: null,
-  renderer: null,
-  composer: null,
-  scene: null,
-  camera: null,
-  human: null,
-  particles: null,
-  disc: null,
-  grid: null,
-  clock: null,
-  rotation: 0,
-  tilt: { x: 0, y: 0 },
-  baseHumanY: -1.62
-};
-
-function holoSetLoading(txt, pctNum) {
-  const t = document.getElementById("holoInlineTxt");
-  const p = document.getElementById("holoInlinePct");
-  const f = document.getElementById("holoInlineFill");
-  if (t) t.textContent = txt;
-  if (p) p.textContent = pctNum === null ? "..." : pctNum + "%";
-  if (f) f.style.width = (pctNum || 0) + "%";
-}
-
-function holoHideLoading() {
-  const l = document.getElementById("holoInlineLoading");
-  if (l) l.classList.add("done");
-}
-
-function holoError(msg) {
-  const l = document.getElementById("holoInlineLoading");
-  const t = document.getElementById("holoInlineTxt");
-  const p = document.getElementById("holoInlinePct");
-  const f = document.getElementById("holoInlineFill");
-  if (l) l.classList.remove("done");
-  if (t) { t.className = "hil-txt err"; t.innerHTML = msg; }
-  if (p) p.style.display = "none";
-  if (f) f.parentElement.style.display = "none";
-}
-
-// Fetch the GLB with progress, trying each source in order
-async function holoFetchModel() {
-  let lastErr = null;
-  for (const url of HOLO_MODEL_SOURCES) {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) { lastErr = new Error(url + " → " + res.status); continue; }
-      const total = parseInt(res.headers.get("content-length") || "0", 10);
-      const reader = res.body.getReader();
-      const chunks = [];
-      let received = 0;
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        chunks.push(value);
-        received += value.length;
-        const pct = total ? Math.round((received / total) * 100) : null;
-        holoSetLoading("CHARGEMENT DU MAILLAGE", pct);
-      }
-      const blob = new Blob(chunks);
-      return URL.createObjectURL(blob);
-    } catch (e) { lastErr = e; }
-  }
-  throw lastErr || new Error("no source");
-}
-
-async function holoBoot() {
-  if (holo.booted || holo.loading) return;
-  holo.loading = true;
-  holoSetLoading("CHARGEMENT DU MOTEUR 3D", null);
-
-  try {
-    const THREE = await import("three");
-    const { GLTFLoader } = await import("three/addons/loaders/GLTFLoader.js");
-    const { EffectComposer } = await import("three/addons/postprocessing/EffectComposer.js");
-    const { RenderPass } = await import("three/addons/postprocessing/RenderPass.js");
-    const { UnrealBloomPass } = await import("three/addons/postprocessing/UnrealBloomPass.js");
-    holo.THREE = THREE;
-
-    const host = document.getElementById("holoInlineHost");
-    const W = host.clientWidth || 320, H = host.clientHeight || 300;
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x02070a);
-
-    const camera = new THREE.PerspectiveCamera(40, W / H, 0.01, 100);
-    camera.position.set(0, 0.25, 5.8);
-    camera.lookAt(0, 0.25, 0);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-    // Capped for battery on mobile
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6));
-    renderer.setSize(W, H);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.80;
-    host.appendChild(renderer.domElement);
-    holo.host = host;
-
-    scene.add(new THREE.HemisphereLight(0x0b4055, 0x001015, 0.35));
-    const l1 = new THREE.PointLight(0x00eaff, 0.45, 8); l1.position.set(2, 3, 3); scene.add(l1);
-    const l2 = new THREE.PointLight(0x0077ff, 0.25, 8); l2.position.set(-2, 2, -3); scene.add(l2);
-
-    const composer = new EffectComposer(renderer);
-    composer.addPass(new RenderPass(scene, camera));
-    composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.12, 0.28, 0.22));
-
-    // Particles
-    const COUNT = 650;
-    const pos = new Float32Array(COUNT * 3);
-    for (let i = 0; i < COUNT; i++) {
-      const r = 2.2 + Math.random() * 1.7;
-      const a = Math.random() * Math.PI * 2;
-      pos[i*3] = Math.cos(a) * r;
-      pos[i*3+1] = -1 + Math.random() * 4.5;
-      pos[i*3+2] = Math.sin(a) * r;
-    }
-    const pg = new THREE.BufferGeometry();
-    pg.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-    const particles = new THREE.Points(pg, new THREE.PointsMaterial({
-      color: 0x00eaff, size: 0.006, transparent: true, opacity: 0.09,
-      blending: THREE.AdditiveBlending, depthWrite: false
-    }));
-    scene.add(particles);
-
-    // Scanner disc
-    const disc = new THREE.Mesh(
-      new THREE.RingGeometry(1.3, 2.15, 96),
-      new THREE.MeshBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.012,
-        side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false })
-    );
-    disc.rotation.x = -Math.PI / 2;
-    scene.add(disc);
-
-    // Floor grid
-    const grid = new THREE.GridHelper(7, 32, 0x00eaff, 0x00333d);
-    grid.position.y = -1.75;
-    grid.material.transparent = true;
-    grid.material.opacity = 0.045;
-    scene.add(grid);
-
-    Object.assign(holo, { scene, camera, renderer, composer, particles, disc, grid, clock: new THREE.Clock() });
-
-    // Model
-    const blobUrl = await holoFetchModel();
-    holoSetLoading("CONSTRUCTION DU MAILLAGE", 100);
-
-    await new Promise((resolve, reject) => {
-      new GLTFLoader().load(blobUrl, (gltf) => {
-        const human = gltf.scene;
-        const box = new THREE.Box3().setFromObject(human);
-        const size = box.getSize(new THREE.Vector3());
-        const scale = 3.55 / size.y;
-        human.scale.setScalar(scale);
-        const c = box.getCenter(new THREE.Vector3());
-        // Center X/Z and place the feet just above the scan floor.
-        const floorY = -1.62;
-        const baseY = floorY - (box.min.y * scale);
-        human.position.set(-c.x * scale, baseY, -c.z * scale);
-        holo.baseHumanY = baseY;
-
-        human.traverse((o) => {
-          if (!o.isMesh) return;
-          o.material = new THREE.MeshBasicMaterial({
-            color: 0x00eaff, transparent: true, opacity: 0.006,
-            side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending
-          });
-          const wire = new THREE.LineSegments(
-            new THREE.WireframeGeometry(o.geometry),
-            new THREE.LineBasicMaterial({ color: 0x00eaff, transparent: true, opacity: 0.045, blending: THREE.AdditiveBlending })
-          );
-          wire.scale.setScalar(1.001);
-          o.add(wire);
-        });
-
-        scene.add(human);
-        holo.human = human;
-        URL.revokeObjectURL(blobUrl);
-        resolve();
-      }, undefined, reject);
-    });
-
-    holo.booted = true;
-    holo.loading = false;
-    holoHideLoading();
-    holoTint();
-    holoResize();
-    if (!holo.raf) holoLoop();
-    hudAudio.scan();
-    hudLog("BIO-SCAN 3D EN LIGNE");
-  } catch (e) {
-    console.error(e);
-    holo.loading = false;
-    holoError("ERREUR DE CHARGEMENT<br><br>Le modèle human.glb est introuvable et le repli distant a échoué.<br><br>Vérifie ta connexion ou dépose human.glb à la racine du repo.");
-    hudLog("ÉCHEC DU BIO-SCAN 3D");
-  }
-}
-
-function holoResize() {
-  if (!holo.booted || !holo.host) return;
-  const W = holo.host.clientWidth, H = holo.host.clientHeight;
-  if (!W || !H) return;
-  holo.camera.aspect = W / H;
-  holo.camera.updateProjectionMatrix();
-  holo.renderer.setSize(W, H);
-  holo.composer.setSize(W, H);
-}
-
-// Move the single WebGL canvas between the inline module and the fullscreen overlay
-function holoMount(hostId) {
-  if (!holo.booted) return;
-  const host = document.getElementById(hostId);
-  if (!host || holo.host === host) { holoResize(); return; }
-  host.appendChild(holo.renderer.domElement);
-  holo.host = host;
-  // Two frames so layout settles before we measure
-  requestAnimationFrame(() => requestAnimationFrame(holoResize));
-}
-
-function holoShouldRun() {
-  if (!holo.booted) return false;
-  if (document.hidden) return false;
-  if (holo.fullscreen) return true;
-  // Inline: only while the Today view is on screen
-  const view = document.getElementById("view-today");
-  if (!view || !view.classList.contains("active")) return false;
-  return holo.inView;
-}
-
-function holoLoop() {
-  holo.raf = requestAnimationFrame(holoLoop);
-  if (!holoShouldRun()) return;
-
-  const t = holo.clock.getElapsedTime();
-
-  if (holo.human) {
-    holo.rotation += 0.0045;
-    holo.human.rotation.y = holo.rotation;
-    holo.human.position.y = holo.baseHumanY + Math.sin(t * 1.2) * 0.018;
-    const deg = (holo.rotation * 180 / Math.PI) % 360;
-    const txt = deg.toFixed(1).padStart(5, "0") + "°";
-    const a = document.getElementById("holoRot");
-    const b = document.getElementById("holoInlineRot");
-    if (a) a.textContent = txt;
-    if (b) b.textContent = txt;
-  }
-
-  holo.particles.rotation.y = t * 0.03;
-  holo.disc.position.y = Math.sin(t * 1.25) * 2.0;
-  holo.disc.scale.setScalar(0.95 + Math.sin(t * 2) * 0.05);
-  holo.grid.material.opacity = 0.07 + Math.sin(t * 0.8) * 0.02;
-
-  holo.camera.position.x += (holo.tilt.x * 0.35 - holo.camera.position.x) * 0.08;
-  holo.camera.position.y += ((0.25 - holo.tilt.y * 0.18) - holo.camera.position.y) * 0.08;
-  holo.camera.lookAt(0, 0.25, 0);
-
-  holo.composer.render();
-}
-
-// Tint the hologram from cyan (idle) to gold (heavy recent load)
-function holoTint() {
-  if (!holo.booted || !holo.human || !holo.THREE) return;
-  const load = countInWindow(() => true, 7);
-  const k = Math.min(1, load / 10);
-  const c = new holo.THREE.Color(0x00eaff).lerp(new holo.THREE.Color(0xffb700), k * 0.75);
-  holo.human.traverse((o) => {
-    if (o.isMesh && o.material) o.material.color.copy(c);
-    if (o.isLineSegments && o.material) o.material.color.copy(c);
-  });
-}
-
-function holoFillPanel() {
-  const upper = countInWindow(a => isStrength(a) && (a.subtypes || []).includes('upper'), SCAN_WINDOW);
-  const lower = countInWindow(a => isStrength(a) && (a.subtypes || []).includes('lower'), SCAN_WINDOW);
-  const cardio = countInWindow(a => a.type === 'run', SCAN_WINDOW);
-  const max = Math.max(1, upper, lower, cardio);
-
-  const setW = (id, n) => { const e = document.getElementById(id); if (e) e.style.width = Math.round((n / max) * 100) + "%"; };
-  setW("holoBarUpper", upper);
-  setW("holoBarLower", lower);
-  setW("holoBarCardio", cardio);
-
-  const mu = document.getElementById("holoMkUpper");
-  const ml = document.getElementById("holoMkLower");
-  if (mu) mu.textContent = upper;
-  if (ml) ml.textContent = lower;
-
-  const ops = totalCompletedSessions();
-  let lvl = 1, need = 5, acc = 0;
-  while (acc + need <= ops) { acc += need; lvl++; need = Math.round(need * 1.35); }
-  const hl = document.getElementById("holoLevel");
-  if (hl) hl.textContent = lvl;
-}
-
-function holoOpen() {
-  // Fullscreen mode intentionally disabled. The hologram stays in the Body Scan module.
-  return false;
-}
-
-function holoClose() {
-  // Kept as a harmless compatibility function. There is no fullscreen overlay anymore.
-  holo.fullscreen = false;
-  document.body.style.overflow = "";
-}
-
-// Fullscreen mode intentionally disabled. No button or tap on the inline hologram can open it.
-
-// Touch parallax on both hosts
-function holoBindTilt(el) {
-  if (!el) return;
-  const move = (cx, cy) => {
-    holo.tilt.x = (cx / window.innerWidth - 0.5) * 2;
-    holo.tilt.y = (cy / window.innerHeight - 0.5) * 2;
-  };
-  el.addEventListener("touchmove", (e) => {
-    if (e.touches.length) { move(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }
-  }, { passive: false });
-  el.addEventListener("mousemove", (e) => move(e.clientX, e.clientY));
-}
-holoBindTilt(document.getElementById("holoHost"));
-holoBindTilt(document.getElementById("holoInlineWrap"));
-
-// Pause rendering when the module scrolls out of view
-if (window.IntersectionObserver && holoInlineWrap) {
-  new IntersectionObserver((entries) => {
-    holo.inView = entries[0].isIntersecting;
-  }, { threshold: 0.05 }).observe(holoInlineWrap);
-} else {
-  holo.inView = true;
-}
-
-window.addEventListener("resize", () => holoResize());
-
-// ═══════════════════════════════════════════════════════════
 // BOOT
 // ═══════════════════════════════════════════════════════════
 
@@ -7114,8 +5675,6 @@ window.addEventListener("resize", () => holoResize());
   const n = totalCompletedSessions();
   const st = computeCurrentStreak();
   hudLog(`REGISTRE CHARGÉ // ${n} OPS · STREAK ${st}J · SYSTÈME NOMINAL`);
-  // Boot the hologram in the background — never blocks the UI
-  setTimeout(() => holoBoot(), 250);
 })();
 
 // Idle telemetry chatter
@@ -7135,10 +5694,9 @@ setInterval(() => {
 
 </script>
 <div class="log-stream">
-  <span class="log-prefix">[SYS]</span>
-  <span class="log-text" id="logText">SYSTÈME INITIALISÉ // EN ATTENTE DE DONNÉES</span>
-  <button class="log-sfx on" id="sfxBtn">SFX ON</button>
+<span class="log-prefix">[SYS]</span>
+<span class="log-text" id="logText">SYSTÈME INITIALISÉ // EN ATTENTE DE DONNÉES</span>
+<button class="log-sfx on" id="sfxBtn">SFX ON</button>
 </div>
-
 </body>
 </html>
