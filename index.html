@@ -3332,7 +3332,7 @@
   .hud-mini svg { width: 100%; display: block; }
 
   /* Rotating wireframe core */
-  .wf-line { fill: none; stroke: var(--arc); stroke-width: 0.8; opacity: 0.75; }
+  .wf-line { fill: none; stroke: var(--arc); stroke-width: 0.8; opacity: 0.75; transition: opacity 0.4s ease, stroke 0.4s ease; }
   .wf-line.dim { stroke: var(--arc-dim); opacity: 0.5; }
   .wf-hot { fill: none; stroke: var(--gold); stroke-width: 0.9; }
 
@@ -3345,7 +3345,9 @@
   .orb-path.hot { stroke: var(--gold); opacity: 0.5; stroke-dasharray: 2 3; }
   .orb-body { fill: var(--arc); filter: drop-shadow(0 0 4px var(--arc)); }
   .orb-body.hot { fill: var(--gold); filter: drop-shadow(0 0 5px var(--gold)); }
-  .orb-sun { fill: var(--gold); filter: drop-shadow(0 0 10px var(--gold)); }
+  .orb-sun { fill: var(--gold); filter: drop-shadow(0 0 10px var(--gold)); transition: r 0.5s ease; }
+  .orb-sun.dim { fill: var(--text-faint); filter: none; opacity: 0.4; }
+  .orb-body { transition: r 0.5s ease; }
 
   .orbit-1 { transform-origin: 50px 50px; animation: spin 12s linear infinite; }
   .orbit-2 { transform-origin: 50px 50px; animation: spin 20s linear infinite; }
@@ -4002,12 +4004,12 @@
 </div>
 <div class="hud-duo">
 <div class="hud-mini"><span class="cnr tl"></span><span class="cnr br"></span>
-<div class="hud-mini-title">Core / Unit-01</div>
+<div class="hud-mini-title">Today / Mix</div>
 <svg viewbox="0 0 100 100">
 <g class="wf-spin">
-<ellipse class="wf-line" cx="50" cy="50" rx="34" ry="13"></ellipse>
-<ellipse class="wf-line dim" cx="50" cy="50" rx="34" ry="13" transform="rotate(60 50 50)"></ellipse>
-<ellipse class="wf-line dim" cx="50" cy="50" rx="34" ry="13" transform="rotate(120 50 50)"></ellipse>
+<ellipse class="wf-line" cx="50" cy="50" id="coreRingAnytime" rx="34" ry="13"></ellipse>
+<ellipse class="wf-line dim" cx="50" cy="50" id="coreRingRun" rx="34" ry="13" transform="rotate(60 50 50)"></ellipse>
+<ellipse class="wf-line dim" cx="50" cy="50" id="coreRingStretch" rx="34" ry="13" transform="rotate(120 50 50)"></ellipse>
 </g>
 <g class="wf-spin-rev">
 <ellipse class="wf-hot" cx="50" cy="50" opacity="0.5" rx="24" ry="24"></ellipse>
@@ -4021,15 +4023,15 @@
 </svg>
 </div>
 <div class="hud-mini"><span class="cnr tl"></span><span class="cnr br"></span>
-<div class="hud-mini-title">Orbit / Cycle</div>
+<div class="hud-mini-title">Nutrition / Orbit</div>
 <svg viewbox="0 0 100 100">
 <ellipse class="orb-path" cx="50" cy="50" rx="18" ry="18"></ellipse>
 <ellipse class="orb-path" cx="50" cy="50" rx="30" ry="30"></ellipse>
 <ellipse class="orb-path hot" cx="50" cy="50" rx="42" ry="42"></ellipse>
-<circle class="orb-sun" cx="50" cy="50" r="4.5"></circle>
-<g class="orbit-1"><circle class="orb-body" cx="68" cy="50" r="2.4"></circle></g>
-<g class="orbit-2"><circle class="orb-body" cx="80" cy="50" r="3"></circle></g>
-<g class="orbit-3"><circle class="orb-body hot" cx="92" cy="50" r="2.6"></circle></g>
+<circle class="orb-sun" cx="50" cy="50" id="orbSun" r="4.5"></circle>
+<g class="orbit-1"><circle class="orb-body" cx="68" cy="50" id="orbProtein" r="2.4"></circle></g>
+<g class="orbit-2"><circle class="orb-body" cx="80" cy="50" id="orbCarbs" r="3"></circle></g>
+<g class="orbit-3"><circle class="orb-body hot" cx="92" cy="50" id="orbFat" r="2.6"></circle></g>
 <line class="map-crosshair" opacity="0.5" x1="4" x2="12" y1="50" y2="50"></line>
 <line class="map-crosshair" opacity="0.5" x1="88" x2="96" y1="50" y2="50"></line>
 </svg>
@@ -5598,6 +5600,25 @@ function renderToday() {
     });
     container.appendChild(gelBtn);
   }
+
+  renderTodayCoreMix(activities);
+}
+
+function renderTodayCoreMix(activities) {
+  const done = { anytime: false, run: false, stretch: false };
+  activities.filter(a => !a.frozen).forEach(a => {
+    if (a.type === 'anytime' || a.type === 'bodyweight') done.anytime = true;
+    else if (a.type === 'run') done.run = true;
+    else if (a.type === 'stretch') done.stretch = true;
+  });
+  const setRing = (id, isDone) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle("dim", !isDone);
+  };
+  setRing("coreRingAnytime", done.anytime);
+  setRing("coreRingRun", done.run);
+  setRing("coreRingStretch", done.stretch);
 }
 
 function renderActivityCard(dk, activity, editable) {
@@ -5793,6 +5814,30 @@ function renderWeek() {
 // RENDER — NUTRITION
 // ═══════════════════════════════════════════════════════════
 
+function renderNutritionOrbit(totals, goals, kcalPct) {
+  const sun = document.getElementById("orbSun");
+  const protein = document.getElementById("orbProtein");
+  const carbs = document.getElementById("orbCarbs");
+  const fat = document.getElementById("orbFat");
+  if (!sun || !protein || !carbs || !fat) return;
+
+  const sunR = 3 + Math.min(1, kcalPct) * 3.5;
+  sun.setAttribute("r", sunR.toFixed(1));
+  sun.classList.toggle("dim", totals.kcal === 0);
+
+  const clampR = (val, ref) => (1.4 + Math.min(1, val / ref) * 3.2).toFixed(1);
+  protein.setAttribute("r", clampR(totals.protein, goals.proteinTarget || 136));
+  carbs.setAttribute("r", clampR(totals.carbs, 150));
+  fat.setAttribute("r", clampR(totals.fat, 80));
+
+  protein.style.fill = "var(--arc)";
+  protein.style.filter = "drop-shadow(0 0 4px var(--arc))";
+  carbs.style.fill = "var(--gold)";
+  carbs.style.filter = "drop-shadow(0 0 4px var(--gold))";
+  fat.style.fill = "var(--steel)";
+  fat.style.filter = "drop-shadow(0 0 4px var(--steel))";
+}
+
 function renderNutrition() {
   const now = new Date();
   const tk = todayKey();
@@ -5818,6 +5863,8 @@ function renderNutrition() {
   document.getElementById("nutriCarbsVal").textContent = Math.round(totals.carbs) + "g";
   document.getElementById("nutriFatVal").textContent = Math.round(totals.fat) + "g";
   document.getElementById("nutriGoalSub").textContent = `Goal: ${goals.proteinTarget}g protein · ${goals.calorieTarget} kcal`;
+
+  renderNutritionOrbit(totals, goals, kcalPct);
 
   const gradeRow = document.getElementById("nutriGradeRow");
   const grade = computeDayGrade(totals, goals);
