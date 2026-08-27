@@ -490,19 +490,22 @@
   
   .tab {
     flex: 1;
-    padding: 10px 4px;
+    padding: 10px 2px;
     background: transparent;
     border: none;
     color: var(--text-dim);
     font-family: "Share Tech Mono", monospace;
-    font-size: 11px;
+    font-size: 9.5px;
     font-weight: 700;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.25s;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
     position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .tab.active {
@@ -1147,7 +1150,491 @@
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   }
-  
+
+  /* NUTRITION — summary card */
+  .nutrition-summary {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+    margin: 0 16px 16px;
+  }
+
+  .nutrition-kcal-ring {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+  }
+
+  .nutrition-kcal-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+
+  .nutri-ring-track {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 8;
+  }
+
+  .nutri-ring-arc {
+    fill: none;
+    stroke: var(--arc);
+    stroke-width: 8;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 6px var(--arc));
+    transition: stroke-dasharray 0.6s ease;
+  }
+
+  .nutrition-kcal-mid {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nutri-kcal-val {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .nutri-kcal-label {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  .nutrition-macros {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nutri-macro-row {
+    display: grid;
+    grid-template-columns: 46px 1fr 40px;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nutri-macro-label {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .nutri-macro-track {
+    height: 6px;
+    background: var(--bg-elevated);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .nutri-macro-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+
+  .nutri-macro-fill.protein { background: var(--arc); box-shadow: 0 0 8px var(--arc); }
+  .nutri-macro-fill.carbs { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+  .nutri-macro-fill.fat { background: var(--steel); box-shadow: 0 0 8px var(--steel); }
+
+  .nutri-macro-val {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 11px;
+    color: var(--text);
+    text-align: right;
+  }
+
+  .food-entry-card .activity-icon { background: rgba(255, 106, 46, 0.12); }
+  .food-entry-kcal { color: var(--gold); font-weight: 700; }
+
+  /* FOOD MODAL */
+  .food-modal-content { max-height: 82vh; overflow-y: auto; }
+
+  .food-category-picker {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    margin-bottom: 14px;
+  }
+
+  .food-cat-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-dim);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .food-cat-icon { font-size: 14px; }
+
+  .food-cat-btn.active {
+    color: var(--text);
+    border-color: var(--arc);
+    background: rgba(255, 36, 56, 0.1);
+    box-shadow: 0 0 14px rgba(255, 36, 56, 0.25);
+  }
+
+  .food-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+
+  .food-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+  }
+
+  .food-item-row:active { transform: scale(0.98); border-color: var(--border-strong); }
+
+  .food-item-info { min-width: 0; }
+
+  .food-item-name {
+    font-family: "Saira Condensed", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .food-item-macros {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 3px;
+  }
+
+  .food-item-add {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 36, 56, 0.12);
+    border: 1px solid var(--arc);
+    border-radius: 50%;
+    color: var(--arc);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .food-text-input, .food-num-input {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .food-text-input:focus, .food-num-input:focus {
+    outline: none;
+    border-color: var(--arc);
+  }
+
+  .food-input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 12px;
+  }
+
+  .food-input-cell .food-num-input { margin-bottom: 0; }
+
+  /* NUTRITION — day grade badge */
+  .nutri-grade-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 16px 14px;
+    padding: 10px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .nutri-grade-emoji { font-size: 16px; flex-shrink: 0; }
+
+  .nutri-grade-label {
+    flex: 1;
+    min-width: 0;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 11px;
+    color: var(--text);
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nutri-grade-row.grade-great { border-color: rgba(255, 255, 255, 0.4); }
+  .nutri-grade-row.grade-ok { border-color: var(--gold); }
+  .nutri-grade-row.grade-low { border-color: var(--arc); }
+
+  .nutri-goals-btn {
+    flex-shrink: 0;
+    padding: 6px 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .nutri-goal-sub {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 9.5px;
+    color: var(--text-faint);
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* NUTRITION — trends */
+  .nutri-avg-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 0 16px 16px;
+  }
+
+  .nutri-avg-cell {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+
+  .nutri-avg-val {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .nutri-avg-val.protein { color: var(--arc); }
+  .nutri-avg-val.carbs { color: var(--gold); }
+  .nutri-avg-val.fat { color: var(--steel); }
+
+  .nutri-avg-label {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 8px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 3px;
+  }
+
+  .nutri-grade-dist {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 12px 16px 20px;
+  }
+
+  .nutri-dist-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .nutri-dist-row b { color: var(--text); font-size: 13px; }
+
+  /* NUTRITION — API search */
+  .food-api-search-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .food-api-search-row .nutri-goals-btn {
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
+  .food-api-results {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .food-api-results:not(:empty) { margin-bottom: 14px; }
+
+  .food-api-msg {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 12px;
+  }
+
+  .food-api-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .food-api-row.food-api-combined {
+    border-color: var(--gold);
+    background: rgba(255, 106, 46, 0.08);
+  }
+
+  .food-api-serving {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    font-weight: 400;
+  }
+
+  .food-api-star {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--gold);
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .food-api-star:disabled { opacity: 0.6; cursor: default; }
+
+  .food-modal-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 9.5px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 4px 0 12px;
+  }
+
+  .food-modal-divider::before, .food-modal-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* MEAL SLOT PICKER */
+  .meal-slot-picker {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .meal-slot-btn {
+    padding: 10px 4px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 10px;
+    color: var(--text-dim);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 9.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
+  .meal-slot-icon {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 3px;
+    line-height: 1;
+  }
+
+  .meal-slot-btn.selected {
+    color: var(--gold);
+    border-color: var(--gold);
+    background: rgba(255, 106, 46, 0.1);
+    box-shadow: 0 0 12px rgba(255, 106, 46, 0.25);
+  }
+
+  /* MEAL GROUP HEADERS in nutrition entries list */
+  .meal-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px 6px;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .meal-group-header:not(:first-child) { margin-top: 8px; }
+
+  .meal-group-total { color: var(--gold); font-weight: 700; }
+
   .subtype-btn {
     padding: 16px 8px;
     background: var(--bg-card);
@@ -3409,6 +3896,7 @@
 <div class="tabs">
 <button class="tab active" data-view="today">Today</button>
 <button class="tab" data-view="week">Week</button>
+<button class="tab" data-view="nutrition">Nutrition</button>
 <button class="tab" data-view="stats">Stats</button>
 <button class="tab" data-view="titles">Titles</button>
 </div>
@@ -3570,9 +4058,84 @@
 </div>
 <div class="week-grid" id="weekGrid"></div>
 </section>
+<!-- NUTRITION VIEW -->
+<section class="view" id="view-nutrition">
+<div class="date-hero">
+<div class="date-day mono">FUEL</div>
+<h1 class="date-title">Your <span class="accent">nutrition</span></h1>
+<div class="date-sub" id="nutritionDateSub">—</div>
+</div>
+<div class="nutri-grade-row" id="nutriGradeRow" style="display:none;">
+<span class="nutri-grade-emoji" id="nutriGradeEmoji">🟢</span>
+<span class="nutri-grade-label" id="nutriGradeLabel">Great day</span>
+<button class="nutri-goals-btn" id="editGoalsBtn">🎯 Goals</button>
+</div>
+<div class="nutrition-summary">
+<div class="nutrition-kcal-ring">
+<svg viewBox="0 0 120 120">
+<circle class="nutri-ring-track" cx="60" cy="60" r="52"></circle>
+<circle class="nutri-ring-arc" cx="60" cy="60" id="nutriKcalRing" r="52" stroke-dasharray="0 327"></circle>
+</svg>
+<div class="nutrition-kcal-mid">
+<div class="nutri-kcal-val" id="nutriKcalVal">0</div>
+<div class="nutri-kcal-label">kcal</div>
+</div>
+</div>
+<div class="nutrition-macros">
+<div class="nutri-macro-row">
+<div class="nutri-macro-label">Protein</div>
+<div class="nutri-macro-track"><div class="nutri-macro-fill protein" id="nutriProteinFill" style="width:0%"></div></div>
+<div class="nutri-macro-val" id="nutriProteinVal">0g</div>
+</div>
+<div class="nutri-macro-row">
+<div class="nutri-macro-label">Carbs</div>
+<div class="nutri-macro-track"><div class="nutri-macro-fill carbs" id="nutriCarbsFill" style="width:0%"></div></div>
+<div class="nutri-macro-val" id="nutriCarbsVal">0g</div>
+</div>
+<div class="nutri-macro-row">
+<div class="nutri-macro-label">Fat</div>
+<div class="nutri-macro-track"><div class="nutri-macro-fill fat" id="nutriFatFill" style="width:0%"></div></div>
+<div class="nutri-macro-val" id="nutriFatVal">0g</div>
+</div>
+<div class="nutri-goal-sub" id="nutriGoalSub">Goal: 136g protein · 2800 kcal</div>
+</div>
+</div>
+<button class="add-activity-btn" id="addFoodBtn">
+<span class="plus">+</span>
+<span>Log a food</span>
+</button>
+<div id="nutritionEntries"></div>
+
+<div class="section-title" style="margin-top: 24px;">Trends</div>
+<div class="period-selector" id="nutriPeriodSelector">
+<button class="period-btn active" data-nperiod="7">7d</button>
+<button class="period-btn" data-nperiod="30">30d</button>
+<button class="period-btn" data-nperiod="90">90d</button>
+<button class="period-btn" data-nperiod="all">All</button>
+</div>
+<div class="nutri-avg-grid" id="nutriAvgGrid"></div>
+<div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+<div class="hud-module-head">
+<div class="hud-module-title">Protein goal trend</div>
+<div class="hud-module-tag">GOAL <b id="nutriTrendGoalTag">--</b></div>
+</div>
+<div style="padding: 12px 14px;">
+<svg viewBox="0 0 100 46" style="width:100%;">
+<line class="wave-grid" x1="0" x2="100" y1="11.5" y2="11.5"></line>
+<line class="wave-grid" x1="0" x2="100" y1="23" y2="23"></line>
+<line class="wave-grid" x1="0" x2="100" y1="34.5" y2="34.5"></line>
+<line id="nutriTrendGoalLine" opacity="0.4" stroke="var(--gold)" stroke-dasharray="2 2" stroke-width="0.6" x1="0" x2="100" y1="0" y2="0"></line>
+<polyline class="wave-line" id="nutriTrendPath" points=""></polyline>
+</svg>
+</div>
+</div>
+<div class="nutri-grade-dist" id="nutriGradeDist"></div>
+</section>
 <!-- STATS VIEW -->
+
 <section class="view" id="view-stats">
 <div class="date-hero">
+
 <div class="date-day mono">PROGRESS</div>
 <h1 class="date-title">Your <span class="accent">stats</span></h1>
 <div class="date-sub">Since the beginning</div>
@@ -3860,6 +4423,90 @@
 <span class="gel-emoji">❄</span>
 <span>New freeze unlocked</span>
 </div>
+<!-- ADD FOOD MODAL -->
+<div class="modal" id="addFoodModal">
+<div class="modal-content food-modal-content">
+<div class="modal-handle"></div>
+<div class="modal-title">Log a food</div>
+<div class="modal-subtitle">When did/will you eat this?</div>
+<div class="meal-slot-picker" id="mealSlotPicker"></div>
+<div class="modal-subtitle" style="margin-top: 14px;">Search by text, or pick a category below</div>
+<div class="food-api-search">
+<input class="food-text-input" id="foodApiQuery" placeholder="e.g. 200g grilled chicken, 1 cup rice" style="margin-bottom: 8px;" type="text"/>
+<div class="food-api-search-row">
+<button class="modal-btn primary" id="foodApiSearchBtn" style="flex: 1;">🔍 Search API</button>
+<button class="nutri-goals-btn" id="foodApiKeyBtn">⚙️</button>
+</div>
+</div>
+<div class="food-api-results" id="foodApiResults"></div>
+<div class="food-modal-divider">or pick a favorite</div>
+<div class="food-category-picker" id="foodCategoryPicker"></div>
+<div class="food-item-list" id="foodItemList"></div>
+<button class="modal-btn secondary" id="createCustomFoodBtn" style="width: 100%; margin-top: 10px;">+ Create a custom favorite</button>
+<button class="modal-btn secondary" id="addFoodCancel" style="width: 100%; margin-top: 8px;">Close</button>
+</div>
+</div>
+<!-- CUSTOM FOOD MODAL -->
+<div class="modal" id="customFoodModal">
+<div class="modal-content">
+<div class="modal-handle"></div>
+<div class="modal-title">New favorite</div>
+<div class="modal-subtitle">Define its nutrition once, reuse it forever</div>
+<div class="modal-label">Name</div>
+<input class="food-text-input" id="customFoodName" placeholder="e.g. My salmon salad" type="text"/>
+<div class="food-input-grid">
+<div class="food-input-cell">
+<div class="modal-label">Calories</div>
+<input class="food-num-input" id="customFoodKcal" inputmode="numeric" placeholder="0" type="number"/>
+</div>
+<div class="food-input-cell">
+<div class="modal-label">Protein (g)</div>
+<input class="food-num-input" id="customFoodProtein" inputmode="numeric" placeholder="0" type="number"/>
+</div>
+<div class="food-input-cell">
+<div class="modal-label">Carbs (g)</div>
+<input class="food-num-input" id="customFoodCarbs" inputmode="numeric" placeholder="0" type="number"/>
+</div>
+<div class="food-input-cell">
+<div class="modal-label">Fat (g)</div>
+<input class="food-num-input" id="customFoodFat" inputmode="numeric" placeholder="0" type="number"/>
+</div>
+</div>
+<div class="modal-actions">
+<button class="modal-btn secondary" id="customFoodCancel">Cancel</button>
+<button class="modal-btn primary" id="customFoodSave">Save</button>
+</div>
+</div>
+</div>
+<!-- NUTRITION GOALS MODAL -->
+<div class="modal" id="nutriGoalsModal">
+<div class="modal-content">
+<div class="modal-handle"></div>
+<div class="modal-title">Daily goals</div>
+<div class="modal-subtitle">1.6–2.2g/kg protein is a solid range for muscle building</div>
+<div class="modal-label">Protein target (g)</div>
+<input class="food-num-input" id="goalProteinInput" inputmode="numeric" placeholder="136" type="number"/>
+<div class="modal-label">Calorie target (kcal)</div>
+<input class="food-num-input" id="goalCalorieInput" inputmode="numeric" placeholder="2800" type="number"/>
+<div class="modal-actions">
+<button class="modal-btn secondary" id="nutriGoalsCancel">Cancel</button>
+<button class="modal-btn primary" id="nutriGoalsSave">Save</button>
+</div>
+</div>
+</div>
+<!-- API KEY MODAL -->
+<div class="modal" id="apiKeyModal">
+<div class="modal-content">
+<div class="modal-handle"></div>
+<div class="modal-title">CalorieNinjas API key</div>
+<div class="modal-subtitle">Stored only on this device — never included in exports or backups</div>
+<input class="food-text-input" id="apiKeyInput" placeholder="Paste your API key" type="text"/>
+<div class="modal-actions">
+<button class="modal-btn secondary" id="apiKeyCancel">Cancel</button>
+<button class="modal-btn primary" id="apiKeySave">Save</button>
+</div>
+</div>
+</div>
 <script>
 // ═══════════════════════════════════════════════════════════
 // STATE
@@ -3870,6 +4517,10 @@ const STORAGE_KEY = "forge:data:v1";
 let state = {
   // { "2026-08-26": { activities: [{id, type, subtypes?, slot, completedAt, duration?}, ...] } }
   days: {},
+  // { "2026-08-26": [{id, name, kcal, protein, carbs, fat, loggedAt}, ...] }
+  nutritionDays: {},
+  customFoods: [],
+  nutritionGoals: { proteinTarget: 136, calorieTarget: 2800 },
   gels: 0,
   gelsEarnedTotal: 0,
   gelsUsedTotal: 0,
@@ -3978,6 +4629,9 @@ async function loadState() {
 
 function applyLoadedData(parsed) {
   state.days = migrateDays(parsed.days || {});
+  state.nutritionDays = parsed.nutritionDays || {};
+  state.customFoods = parsed.customFoods || [];
+  state.nutritionGoals = parsed.nutritionGoals || { proteinTarget: 136, calorieTarget: 2800 };
   state.gels = parsed.gels || 0;
   state.gelsEarnedTotal = parsed.gelsEarnedTotal || 0;
   state.gelsUsedTotal = parsed.gelsUsedTotal || 0;
@@ -3992,6 +4646,9 @@ function applyLoadedData(parsed) {
 async function saveState() {
   const payload = JSON.stringify({
     days: state.days,
+    nutritionDays: state.nutritionDays,
+    customFoods: state.customFoods,
+    nutritionGoals: state.nutritionGoals,
     gels: state.gels,
     gelsEarnedTotal: state.gelsEarnedTotal,
     gelsUsedTotal: state.gelsUsedTotal,
@@ -4071,6 +4728,106 @@ async function removeActivity(dk, actId) {
   state.days[dk].activities = state.days[dk].activities.filter(a => a.id !== actId);
   if (state.days[dk].activities.length === 0) delete state.days[dk];
   await saveState();
+}
+
+// ═══════════════════════════════════════════════════════════
+// NUTRITION — data helpers
+// ═══════════════════════════════════════════════════════════
+
+function getNutritionEntries(dk) {
+  if (!state.nutritionDays[dk]) state.nutritionDays[dk] = [];
+  return state.nutritionDays[dk];
+}
+
+function genFoodEntryId() {
+  return 'food-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+}
+
+async function logFoodEntry(dk, item, mealSlot) {
+  const entries = getNutritionEntries(dk);
+  entries.push({
+    id: genFoodEntryId(),
+    name: item.name,
+    kcal: item.kcal,
+    protein: item.protein,
+    carbs: item.carbs,
+    fat: item.fat,
+    mealSlot: mealSlot || deduceMealSlot(),
+    loggedAt: new Date().toISOString()
+  });
+  await saveState();
+}
+
+async function removeFoodEntry(dk, entryId) {
+  if (!state.nutritionDays[dk]) return;
+  state.nutritionDays[dk] = state.nutritionDays[dk].filter(e => e.id !== entryId);
+  if (state.nutritionDays[dk].length === 0) delete state.nutritionDays[dk];
+  await saveState();
+}
+
+function dayNutritionTotals(dk) {
+  const entries = state.nutritionDays[dk] || [];
+  return entries.reduce((acc, e) => {
+    acc.kcal += e.kcal || 0;
+    acc.protein += e.protein || 0;
+    acc.carbs += e.carbs || 0;
+    acc.fat += e.fat || 0;
+    return acc;
+  }, { kcal: 0, protein: 0, carbs: 0, fat: 0 });
+}
+
+function computeDayGrade(totals, goals) {
+  if (totals.kcal === 0) return null;
+  const proteinPct = goals.proteinTarget > 0 ? (totals.protein / goals.proteinTarget) * 100 : 0;
+  const kcalTarget = goals.calorieTarget || 0;
+  const kcalInRange = kcalTarget > 0 ? Math.abs(totals.kcal - kcalTarget) / kcalTarget <= 0.15 : true;
+
+  if (proteinPct >= 90 && kcalInRange) {
+    return { emoji: "🟢", label: "Great day", className: "grade-great", proteinPct };
+  } else if (proteinPct >= 60) {
+    return { emoji: "🟡", label: "Decent", className: "grade-ok", proteinPct };
+  } else {
+    return { emoji: "🔴", label: "Low protein", className: "grade-low", proteinPct };
+  }
+}
+
+function nutritionDatesInRange(days) {
+  // Returns array of dateKeys for the last N days (or all logged dates if days === "all"), oldest first
+  const allKeys = Object.keys(state.nutritionDays).sort();
+  if (days === "all") return allKeys;
+  const cutoff = new Date(); cutoff.setHours(0,0,0,0); cutoff.setDate(cutoff.getDate() - (days - 1));
+  return allKeys.filter(k => new Date(k + "T00:00:00") >= cutoff);
+}
+
+function nutritionPeriodStats(days) {
+  const keys = nutritionDatesInRange(days);
+  const daysWithData = keys.filter(k => (state.nutritionDays[k] || []).length > 0);
+  if (daysWithData.length === 0) {
+    return { count: 0, avgKcal: 0, avgProtein: 0, avgCarbs: 0, avgFat: 0, series: [], grades: { great: 0, ok: 0, low: 0 } };
+  }
+  const totalsPerDay = daysWithData.map(k => ({ dk: k, ...dayNutritionTotals(k) }));
+  const sum = totalsPerDay.reduce((acc, t) => {
+    acc.kcal += t.kcal; acc.protein += t.protein; acc.carbs += t.carbs; acc.fat += t.fat;
+    return acc;
+  }, { kcal: 0, protein: 0, carbs: 0, fat: 0 });
+  const n = totalsPerDay.length;
+  const grades = { great: 0, ok: 0, low: 0 };
+  totalsPerDay.forEach(t => {
+    const g = computeDayGrade(t, state.nutritionGoals);
+    if (!g) return;
+    if (g.className === "grade-great") grades.great++;
+    else if (g.className === "grade-ok") grades.ok++;
+    else grades.low++;
+  });
+  return {
+    count: n,
+    avgKcal: sum.kcal / n,
+    avgProtein: sum.protein / n,
+    avgCarbs: sum.carbs / n,
+    avgFat: sum.fat / n,
+    series: totalsPerDay,
+    grades
+  };
 }
 
 function activityTypeName(a) {
@@ -4445,6 +5202,107 @@ function countAllCategoriesWeeks() {
 // BADGES + TITLES (definitions)
 // Legacy IDs preserved to keep user's unlocked history
 // ═══════════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════
+// NUTRITION — meal time slots
+// ═══════════════════════════════════════════════════════════
+
+const MEAL_SLOTS = [
+  { id: "breakfast", label: "Breakfast", icon: "🌅" },
+  { id: "morningsnack", label: "Snack", icon: "☕" },
+  { id: "lunch", label: "Lunch", icon: "🍽" },
+  { id: "afternoon", label: "Afternoon", icon: "🍪" },
+  { id: "evening", label: "Evening", icon: "🌆" },
+  { id: "night", label: "Night", icon: "🌙" }
+];
+
+function deduceMealSlot(d) {
+  const date = d || new Date();
+  const h = date.getHours() + date.getMinutes() / 60;
+  if (h >= 5 && h < 10) return "breakfast";
+  if (h >= 10 && h < 11.5) return "morningsnack";
+  if (h >= 11.5 && h < 14) return "lunch";
+  if (h >= 14 && h < 18) return "afternoon";
+  if (h >= 18 && h < 22) return "evening";
+  return "night";
+}
+
+function mealSlotInfo(id) {
+  return MEAL_SLOTS.find(s => s.id === id) || null;
+}
+
+// ═══════════════════════════════════════════════════════════
+// NUTRITION — food presets library
+// ═══════════════════════════════════════════════════════════
+
+const FOOD_CATEGORIES = [
+  { id: "mine", label: "My meals", icon: "⭐" },
+  { id: "fastfood", label: "Fast food", icon: "🍟" },
+  { id: "protein", label: "Protein", icon: "🍗" },
+  { id: "carbs", label: "Carbs", icon: "🍚" },
+  { id: "fruit", label: "Fruit", icon: "🍎" },
+  { id: "drinks", label: "Drinks", icon: "🥤" }
+];
+
+// Values are approximate reference figures, not lab-verified — good for trend tracking, not clinical precision.
+const FOOD_PRESETS = [
+  // MY MEALS
+  { id: "salmon-salad-hm", category: "mine", name: "Salmon salad (honey mustard)", kcal: 516, protein: 30, carbs: 41, fat: 25 },
+  { id: "salmon-salad-sesame", category: "mine", name: "Salmon salad (sesame)", kcal: 540, protein: 30, carbs: 41, fat: 28 },
+  { id: "salmon-salad-avo-hm", category: "mine", name: "Salmon salad + avocado (honey mustard)", kcal: 676, protein: 32, carbs: 50, fat: 40 },
+  { id: "salmon-salad-avo-sesame", category: "mine", name: "Salmon salad + avocado (sesame)", kcal: 700, protein: 32, carbs: 50, fat: 43 },
+  { id: "brioche-nutella-milk", category: "mine", name: "Brioche toast + Nutella + chocolate milk", kcal: 520, protein: 14, carbs: 66, fat: 21 },
+
+  // FAST FOOD
+  { id: "mcd-simple-crispy", category: "fastfood", name: "McCrispy (single, sandwich only)", kcal: 450, protein: 24, carbs: 40, fat: 20 },
+  { id: "mcd-double-crispy", category: "fastfood", name: "Double McCrispy (sandwich only)", kcal: 650, protein: 40, carbs: 42, fat: 35 },
+  { id: "mcd-double-qp", category: "fastfood", name: "Double Quarter Pounder (sandwich only)", kcal: 740, protein: 48, carbs: 40, fat: 42 },
+  { id: "mcd-fries-medium", category: "fastfood", name: "Fries (medium)", kcal: 340, protein: 4, carbs: 44, fat: 16 },
+  { id: "mcd-fries-large", category: "fastfood", name: "Fries (large)", kcal: 450, protein: 5, carbs: 58, fat: 21 },
+  { id: "mcd-coke-medium", category: "fastfood", name: "Coca-Cola (medium)", kcal: 170, protein: 0, carbs: 42, fat: 0 },
+  { id: "mcd-coke-large", category: "fastfood", name: "Coca-Cola (large)", kcal: 210, protein: 0, carbs: 52, fat: 0 },
+  { id: "mcd-menu-maxi-double-crispy", category: "fastfood", name: "Menu: Double McCrispy + large fries + large Coke", kcal: 1310, protein: 45, carbs: 152, fat: 56 },
+  { id: "mcd-menu-double-qp", category: "fastfood", name: "Menu: Double Quarter Pounder + fries + Coke", kcal: 1250, protein: 52, carbs: 126, fat: 58 },
+
+  // PROTEIN
+  { id: "chicken-grilled", category: "protein", name: "Grilled chicken breast (120g)", kcal: 200, protein: 37, carbs: 0, fat: 5 },
+  { id: "beef-mince-5", category: "protein", name: "Beef mince 5% (120g)", kcal: 180, protein: 26, carbs: 0, fat: 8 },
+  { id: "beef-steak-15", category: "protein", name: "Beef steak 15% (120g)", kcal: 250, protein: 24, carbs: 0, fat: 17 },
+  { id: "egg", category: "protein", name: "Egg (1 large)", kcal: 78, protein: 6.5, carbs: 0.5, fat: 5.5 },
+  { id: "tuna-can", category: "protein", name: "Canned tuna, plain (100g)", kcal: 116, protein: 26, carbs: 0, fat: 1 },
+  { id: "tuna-can-oil", category: "protein", name: "Canned tuna in oil, drained (100g)", kcal: 190, protein: 25, carbs: 0, fat: 9 },
+  { id: "tuna-mayo", category: "protein", name: "Tuna with mayo (100g)", kcal: 210, protein: 20, carbs: 2, fat: 14 },
+  { id: "ham-slices", category: "protein", name: "Ham, 2 slices (50g)", kcal: 60, protein: 10, carbs: 1, fat: 2 },
+  { id: "salmon-fillet", category: "protein", name: "Salmon fillet (130g)", kcal: 270, protein: 26, carbs: 0, fat: 17 },
+
+  // CARBS
+  { id: "rice-cooked", category: "carbs", name: "White rice, cooked (150g)", kcal: 195, protein: 4, carbs: 43, fat: 0.5 },
+  { id: "pasta-cooked", category: "carbs", name: "Pasta, cooked (150g)", kcal: 220, protein: 8, carbs: 43, fat: 1.5 },
+  { id: "potato-cooked", category: "carbs", name: "Potato, cooked (200g)", kcal: 170, protein: 4, carbs: 39, fat: 0.2 },
+  { id: "bread-slice", category: "carbs", name: "Bread, 1 slice (30g)", kcal: 80, protein: 3, carbs: 15, fat: 1 },
+  { id: "quinoa-cooked", category: "carbs", name: "Quinoa, cooked (150g)", kcal: 180, protein: 6, carbs: 32, fat: 3 },
+
+  // FRUIT
+  { id: "apple", category: "fruit", name: "Apple, medium", kcal: 95, protein: 0.5, carbs: 25, fat: 0.3 },
+  { id: "banana", category: "fruit", name: "Banana, medium", kcal: 105, protein: 1.3, carbs: 27, fat: 0.4 },
+  { id: "orange", category: "fruit", name: "Orange, medium", kcal: 70, protein: 1.4, carbs: 17, fat: 0.2 },
+  { id: "strawberries", category: "fruit", name: "Strawberries, handful (100g)", kcal: 32, protein: 0.7, carbs: 8, fat: 0.3 },
+  { id: "grapes", category: "fruit", name: "Grapes (100g)", kcal: 69, protein: 0.7, carbs: 18, fat: 0.2 },
+
+  // DRINKS
+  { id: "black-coffee", category: "drinks", name: "Black coffee", kcal: 2, protein: 0, carbs: 0, fat: 0 },
+  { id: "coffee-milk", category: "drinks", name: "Coffee with milk", kcal: 40, protein: 2, carbs: 4, fat: 1.5 },
+  { id: "orange-juice", category: "drinks", name: "Orange juice (200ml)", kcal: 90, protein: 1, carbs: 21, fat: 0 },
+  { id: "wine-glass", category: "drinks", name: "Wine, glass (150ml)", kcal: 125, protein: 0, carbs: 4, fat: 0 },
+  { id: "beer", category: "drinks", name: "Beer (330ml)", kcal: 140, protein: 1, carbs: 11, fat: 0 },
+  { id: "ijooz-juice", category: "drinks", name: "IJOOZ fresh juice (350ml)", kcal: 160, protein: 1, carbs: 38, fat: 0.3 },
+  { id: "coke-can", category: "drinks", name: "Coca-Cola, can (330ml)", kcal: 139, protein: 0, carbs: 35, fat: 0 }
+];
+
+function allFoodItems() {
+  const custom = state.customFoods.map(f => ({ ...f, category: "mine" }));
+  return [...custom, ...FOOD_PRESETS];
+}
 
 const BADGES = [
   { id: "first-workout", icon: "🌱", name: "First step", desc: "Your very first completed session", target: 1, progress: () => totalCompletedSessions() },
@@ -4925,6 +5783,171 @@ function renderWeek() {
 }
 
 // ═══════════════════════════════════════════════════════════
+// RENDER — NUTRITION
+// ═══════════════════════════════════════════════════════════
+
+function renderNutrition() {
+  const now = new Date();
+  const tk = todayKey();
+  document.getElementById("nutritionDateSub").textContent = `${DAY_NAMES_LONG[now.getDay()]}, ${now.getDate()} ${MONTH_NAMES[now.getMonth()]}`;
+
+  const totals = dayNutritionTotals(tk);
+  const goals = state.nutritionGoals;
+  const kcalGoal = goals.calorieTarget || 2800;
+  const kcalPct = Math.min(1, totals.kcal / kcalGoal);
+  const ring = document.getElementById("nutriKcalRing");
+  const circumference = 2 * Math.PI * 52;
+  ring.setAttribute("stroke-dasharray", `${circumference * kcalPct} ${circumference}`);
+  document.getElementById("nutriKcalVal").textContent = Math.round(totals.kcal);
+
+  const macroCalKcal = totals.protein * 4 + totals.carbs * 4 + totals.fat * 9;
+  const pPct = macroCalKcal > 0 ? (totals.protein * 4 / macroCalKcal) * 100 : 0;
+  const cPct = macroCalKcal > 0 ? (totals.carbs * 4 / macroCalKcal) * 100 : 0;
+  const fPct = macroCalKcal > 0 ? (totals.fat * 9 / macroCalKcal) * 100 : 0;
+  document.getElementById("nutriProteinFill").style.width = pPct + "%";
+  document.getElementById("nutriCarbsFill").style.width = cPct + "%";
+  document.getElementById("nutriFatFill").style.width = fPct + "%";
+  document.getElementById("nutriProteinVal").textContent = Math.round(totals.protein) + "g";
+  document.getElementById("nutriCarbsVal").textContent = Math.round(totals.carbs) + "g";
+  document.getElementById("nutriFatVal").textContent = Math.round(totals.fat) + "g";
+  document.getElementById("nutriGoalSub").textContent = `Goal: ${goals.proteinTarget}g protein · ${goals.calorieTarget} kcal`;
+
+  const gradeRow = document.getElementById("nutriGradeRow");
+  const grade = computeDayGrade(totals, goals);
+  if (grade) {
+    gradeRow.style.display = "flex";
+    document.getElementById("nutriGradeEmoji").textContent = grade.emoji;
+    document.getElementById("nutriGradeLabel").textContent = `${grade.label} · ${Math.round(grade.proteinPct)}% protein goal`;
+    gradeRow.className = "nutri-grade-row " + grade.className;
+  } else {
+    gradeRow.style.display = "flex";
+    document.getElementById("nutriGradeEmoji").textContent = "⚪";
+    document.getElementById("nutriGradeLabel").textContent = "No food logged yet";
+    gradeRow.className = "nutri-grade-row";
+  }
+
+  const container = document.getElementById("nutritionEntries");
+  container.innerHTML = "";
+  const entries = state.nutritionDays[tk] || [];
+
+  if (entries.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty-state";
+    empty.innerHTML = `
+      <div class="empty-state-icon">🍽</div>
+      <div class="empty-state-title">Nothing logged yet</div>
+      <div class="empty-state-text">Tap "Log a food" to add your first meal</div>
+    `;
+    container.appendChild(empty);
+  } else {
+    MEAL_SLOTS.forEach(slot => {
+      const slotEntries = entries.filter(e => (e.mealSlot || "night") === slot.id)
+        .sort((a, b) => new Date(a.loggedAt) - new Date(b.loggedAt));
+      if (slotEntries.length === 0) return;
+      const slotTotal = slotEntries.reduce((acc, e) => {
+        acc.kcal += e.kcal || 0; acc.protein += e.protein || 0;
+        return acc;
+      }, { kcal: 0, protein: 0 });
+      const header = document.createElement("div");
+      header.className = "meal-group-header";
+      header.innerHTML = `<span>${slot.icon} ${slot.label}</span><span class="meal-group-total">${Math.round(slotTotal.kcal)} kcal · ${Math.round(slotTotal.protein)}P</span>`;
+      container.appendChild(header);
+      slotEntries.forEach(e => container.appendChild(renderFoodEntryCard(tk, e)));
+    });
+  }
+
+  renderNutritionTrends();
+}
+
+let currentNutritionPeriod = 7;
+
+function renderNutritionTrends() {
+  const goals = state.nutritionGoals;
+  const stats = nutritionPeriodStats(currentNutritionPeriod);
+
+  const avgGrid = document.getElementById("nutriAvgGrid");
+  avgGrid.innerHTML = `
+    <div class="nutri-avg-cell">
+      <div class="nutri-avg-val">${Math.round(stats.avgKcal)}</div>
+      <div class="nutri-avg-label">avg kcal/day</div>
+    </div>
+    <div class="nutri-avg-cell">
+      <div class="nutri-avg-val protein">${Math.round(stats.avgProtein)}g</div>
+      <div class="nutri-avg-label">avg protein</div>
+    </div>
+    <div class="nutri-avg-cell">
+      <div class="nutri-avg-val carbs">${Math.round(stats.avgCarbs)}g</div>
+      <div class="nutri-avg-label">avg carbs</div>
+    </div>
+    <div class="nutri-avg-cell">
+      <div class="nutri-avg-val fat">${Math.round(stats.avgFat)}g</div>
+      <div class="nutri-avg-label">avg fat</div>
+    </div>
+  `;
+
+  document.getElementById("nutriTrendGoalTag").textContent = goals.proteinTarget + "g";
+
+  const path = document.getElementById("nutriTrendPath");
+  const goalLine = document.getElementById("nutriTrendGoalLine");
+  if (stats.series.length === 0) {
+    path.setAttribute("points", "");
+    goalLine.setAttribute("y1", "23"); goalLine.setAttribute("y2", "23");
+  } else {
+    const maxVal = Math.max(goals.proteinTarget * 1.2, ...stats.series.map(s => s.protein));
+    const N = stats.series.length;
+    const pts = stats.series.map((s, i) => {
+      const x = N === 1 ? 50 : (i / (N - 1)) * 100;
+      const y = 42 - (s.protein / maxVal) * 36;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    });
+    path.setAttribute("points", pts.join(" "));
+    const goalY = 42 - (goals.proteinTarget / maxVal) * 36;
+    goalLine.setAttribute("y1", goalY.toFixed(1));
+    goalLine.setAttribute("y2", goalY.toFixed(1));
+  }
+
+  const distEl = document.getElementById("nutriGradeDist");
+  if (stats.count === 0) {
+    distEl.innerHTML = `<div class="titles-empty">No logged days in this period yet</div>`;
+  } else {
+    distEl.innerHTML = `
+      <div class="nutri-dist-row"><span>🟢 Great days</span><b>${stats.grades.great}</b></div>
+      <div class="nutri-dist-row"><span>🟡 Decent days</span><b>${stats.grades.ok}</b></div>
+      <div class="nutri-dist-row"><span>🔴 Low protein days</span><b>${stats.grades.low}</b></div>
+    `;
+  }
+}
+
+function renderFoodEntryCard(dk, entry) {
+  const card = document.createElement("div");
+  card.className = "activity-card food-entry-card";
+  const slot = mealSlotInfo(entry.mealSlot);
+  card.innerHTML = `
+    <div class="activity-icon">${slot ? slot.icon : "🍽"}</div>
+    <div class="activity-info">
+      <div class="activity-name">${entry.name}</div>
+      <div class="activity-meta">
+        <span class="activity-time">${fmtTime(entry.loggedAt)}</span>
+        <span class="dot">·</span>
+        <span class="food-entry-kcal">${Math.round(entry.kcal)} kcal</span>
+        <span class="dot">·</span>
+        <span>${Math.round(entry.protein)}P · ${Math.round(entry.carbs)}C · ${Math.round(entry.fat)}F</span>
+      </div>
+    </div>
+    <div class="activity-actions">
+      <button class="activity-action-btn delete" data-action="delete" title="Delete">✕</button>
+    </div>
+  `;
+  card.querySelector('[data-action="delete"]').addEventListener("click", async (e) => {
+    e.stopPropagation();
+    await removeFoodEntry(dk, entry.id);
+    hudAudio.cancel();
+    renderNutrition();
+  });
+  return card;
+}
+
+// ═══════════════════════════════════════════════════════════
 // RENDER — STATS
 // ═══════════════════════════════════════════════════════════
 
@@ -5258,6 +6281,7 @@ function renderAll() {
   
   renderToday();
   renderWeek();
+  renderNutrition();
   renderStats();
   renderTitles();
   renderActiveTitle();
@@ -5487,7 +6511,7 @@ document.querySelectorAll(".tab").forEach(tab => {
     tab.classList.add("active");
     document.getElementById("view-" + tab.dataset.view).classList.add("active");
     hudAudio.select();
-    hudLog(`PANNEAU → ${tab.textContent.toUpperCase()}`);
+    hudLog(`PANEL → ${tab.textContent.toUpperCase()}`);
     if (tab.dataset.view === "week") { weekOffset = 0; expandedWeekDay = null; renderWeek(); }
     window.scrollTo(0, 0);
   });
@@ -5584,6 +6608,348 @@ document.getElementById("addActivityModal").addEventListener("click", (e) => {
   if (e.target.id === "addActivityModal") {
     document.getElementById("addActivityModal").classList.remove("active");
   }
+});
+
+// ═══════════════════════════════════════════════════════════
+// NUTRITION — add food modal
+// ═══════════════════════════════════════════════════════════
+
+let selectedFoodCategory = "mine";
+let selectedMealSlot = "breakfast";
+
+function renderMealSlotPicker() {
+  const picker = document.getElementById("mealSlotPicker");
+  picker.innerHTML = "";
+  MEAL_SLOTS.forEach(slot => {
+    const btn = document.createElement("button");
+    btn.className = "meal-slot-btn" + (slot.id === selectedMealSlot ? " selected" : "");
+    btn.innerHTML = `<span class="meal-slot-icon">${slot.icon}</span>${slot.label}`;
+    btn.addEventListener("click", () => {
+      selectedMealSlot = slot.id;
+      hudAudio.tick();
+      renderMealSlotPicker();
+    });
+    picker.appendChild(btn);
+  });
+}
+
+
+function renderFoodCategoryPicker() {
+  const picker = document.getElementById("foodCategoryPicker");
+  picker.innerHTML = "";
+  FOOD_CATEGORIES.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.className = "food-cat-btn" + (cat.id === selectedFoodCategory ? " active" : "");
+    btn.innerHTML = `<span class="food-cat-icon">${cat.icon}</span>${cat.label}`;
+    btn.addEventListener("click", () => {
+      selectedFoodCategory = cat.id;
+      hudAudio.tick();
+      renderFoodCategoryPicker();
+      renderFoodItemList();
+    });
+    picker.appendChild(btn);
+  });
+}
+
+function renderFoodItemList() {
+  const list = document.getElementById("foodItemList");
+  list.innerHTML = "";
+  const items = allFoodItems().filter(f => f.category === selectedFoodCategory);
+
+  if (items.length === 0) {
+    list.innerHTML = `<div class="titles-empty">No items yet — create a custom favorite below</div>`;
+    return;
+  }
+
+  items.forEach(item => {
+    const row = document.createElement("button");
+    row.className = "food-item-row";
+    row.innerHTML = `
+      <div class="food-item-info">
+        <div class="food-item-name">${item.name}</div>
+        <div class="food-item-macros">${Math.round(item.kcal)} kcal · ${Math.round(item.protein)}P · ${Math.round(item.carbs)}C · ${Math.round(item.fat)}F</div>
+      </div>
+      <span class="food-item-add">+</span>
+    `;
+    row.addEventListener("click", async () => {
+      const tk = todayKey();
+      await logFoodEntry(tk, item, selectedMealSlot);
+      hudAudio.confirm();
+      hudLog(`FOOD LOGGED → ${item.name.toUpperCase()}`);
+      showToast("Food added");
+      document.getElementById("addFoodModal").classList.remove("active");
+      renderNutrition();
+    });
+    list.appendChild(row);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// NUTRITION — CalorieNinjas API search
+// ═══════════════════════════════════════════════════════════
+
+const API_KEY_STORAGE = "nate-fitness:calorieninjas-key";
+
+function getApiKey() {
+  try { return localStorage.getItem(API_KEY_STORAGE) || ""; } catch (e) { return ""; }
+}
+
+function setApiKey(key) {
+  try { localStorage.setItem(API_KEY_STORAGE, key); } catch (e) {}
+}
+
+async function searchFoodApi(query) {
+  const apiKey = getApiKey();
+  const resultsEl = document.getElementById("foodApiResults");
+  if (!apiKey) {
+    resultsEl.innerHTML = `<div class="food-api-msg">No API key set. Tap ⚙️ to add your CalorieNinjas key.</div>`;
+    return;
+  }
+  if (!query.trim()) return;
+
+  resultsEl.innerHTML = `<div class="food-api-msg">Searching…</div>`;
+  try {
+    const res = await fetch("https://api.calorieninjas.com/v1/nutrition?query=" + encodeURIComponent(query), {
+      headers: { "X-Api-Key": apiKey }
+    });
+    if (!res.ok) {
+      if (res.status === 401) {
+        resultsEl.innerHTML = `<div class="food-api-msg">Invalid API key — check it via ⚙️</div>`;
+      } else {
+        resultsEl.innerHTML = `<div class="food-api-msg">API error (${res.status}). Try again later.</div>`;
+      }
+      return;
+    }
+    const data = await res.json();
+    const items = data.items || [];
+    if (items.length === 0) {
+      resultsEl.innerHTML = `<div class="food-api-msg">No results — try being more specific (e.g. add quantities)</div>`;
+      return;
+    }
+    resultsEl.innerHTML = "";
+    items.forEach(it => {
+      renderApiResultRow(it, resultsEl);
+    });
+    // Also offer to log everything as one combined entry
+    if (items.length > 1) {
+      const totalKcal = items.reduce((s, i) => s + (i.calories || 0), 0);
+      const totalProtein = items.reduce((s, i) => s + (i.protein_g || 0), 0);
+      const totalCarbs = items.reduce((s, i) => s + (i.carbohydrates_total_g || 0), 0);
+      const totalFat = items.reduce((s, i) => s + (i.fat_total_g || 0), 0);
+      const combined = { name: query.trim(), kcal: totalKcal, protein: totalProtein, carbs: totalCarbs, fat: totalFat };
+      const row = document.createElement("div");
+      row.className = "food-api-row food-api-combined";
+      row.innerHTML = `
+        <div class="food-item-info">
+          <div class="food-item-name">Log all as "${combined.name}"</div>
+          <div class="food-item-macros">${Math.round(combined.kcal)} kcal · ${Math.round(combined.protein)}P · ${Math.round(combined.carbs)}C · ${Math.round(combined.fat)}F</div>
+        </div>
+        <button class="food-item-add" data-action="log" title="Log">+</button>
+      `;
+      row.querySelector('[data-action="log"]').addEventListener("click", async () => {
+        await logFoodEntry(todayKey(), combined, selectedMealSlot);
+        hudAudio.confirm();
+        showToast("Food added");
+        document.getElementById("addFoodModal").classList.remove("active");
+        renderNutrition();
+      });
+      resultsEl.appendChild(row);
+    }
+  } catch (e) {
+    resultsEl.innerHTML = `<div class="food-api-msg">Network error — check your connection</div>`;
+  }
+}
+
+function renderApiResultRow(apiItem, container) {
+  const item = {
+    name: apiItem.name.charAt(0).toUpperCase() + apiItem.name.slice(1),
+    kcal: apiItem.calories || 0,
+    protein: apiItem.protein_g || 0,
+    carbs: apiItem.carbohydrates_total_g || 0,
+    fat: apiItem.fat_total_g || 0
+  };
+  const row = document.createElement("div");
+  row.className = "food-api-row";
+  row.innerHTML = `
+    <div class="food-item-info">
+      <div class="food-item-name">${item.name} <span class="food-api-serving">(${Math.round(apiItem.serving_size_g || 0)}g)</span></div>
+      <div class="food-item-macros">${Math.round(item.kcal)} kcal · ${Math.round(item.protein)}P · ${Math.round(item.carbs)}C · ${Math.round(item.fat)}F</div>
+    </div>
+    <button class="food-api-star" data-action="star" title="Save as favorite">☆</button>
+    <button class="food-item-add" data-action="log" title="Log">+</button>
+  `;
+  row.querySelector('[data-action="log"]').addEventListener("click", async () => {
+    await logFoodEntry(todayKey(), item, selectedMealSlot);
+    hudAudio.confirm();
+    hudLog(`FOOD LOGGED (API) → ${item.name.toUpperCase()}`);
+    showToast("Food added");
+    document.getElementById("addFoodModal").classList.remove("active");
+    renderNutrition();
+  });
+  row.querySelector('[data-action="star"]').addEventListener("click", async (e) => {
+    e.stopPropagation();
+    state.customFoods.push({ id: 'custom-' + Date.now() + '-' + Math.floor(Math.random() * 1000), ...item });
+    await saveState();
+    hudAudio.confirm();
+    showToast("Saved to favorites");
+    const btn = e.currentTarget;
+    btn.textContent = "★";
+    btn.disabled = true;
+  });
+  container.appendChild(row);
+}
+
+document.getElementById("foodApiSearchBtn").addEventListener("click", () => {
+  const query = document.getElementById("foodApiQuery").value;
+  hudAudio.select();
+  searchFoodApi(query);
+});
+
+document.getElementById("foodApiQuery").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    searchFoodApi(document.getElementById("foodApiQuery").value);
+  }
+});
+
+document.getElementById("foodApiKeyBtn").addEventListener("click", () => {
+  document.getElementById("apiKeyInput").value = getApiKey();
+  document.getElementById("apiKeyModal").classList.add("active");
+  hudAudio.select();
+});
+
+document.getElementById("apiKeyCancel").addEventListener("click", () => {
+  document.getElementById("apiKeyModal").classList.remove("active");
+  hudAudio.cancel();
+});
+
+document.getElementById("apiKeyModal").addEventListener("click", (e) => {
+  if (e.target.id === "apiKeyModal") {
+    document.getElementById("apiKeyModal").classList.remove("active");
+  }
+});
+
+document.getElementById("apiKeySave").addEventListener("click", () => {
+  const key = document.getElementById("apiKeyInput").value.trim();
+  setApiKey(key);
+  hudAudio.confirm();
+  showToast(key ? "API key saved" : "API key cleared");
+  document.getElementById("apiKeyModal").classList.remove("active");
+});
+
+document.getElementById("addFoodBtn").addEventListener("click", () => {
+  document.getElementById("foodApiQuery").value = "";
+  document.getElementById("foodApiResults").innerHTML = "";
+  selectedMealSlot = deduceMealSlot();
+  renderMealSlotPicker();
+  renderFoodCategoryPicker();
+  renderFoodItemList();
+  document.getElementById("addFoodModal").classList.add("active");
+  hudAudio.select();
+});
+
+document.getElementById("addFoodCancel").addEventListener("click", () => {
+  document.getElementById("addFoodModal").classList.remove("active");
+  hudAudio.cancel();
+});
+
+document.getElementById("addFoodModal").addEventListener("click", (e) => {
+  if (e.target.id === "addFoodModal") {
+    document.getElementById("addFoodModal").classList.remove("active");
+  }
+});
+
+// Custom food creation
+document.getElementById("createCustomFoodBtn").addEventListener("click", () => {
+  document.getElementById("customFoodName").value = "";
+  document.getElementById("customFoodKcal").value = "";
+  document.getElementById("customFoodProtein").value = "";
+  document.getElementById("customFoodCarbs").value = "";
+  document.getElementById("customFoodFat").value = "";
+  document.getElementById("addFoodModal").classList.remove("active");
+  document.getElementById("customFoodModal").classList.add("active");
+  hudAudio.select();
+});
+
+document.getElementById("customFoodCancel").addEventListener("click", () => {
+  document.getElementById("customFoodModal").classList.remove("active");
+  hudAudio.cancel();
+});
+
+document.getElementById("customFoodModal").addEventListener("click", (e) => {
+  if (e.target.id === "customFoodModal") {
+    document.getElementById("customFoodModal").classList.remove("active");
+  }
+});
+
+document.getElementById("customFoodSave").addEventListener("click", async () => {
+  const name = document.getElementById("customFoodName").value.trim();
+  const kcal = parseFloat(document.getElementById("customFoodKcal").value) || 0;
+  const protein = parseFloat(document.getElementById("customFoodProtein").value) || 0;
+  const carbs = parseFloat(document.getElementById("customFoodCarbs").value) || 0;
+  const fat = parseFloat(document.getElementById("customFoodFat").value) || 0;
+  if (!name || kcal <= 0) {
+    alert("Please enter at least a name and calories");
+    return;
+  }
+  state.customFoods.push({
+    id: 'custom-' + Date.now(),
+    name, kcal, protein, carbs, fat
+  });
+  await saveState();
+  hudAudio.confirm();
+  hudLog(`CUSTOM FAVORITE CREATED → ${name.toUpperCase()}`);
+  showToast("Favorite created");
+  document.getElementById("customFoodModal").classList.remove("active");
+  selectedFoodCategory = "mine";
+  document.getElementById("addFoodModal").classList.add("active");
+  renderFoodCategoryPicker();
+  renderFoodItemList();
+});
+
+// ═══════════════════════════════════════════════════════════
+// NUTRITION — goals modal + period selector
+// ═══════════════════════════════════════════════════════════
+
+document.getElementById("editGoalsBtn").addEventListener("click", () => {
+  document.getElementById("goalProteinInput").value = state.nutritionGoals.proteinTarget;
+  document.getElementById("goalCalorieInput").value = state.nutritionGoals.calorieTarget;
+  document.getElementById("nutriGoalsModal").classList.add("active");
+  hudAudio.select();
+});
+
+document.getElementById("nutriGoalsCancel").addEventListener("click", () => {
+  document.getElementById("nutriGoalsModal").classList.remove("active");
+  hudAudio.cancel();
+});
+
+document.getElementById("nutriGoalsModal").addEventListener("click", (e) => {
+  if (e.target.id === "nutriGoalsModal") {
+    document.getElementById("nutriGoalsModal").classList.remove("active");
+  }
+});
+
+document.getElementById("nutriGoalsSave").addEventListener("click", async () => {
+  const protein = parseFloat(document.getElementById("goalProteinInput").value) || state.nutritionGoals.proteinTarget;
+  const calories = parseFloat(document.getElementById("goalCalorieInput").value) || state.nutritionGoals.calorieTarget;
+  state.nutritionGoals = { proteinTarget: protein, calorieTarget: calories };
+  await saveState();
+  hudAudio.confirm();
+  hudLog(`NUTRITION GOALS UPDATED → ${protein}G PROTEIN`);
+  showToast("Goals updated");
+  document.getElementById("nutriGoalsModal").classList.remove("active");
+  renderNutrition();
+});
+
+document.querySelectorAll("#nutriPeriodSelector .period-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#nutriPeriodSelector .period-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const p = btn.dataset.nperiod;
+    currentNutritionPeriod = p === "all" ? "all" : parseInt(p);
+    hudAudio.tick();
+    renderNutritionTrends();
+  });
 });
 
 // Type picker
@@ -5787,6 +7153,9 @@ document.getElementById("exportBtn").addEventListener("click", () => {
     exportedAt: new Date().toISOString(),
     data: {
       days: state.days,
+      nutritionDays: state.nutritionDays,
+      customFoods: state.customFoods,
+      nutritionGoals: state.nutritionGoals,
       gels: state.gels,
       gelsEarnedTotal: state.gelsEarnedTotal,
       gelsUsedTotal: state.gelsUsedTotal,
