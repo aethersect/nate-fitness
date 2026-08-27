@@ -1187,6 +1187,11 @@
     transition: stroke-dasharray 0.6s ease;
   }
 
+  .nutri-ring-arc.over {
+    stroke: var(--gold);
+    filter: drop-shadow(0 0 8px var(--gold));
+  }
+
   .nutrition-kcal-mid {
     position: absolute;
     inset: 0;
@@ -1221,6 +1226,14 @@
     gap: 10px;
   }
 
+  .nutri-kcal-small {
+    font-family: "Share Tech Mono", monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.03em;
+    margin-bottom: 2px;
+  }
+
   .nutri-macro-row {
     display: grid;
     grid-template-columns: 42px 1fr 68px;
@@ -1253,6 +1266,8 @@
   .nutri-macro-fill.protein { background: var(--arc); box-shadow: 0 0 8px var(--arc); }
   .nutri-macro-fill.carbs { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
   .nutri-macro-fill.fat { background: var(--steel); box-shadow: 0 0 8px var(--steel); }
+  .nutri-macro-fill.over-budget { background: var(--alert) !important; box-shadow: 0 0 8px var(--alert) !important; }
+  .nutri-macro-row:has(.over-budget) .nutri-macro-val { color: var(--alert); }
 
   .nutri-macro-val {
     font-family: "Share Tech Mono", monospace;
@@ -4117,19 +4132,15 @@
 <div class="nutrition-kcal-ring">
 <svg viewBox="0 0 120 120">
 <circle class="nutri-ring-track" cx="60" cy="60" r="52"></circle>
-<circle class="nutri-ring-arc" cx="60" cy="60" id="nutriKcalRing" r="52" stroke-dasharray="0 327"></circle>
+<circle class="nutri-ring-arc" cx="60" cy="60" id="nutriProteinRing" r="52" stroke-dasharray="0 327"></circle>
 </svg>
 <div class="nutrition-kcal-mid">
-<div class="nutri-kcal-val" id="nutriKcalVal">0</div>
-<div class="nutri-kcal-label">kcal</div>
+<div class="nutri-kcal-val" id="nutriProteinRingVal">0</div>
+<div class="nutri-kcal-label">g protein</div>
 </div>
 </div>
 <div class="nutrition-macros">
-<div class="nutri-macro-row">
-<div class="nutri-macro-label">Protein</div>
-<div class="nutri-macro-track"><div class="nutri-macro-fill protein" id="nutriProteinFill" style="width:0%"></div></div>
-<div class="nutri-macro-val" id="nutriProteinVal">0g</div>
-</div>
+<div class="nutri-kcal-small" id="nutriKcalSmall">0 kcal today</div>
 <div class="nutri-macro-row">
 <div class="nutri-macro-label">Carbs</div>
 <div class="nutri-macro-track"><div class="nutri-macro-fill carbs" id="nutriCarbsFill" style="width:0%"></div></div>
@@ -5928,22 +5939,29 @@ function renderNutrition() {
   const goals = state.nutritionGoals;
   const kcalGoal = goals.calorieTarget || 2800;
   const kcalPct = Math.min(1, totals.kcal / kcalGoal);
-  const ring = document.getElementById("nutriKcalRing");
-  const circumference = 2 * Math.PI * 52;
-  ring.setAttribute("stroke-dasharray", `${circumference * kcalPct} ${circumference}`);
-  document.getElementById("nutriKcalVal").textContent = Math.round(totals.kcal);
 
-  const macroCalKcal = totals.protein * 4 + totals.carbs * 4 + totals.fat * 9;
-  const pPct = macroCalKcal > 0 ? (totals.protein * 4 / macroCalKcal) * 100 : 0;
-  const cPct = macroCalKcal > 0 ? (totals.carbs * 4 / macroCalKcal) * 100 : 0;
-  const fPct = macroCalKcal > 0 ? (totals.fat * 9 / macroCalKcal) * 100 : 0;
-  document.getElementById("nutriProteinFill").style.width = pPct + "%";
-  document.getElementById("nutriCarbsFill").style.width = cPct + "%";
-  document.getElementById("nutriFatFill").style.width = fPct + "%";
-  document.getElementById("nutriProteinVal").textContent = Math.round(totals.protein) + "g / " + goals.proteinTarget + "g";
-  document.getElementById("nutriCarbsVal").textContent = Math.round(totals.carbs) + "g / " + (goals.carbTarget || 275) + "g";
-  document.getElementById("nutriFatVal").textContent = Math.round(totals.fat) + "g / " + (goals.fatTarget || 70) + "g";
-  document.getElementById("nutriGoalSub").textContent = `Goal: ${goals.calorieTarget} kcal · ${goals.proteinTarget}P / ${goals.carbTarget || 275}C / ${goals.fatTarget || 70}F`;
+  const proteinTarget = goals.proteinTarget || 110;
+  const proteinPctRaw = totals.protein / proteinTarget;
+  const ring = document.getElementById("nutriProteinRing");
+  const circumference = 2 * Math.PI * 52;
+  ring.setAttribute("stroke-dasharray", `${circumference * Math.min(1, proteinPctRaw)} ${circumference}`);
+  ring.classList.toggle("over", proteinPctRaw > 1);
+  document.getElementById("nutriProteinRingVal").textContent = Math.round(totals.protein);
+  document.getElementById("nutriKcalSmall").textContent = `${Math.round(totals.kcal)} kcal today`;
+
+  const carbTarget = goals.carbTarget || 275;
+  const fatTarget = goals.fatTarget || 70;
+  const cPct = carbTarget > 0 ? Math.min(100, (totals.carbs / carbTarget) * 100) : 0;
+  const fPct = fatTarget > 0 ? Math.min(100, (totals.fat / fatTarget) * 100) : 0;
+  const carbsFill = document.getElementById("nutriCarbsFill");
+  const fatFill = document.getElementById("nutriFatFill");
+  carbsFill.style.width = cPct + "%";
+  fatFill.style.width = fPct + "%";
+  carbsFill.classList.toggle("over-budget", carbTarget > 0 && totals.carbs > carbTarget);
+  fatFill.classList.toggle("over-budget", fatTarget > 0 && totals.fat > fatTarget);
+  document.getElementById("nutriCarbsVal").textContent = Math.round(totals.carbs) + "g / " + carbTarget + "g";
+  document.getElementById("nutriFatVal").textContent = Math.round(totals.fat) + "g / " + fatTarget + "g";
+  document.getElementById("nutriGoalSub").textContent = `Goal: ${proteinTarget}g protein · ${carbTarget}C / ${fatTarget}F`;
 
   renderNutritionOrbit(totals, goals, kcalPct);
 
