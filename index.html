@@ -1410,7 +1410,20 @@
     border-radius: 12px;
   }
 
-  .nutri-grade-emoji { font-size: 16px; flex-shrink: 0; }
+  .nutri-grade-emoji {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 16px;
+    font-weight: 700;
+    background: var(--bg-elevated);
+    border: 1.5px solid var(--border-strong);
+  }
 
   .nutri-grade-label {
     flex: 1;
@@ -1425,8 +1438,11 @@
   }
 
   .nutri-grade-row.grade-great { border-color: rgba(255, 255, 255, 0.4); }
+  .nutri-grade-row.grade-great .nutri-grade-emoji { color: var(--hud-white); border-color: rgba(255, 255, 255, 0.5); box-shadow: 0 0 10px rgba(255, 255, 255, 0.25); }
   .nutri-grade-row.grade-ok { border-color: var(--gold); }
-  .nutri-grade-row.grade-low { border-color: var(--arc); }
+  .nutri-grade-row.grade-ok .nutri-grade-emoji { color: var(--gold); border-color: var(--gold); box-shadow: 0 0 10px rgba(255, 106, 46, 0.3); }
+  .nutri-grade-row.grade-low { border-color: var(--alert); }
+  .nutri-grade-row.grade-low .nutri-grade-emoji { color: var(--alert); border-color: var(--alert); box-shadow: 0 0 10px rgba(255, 10, 46, 0.3); }
 
   .nutri-goals-btn {
     flex-shrink: 0;
@@ -4860,23 +4876,32 @@ function dayNutritionTotals(dk) {
   }, { kcal: 0, protein: 0, carbs: 0, fat: 0 });
 }
 
+function budgetScore(actual, target, leniency) {
+  if (!target || target <= 0) return 100;
+  if (actual <= target) return 100;
+  const overPct = (actual - target) / target;
+  return Math.max(0, 100 - overPct * leniency);
+}
+
 function computeDayGrade(totals, goals) {
   if (totals.kcal === 0) return null;
-  const proteinPct = goals.proteinTarget > 0 ? (totals.protein / goals.proteinTarget) * 100 : 0;
-  const kcalTarget = goals.calorieTarget || 0;
-  const kcalInRange = kcalTarget > 0 ? Math.abs(totals.kcal - kcalTarget) / kcalTarget <= 0.15 : true;
-  const carbTarget = goals.carbTarget || 0;
-  const carbInRange = carbTarget > 0 ? Math.abs(totals.carbs - carbTarget) / carbTarget <= 0.25 : true;
-  const fatTarget = goals.fatTarget || 0;
-  const fatInRange = fatTarget > 0 ? Math.abs(totals.fat - fatTarget) / fatTarget <= 0.25 : true;
+  const proteinTarget = goals.proteinTarget || 110;
+  const proteinPct = (totals.protein / proteinTarget) * 100;
+  const proteinScore = Math.min(100, proteinPct);
+  // Carbs are the flexible "fill the rest of your calories" macro — lenient penalty (100% over target before hitting 0).
+  const carbScore = budgetScore(totals.carbs, goals.carbTarget, 100);
+  // Fat has a narrower healthy range (hormonal relevance) — a bit firmer, but still forgiving (~130% over before hitting 0).
+  const fatScore = budgetScore(totals.fat, goals.fatTarget, 130);
+  const score = proteinScore * 0.6 + carbScore * 0.2 + fatScore * 0.2;
 
-  if (proteinPct >= 90 && kcalInRange && carbInRange && fatInRange) {
-    return { emoji: "🟢", label: "Great day", className: "grade-great", proteinPct };
-  } else if (proteinPct >= 60) {
-    return { emoji: "🟡", label: "Decent", className: "grade-ok", proteinPct };
-  } else {
-    return { emoji: "🔴", label: "Low protein", className: "grade-low", proteinPct };
-  }
+  let letter, emoji, className, label;
+  if (score >= 90) { letter = "A"; emoji = "🟢"; className = "grade-great"; label = "Excellent"; }
+  else if (score >= 75) { letter = "B"; emoji = "🟢"; className = "grade-great"; label = "Great"; }
+  else if (score >= 60) { letter = "C"; emoji = "🟡"; className = "grade-ok"; label = "Decent"; }
+  else if (score >= 40) { letter = "D"; emoji = "🟠"; className = "grade-low"; label = "Below target"; }
+  else { letter = "E"; emoji = "🔴"; className = "grade-low"; label = "Low protein"; }
+
+  return { letter, emoji, className, label, score, proteinPct, carbScore, fatScore };
 }
 
 function nutritionDatesInRange(days) {
@@ -4891,7 +4916,7 @@ function nutritionPeriodStats(days) {
   const keys = nutritionDatesInRange(days);
   const daysWithData = keys.filter(k => (state.nutritionDays[k] || []).length > 0);
   if (daysWithData.length === 0) {
-    return { count: 0, avgKcal: 0, avgProtein: 0, avgCarbs: 0, avgFat: 0, series: [], grades: { great: 0, ok: 0, low: 0 } };
+    return { count: 0, avgKcal: 0, avgProtein: 0, avgCarbs: 0, avgFat: 0, series: [], grades: { A: 0, B: 0, C: 0, D: 0, E: 0 } };
   }
   const totalsPerDay = daysWithData.map(k => ({ dk: k, ...dayNutritionTotals(k) }));
   const sum = totalsPerDay.reduce((acc, t) => {
@@ -4899,13 +4924,11 @@ function nutritionPeriodStats(days) {
     return acc;
   }, { kcal: 0, protein: 0, carbs: 0, fat: 0 });
   const n = totalsPerDay.length;
-  const grades = { great: 0, ok: 0, low: 0 };
+  const grades = { A: 0, B: 0, C: 0, D: 0, E: 0 };
   totalsPerDay.forEach(t => {
     const g = computeDayGrade(t, state.nutritionGoals);
     if (!g) return;
-    if (g.className === "grade-great") grades.great++;
-    else if (g.className === "grade-ok") grades.ok++;
-    else grades.low++;
+    grades[g.letter]++;
   });
   return {
     count: n,
@@ -5969,12 +5992,12 @@ function renderNutrition() {
   const grade = computeDayGrade(totals, goals);
   if (grade) {
     gradeRow.style.display = "flex";
-    document.getElementById("nutriGradeEmoji").textContent = grade.emoji;
+    document.getElementById("nutriGradeEmoji").textContent = grade.letter;
     document.getElementById("nutriGradeLabel").textContent = `${grade.label} · ${Math.round(grade.proteinPct)}% protein goal`;
     gradeRow.className = "nutri-grade-row " + grade.className;
   } else {
     gradeRow.style.display = "flex";
-    document.getElementById("nutriGradeEmoji").textContent = "⚪";
+    document.getElementById("nutriGradeEmoji").textContent = "—";
     document.getElementById("nutriGradeLabel").textContent = "No food logged yet";
     gradeRow.className = "nutri-grade-row";
   }
@@ -6064,9 +6087,11 @@ function renderNutritionTrends() {
     distEl.innerHTML = `<div class="titles-empty">No logged days in this period yet</div>`;
   } else {
     distEl.innerHTML = `
-      <div class="nutri-dist-row"><span>🟢 Great days</span><b>${stats.grades.great}</b></div>
-      <div class="nutri-dist-row"><span>🟡 Decent days</span><b>${stats.grades.ok}</b></div>
-      <div class="nutri-dist-row"><span>🔴 Low protein days</span><b>${stats.grades.low}</b></div>
+      <div class="nutri-dist-row"><span>A · Excellent</span><b>${stats.grades.A}</b></div>
+      <div class="nutri-dist-row"><span>B · Great</span><b>${stats.grades.B}</b></div>
+      <div class="nutri-dist-row"><span>C · Decent</span><b>${stats.grades.C}</b></div>
+      <div class="nutri-dist-row"><span>D · Below target</span><b>${stats.grades.D}</b></div>
+      <div class="nutri-dist-row"><span>E · Low protein</span><b>${stats.grades.E}</b></div>
     `;
   }
 }
