@@ -5328,6 +5328,11 @@ const FOOD_PRESETS = [
   { id: "salmon-salad-sesame", category: "mine", name: "Salmon salad (sesame)", kcal: 540, protein: 30, carbs: 41, fat: 28 },
   { id: "salmon-salad-avo-hm", category: "mine", name: "Salmon salad + avocado (honey mustard)", kcal: 676, protein: 32, carbs: 50, fat: 40 },
   { id: "salmon-salad-avo-sesame", category: "mine", name: "Salmon salad + avocado (sesame)", kcal: 700, protein: 32, carbs: 50, fat: 43 },
+  { id: "chicken-salad-hm", category: "mine", name: "Chicken salad (honey mustard)", kcal: 463, protein: 44, carbs: 41, fat: 13 },
+  { id: "chicken-salad-sesame", category: "mine", name: "Chicken salad (sesame)", kcal: 488, protein: 44, carbs: 41, fat: 16 },
+  { id: "chicken-salad-avo-hm", category: "mine", name: "Chicken salad + avocado (honey mustard)", kcal: 623, protein: 46, carbs: 50, fat: 28 },
+  { id: "chicken-salad-avo-sesame", category: "mine", name: "Chicken salad + avocado (sesame)", kcal: 648, protein: 46, carbs: 50, fat: 31 },
+  { id: "chicken-breast-addon", category: "mine", name: "+ Extra chicken breast (130g)", baseName: "Extra chicken breast", refGrams: 130, kcal: 217, protein: 40, carbs: 0, fat: 5.4 },
   { id: "brioche-nutella-milk", category: "mine", name: "Brioche toast + Nutella + chocolate milk", kcal: 520, protein: 14, carbs: 66, fat: 21 },
 
   // FAST FOOD
@@ -5342,29 +5347,29 @@ const FOOD_PRESETS = [
   { id: "mcd-menu-double-qp", category: "fastfood", name: "Menu: Double Quarter Pounder + fries + Coke", kcal: 1250, protein: 52, carbs: 126, fat: 58 },
 
   // PROTEIN
-  { id: "chicken-grilled", category: "protein", name: "Grilled chicken breast (120g)", kcal: 200, protein: 37, carbs: 0, fat: 5 },
-  { id: "beef-mince-5", category: "protein", name: "Beef mince 5% (120g)", kcal: 180, protein: 26, carbs: 0, fat: 8 },
-  { id: "beef-steak-15", category: "protein", name: "Beef steak 15% (120g)", kcal: 250, protein: 24, carbs: 0, fat: 17 },
+  { id: "chicken-grilled", category: "protein", name: "Grilled chicken breast (120g)", baseName: "Grilled chicken breast", refGrams: 120, kcal: 200, protein: 37, carbs: 0, fat: 5 },
+  { id: "beef-mince-5", category: "protein", name: "Beef mince 5% (120g)", baseName: "Beef mince 5%", refGrams: 120, kcal: 180, protein: 26, carbs: 0, fat: 8 },
+  { id: "beef-steak-15", category: "protein", name: "Beef steak 15% (120g)", baseName: "Beef steak 15%", refGrams: 120, kcal: 250, protein: 24, carbs: 0, fat: 17 },
   { id: "egg", category: "protein", name: "Egg (1 large)", kcal: 78, protein: 6.5, carbs: 0.5, fat: 5.5 },
-  { id: "tuna-can", category: "protein", name: "Canned tuna, plain (100g)", kcal: 116, protein: 26, carbs: 0, fat: 1 },
-  { id: "tuna-can-oil", category: "protein", name: "Canned tuna in oil, drained (100g)", kcal: 190, protein: 25, carbs: 0, fat: 9 },
+  { id: "tuna-can", category: "protein", name: "Canned tuna, plain (100g)", baseName: "Canned tuna, plain", refGrams: 100, kcal: 116, protein: 26, carbs: 0, fat: 1 },
+  { id: "tuna-can-oil", category: "protein", name: "Canned tuna in oil, drained (100g)", baseName: "Canned tuna in oil, drained", refGrams: 100, kcal: 190, protein: 25, carbs: 0, fat: 9 },
   { id: "tuna-mayo", category: "protein", name: "Tuna with mayo (100g)", kcal: 210, protein: 20, carbs: 2, fat: 14 },
   { id: "protein-bar", category: "protein", name: "Protein bar, generic (~40g)", kcal: 180, protein: 18, carbs: 18, fat: 6 },
   { id: "nugo-smarte-carb-pbcrunch", category: "protein", name: "NuGo Smarte Carb bar, Peanut Butter Crunch (52g)", kcal: 160, protein: 20, carbs: 2, fat: 8 },
   { id: "beef-jerky", category: "protein", name: "Beef jerky (30g)", kcal: 90, protein: 15, carbs: 3, fat: 2 },
-  { id: "tuna-pouch", category: "protein", name: "Tuna pouch, plain (100g)", kcal: 116, protein: 26, carbs: 0, fat: 1 },
+  { id: "tuna-pouch", category: "protein", name: "Tuna pouch, plain (100g)", baseName: "Tuna pouch, plain", refGrams: 100, kcal: 116, protein: 26, carbs: 0, fat: 1 },
   { id: "greek-yogurt", category: "protein", name: "Greek yogurt / skyr (170g)", kcal: 110, protein: 18, carbs: 6, fat: 1 },
   { id: "rtd-protein-shake", category: "protein", name: "Ready-to-drink protein shake (330ml)", kcal: 160, protein: 25, carbs: 6, fat: 3 },
   { id: "hardboiled-eggs-2", category: "protein", name: "Hard-boiled eggs (2)", kcal: 156, protein: 13, carbs: 1, fat: 11 },
-  { id: "ham-slices", category: "protein", name: "Ham, 2 slices (50g)", kcal: 60, protein: 10, carbs: 1, fat: 2 },
-  { id: "salmon-fillet", category: "protein", name: "Salmon fillet (130g)", kcal: 270, protein: 26, carbs: 0, fat: 17 },
+  { id: "ham-slices", category: "protein", name: "Ham, 2 slices (50g)", baseName: "Ham", refGrams: 50, kcal: 60, protein: 10, carbs: 1, fat: 2 },
+  { id: "salmon-fillet", category: "protein", name: "Salmon fillet (130g)", baseName: "Salmon fillet", refGrams: 130, kcal: 270, protein: 26, carbs: 0, fat: 17 },
 
   // CARBS
-  { id: "rice-cooked", category: "carbs", name: "White rice, cooked (150g)", kcal: 195, protein: 4, carbs: 43, fat: 0.5 },
-  { id: "pasta-cooked", category: "carbs", name: "Pasta, cooked (150g)", kcal: 220, protein: 8, carbs: 43, fat: 1.5 },
-  { id: "potato-cooked", category: "carbs", name: "Potato, cooked (200g)", kcal: 170, protein: 4, carbs: 39, fat: 0.2 },
+  { id: "rice-cooked", category: "carbs", name: "White rice, cooked (150g)", baseName: "White rice, cooked", refGrams: 150, kcal: 195, protein: 4, carbs: 43, fat: 0.5 },
+  { id: "pasta-cooked", category: "carbs", name: "Pasta, cooked (150g)", baseName: "Pasta, cooked", refGrams: 150, kcal: 220, protein: 8, carbs: 43, fat: 1.5 },
+  { id: "potato-cooked", category: "carbs", name: "Potato, cooked (200g)", baseName: "Potato, cooked", refGrams: 200, kcal: 170, protein: 4, carbs: 39, fat: 0.2 },
   { id: "bread-slice", category: "carbs", name: "Bread, 1 slice (30g)", kcal: 80, protein: 3, carbs: 15, fat: 1 },
-  { id: "quinoa-cooked", category: "carbs", name: "Quinoa, cooked (150g)", kcal: 180, protein: 6, carbs: 32, fat: 3 },
+  { id: "quinoa-cooked", category: "carbs", name: "Quinoa, cooked (150g)", baseName: "Quinoa, cooked", refGrams: 150, kcal: 180, protein: 6, carbs: 32, fat: 3 },
 
   // FRUIT
   { id: "apple", category: "fruit", name: "Apple, medium", kcal: 95, protein: 0.5, carbs: 25, fat: 0.3 },
@@ -6754,10 +6759,24 @@ let pendingQtyItem = null;
 
 function openQtyModal(item) {
   pendingQtyItem = item;
+  const isGramMode = !!item.refGrams;
   document.getElementById("qtyModalTitle").textContent = item.name;
-  document.getElementById("qtyModalBase").textContent =
-    `${Math.round(item.kcal)} kcal · ${Math.round(item.protein)}P · ${Math.round(item.carbs)}C · ${Math.round(item.fat)}F per unit`;
-  document.getElementById("qtyInput").value = 1;
+
+  if (isGramMode) {
+    document.getElementById("qtyModalBase").textContent =
+      `${Math.round(item.kcal)} kcal · ${Math.round(item.protein)}P · ${Math.round(item.carbs)}C · ${Math.round(item.fat)}F per ${item.refGrams}g — enter your actual weight`;
+    document.getElementById("qtyInput").value = item.refGrams;
+    document.getElementById("qtyInput").step = "5";
+    document.getElementById("qtyMinus").textContent = "−10g";
+    document.getElementById("qtyPlus").textContent = "+10g";
+  } else {
+    document.getElementById("qtyModalBase").textContent =
+      `${Math.round(item.kcal)} kcal · ${Math.round(item.protein)}P · ${Math.round(item.carbs)}C · ${Math.round(item.fat)}F per unit`;
+    document.getElementById("qtyInput").value = 1;
+    document.getElementById("qtyInput").step = "0.5";
+    document.getElementById("qtyMinus").textContent = "−1";
+    document.getElementById("qtyPlus").textContent = "+1";
+  }
   updateQtyPreview();
   document.getElementById("foodQtyModal").classList.add("active");
   hudAudio.select();
@@ -6765,28 +6784,42 @@ function openQtyModal(item) {
 
 function updateQtyPreview() {
   if (!pendingQtyItem) return;
-  let qty = parseFloat(document.getElementById("qtyInput").value);
-  if (!qty || qty <= 0) qty = 1;
+  const item = pendingQtyItem;
+  const isGramMode = !!item.refGrams;
+  let val = parseFloat(document.getElementById("qtyInput").value);
   const preview = document.getElementById("qtyPreview");
-  preview.textContent = `${Math.round(pendingQtyItem.kcal * qty)} kcal · ${Math.round(pendingQtyItem.protein * qty)}P · ${Math.round(pendingQtyItem.carbs * qty)}C · ${Math.round(pendingQtyItem.fat * qty)}F total`;
+
+  if (isGramMode) {
+    if (!val || val <= 0) val = item.refGrams;
+    const factor = val / item.refGrams;
+    preview.textContent = `${Math.round(item.kcal * factor)} kcal · ${Math.round(item.protein * factor)}P · ${Math.round(item.carbs * factor)}C · ${Math.round(item.fat * factor)}F for ${val}g`;
+  } else {
+    if (!val || val <= 0) val = 1;
+    preview.textContent = `${Math.round(item.kcal * val)} kcal · ${Math.round(item.protein * val)}P · ${Math.round(item.carbs * val)}C · ${Math.round(item.fat * val)}F total`;
+  }
 }
 
 document.getElementById("qtyInput").addEventListener("input", updateQtyPreview);
 
 document.getElementById("qtyMinus").addEventListener("click", () => {
   const input = document.getElementById("qtyInput");
-  let qty = parseFloat(input.value) || 1;
-  qty = Math.max(0.5, qty - 1);
-  input.value = qty;
+  const isGramMode = pendingQtyItem && !!pendingQtyItem.refGrams;
+  const step = isGramMode ? 10 : 1;
+  const min = isGramMode ? 5 : 0.5;
+  let val = parseFloat(input.value) || (isGramMode ? pendingQtyItem.refGrams : 1);
+  val = Math.max(min, val - step);
+  input.value = val;
   hudAudio.tick();
   updateQtyPreview();
 });
 
 document.getElementById("qtyPlus").addEventListener("click", () => {
   const input = document.getElementById("qtyInput");
-  let qty = parseFloat(input.value) || 1;
-  qty = qty + 1;
-  input.value = qty;
+  const isGramMode = pendingQtyItem && !!pendingQtyItem.refGrams;
+  const step = isGramMode ? 10 : 1;
+  let val = parseFloat(input.value) || (isGramMode ? pendingQtyItem.refGrams : 1);
+  val = val + step;
+  input.value = val;
   hudAudio.tick();
   updateQtyPreview();
 });
@@ -6806,22 +6839,38 @@ document.getElementById("foodQtyModal").addEventListener("click", (e) => {
 
 document.getElementById("qtyConfirm").addEventListener("click", async () => {
   if (!pendingQtyItem) return;
-  let qty = parseFloat(document.getElementById("qtyInput").value);
-  if (!qty || qty <= 0) qty = 1;
   const base = pendingQtyItem;
-  const finalItem = {
-    name: qty !== 1 ? `${qty}× ${base.name}` : base.name,
-    kcal: base.kcal * qty,
-    protein: base.protein * qty,
-    carbs: base.carbs * qty,
-    fat: base.fat * qty
-  };
+  const isGramMode = !!base.refGrams;
+  let finalItem;
+
+  if (isGramMode) {
+    let grams = parseFloat(document.getElementById("qtyInput").value);
+    if (!grams || grams <= 0) grams = base.refGrams;
+    const factor = grams / base.refGrams;
+    finalItem = {
+      name: `${base.baseName || base.name} (${grams}g)`,
+      kcal: base.kcal * factor,
+      protein: base.protein * factor,
+      carbs: base.carbs * factor,
+      fat: base.fat * factor
+    };
+  } else {
+    let qty = parseFloat(document.getElementById("qtyInput").value);
+    if (!qty || qty <= 0) qty = 1;
+    finalItem = {
+      name: qty !== 1 ? `${qty}× ${base.name}` : base.name,
+      kcal: base.kcal * qty,
+      protein: base.protein * qty,
+      carbs: base.carbs * qty,
+      fat: base.fat * qty
+    };
+  }
+
   await logFoodEntry(todayKey(), finalItem, selectedMealSlot);
   hudAudio.confirm();
   hudLog(`FOOD LOGGED → ${finalItem.name.toUpperCase()}`);
-  showToast("Food added");
+  showToast("Food added — add another or tap Close");
   document.getElementById("foodQtyModal").classList.remove("active");
-  document.getElementById("addFoodModal").classList.remove("active");
   pendingQtyItem = null;
   renderNutrition();
 });
@@ -6954,8 +7003,7 @@ async function searchFoodApi(query) {
       row.querySelector('[data-action="log"]').addEventListener("click", async () => {
         await logFoodEntry(todayKey(), combined, selectedMealSlot);
         hudAudio.confirm();
-        showToast("Food added");
-        document.getElementById("addFoodModal").classList.remove("active");
+        showToast("Food added — add another or tap Close");
         renderNutrition();
       });
       resultsEl.appendChild(row);
