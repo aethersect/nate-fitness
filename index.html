@@ -1223,9 +1223,9 @@
 
   .nutri-macro-row {
     display: grid;
-    grid-template-columns: 46px 1fr 40px;
+    grid-template-columns: 42px 1fr 68px;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .nutri-macro-label {
@@ -1256,9 +1256,10 @@
 
   .nutri-macro-val {
     font-family: "Share Tech Mono", monospace;
-    font-size: 11px;
+    font-size: 9.5px;
     color: var(--text);
     text-align: right;
+    white-space: nowrap;
   }
 
   .food-entry-card .activity-icon { background: rgba(255, 106, 46, 0.12); }
@@ -4525,11 +4526,23 @@
 <div class="modal-content">
 <div class="modal-handle"></div>
 <div class="modal-title">Daily goals</div>
-<div class="modal-subtitle">1.6–2.2g/kg protein is a solid range for muscle building</div>
-<div class="modal-label">Protein target (g)</div>
-<input class="food-num-input" id="goalProteinInput" inputmode="numeric" placeholder="136" type="number"/>
+<div class="modal-subtitle">Set your full macro targets — from a coach, calculator, or your own plan</div>
 <div class="modal-label">Calorie target (kcal)</div>
 <input class="food-num-input" id="goalCalorieInput" inputmode="numeric" placeholder="2800" type="number"/>
+<div class="food-input-grid">
+<div class="food-input-cell">
+<div class="modal-label">Protein (g)</div>
+<input class="food-num-input" id="goalProteinInput" inputmode="numeric" placeholder="136" type="number"/>
+</div>
+<div class="food-input-cell">
+<div class="modal-label">Carbs (g)</div>
+<input class="food-num-input" id="goalCarbInput" inputmode="numeric" placeholder="275" type="number"/>
+</div>
+<div class="food-input-cell">
+<div class="modal-label">Fat (g)</div>
+<input class="food-num-input" id="goalFatInput" inputmode="numeric" placeholder="70" type="number"/>
+</div>
+</div>
 <div class="modal-actions">
 <button class="modal-btn secondary" id="nutriGoalsCancel">Cancel</button>
 <button class="modal-btn primary" id="nutriGoalsSave">Save</button>
@@ -4580,7 +4593,7 @@ let state = {
   // { "2026-08-26": [{id, name, kcal, protein, carbs, fat, loggedAt}, ...] }
   nutritionDays: {},
   customFoods: [],
-  nutritionGoals: { proteinTarget: 136, calorieTarget: 2800 },
+  nutritionGoals: { proteinTarget: 140, calorieTarget: 2300, carbTarget: 275, fatTarget: 70 },
   gels: 0,
   gelsEarnedTotal: 0,
   gelsUsedTotal: 0,
@@ -4691,7 +4704,7 @@ function applyLoadedData(parsed) {
   state.days = migrateDays(parsed.days || {});
   state.nutritionDays = parsed.nutritionDays || {};
   state.customFoods = parsed.customFoods || [];
-  state.nutritionGoals = parsed.nutritionGoals || { proteinTarget: 136, calorieTarget: 2800 };
+  state.nutritionGoals = parsed.nutritionGoals || { proteinTarget: 140, calorieTarget: 2300, carbTarget: 275, fatTarget: 70 };
   state.gels = parsed.gels || 0;
   state.gelsEarnedTotal = parsed.gelsEarnedTotal || 0;
   state.gelsUsedTotal = parsed.gelsUsedTotal || 0;
@@ -4841,8 +4854,12 @@ function computeDayGrade(totals, goals) {
   const proteinPct = goals.proteinTarget > 0 ? (totals.protein / goals.proteinTarget) * 100 : 0;
   const kcalTarget = goals.calorieTarget || 0;
   const kcalInRange = kcalTarget > 0 ? Math.abs(totals.kcal - kcalTarget) / kcalTarget <= 0.15 : true;
+  const carbTarget = goals.carbTarget || 0;
+  const carbInRange = carbTarget > 0 ? Math.abs(totals.carbs - carbTarget) / carbTarget <= 0.25 : true;
+  const fatTarget = goals.fatTarget || 0;
+  const fatInRange = fatTarget > 0 ? Math.abs(totals.fat - fatTarget) / fatTarget <= 0.25 : true;
 
-  if (proteinPct >= 90 && kcalInRange) {
+  if (proteinPct >= 90 && kcalInRange && carbInRange && fatInRange) {
     return { emoji: "🟢", label: "Great day", className: "grade-great", proteinPct };
   } else if (proteinPct >= 60) {
     return { emoji: "🟡", label: "Decent", className: "grade-ok", proteinPct };
@@ -5918,10 +5935,10 @@ function renderNutrition() {
   document.getElementById("nutriProteinFill").style.width = pPct + "%";
   document.getElementById("nutriCarbsFill").style.width = cPct + "%";
   document.getElementById("nutriFatFill").style.width = fPct + "%";
-  document.getElementById("nutriProteinVal").textContent = Math.round(totals.protein) + "g";
-  document.getElementById("nutriCarbsVal").textContent = Math.round(totals.carbs) + "g";
-  document.getElementById("nutriFatVal").textContent = Math.round(totals.fat) + "g";
-  document.getElementById("nutriGoalSub").textContent = `Goal: ${goals.proteinTarget}g protein · ${goals.calorieTarget} kcal`;
+  document.getElementById("nutriProteinVal").textContent = Math.round(totals.protein) + "g / " + goals.proteinTarget + "g";
+  document.getElementById("nutriCarbsVal").textContent = Math.round(totals.carbs) + "g / " + (goals.carbTarget || 275) + "g";
+  document.getElementById("nutriFatVal").textContent = Math.round(totals.fat) + "g / " + (goals.fatTarget || 70) + "g";
+  document.getElementById("nutriGoalSub").textContent = `Goal: ${goals.calorieTarget} kcal · ${goals.proteinTarget}P / ${goals.carbTarget || 275}C / ${goals.fatTarget || 70}F`;
 
   renderNutritionOrbit(totals, goals, kcalPct);
 
@@ -7097,6 +7114,8 @@ document.getElementById("customFoodSave").addEventListener("click", async () => 
 document.getElementById("editGoalsBtn").addEventListener("click", () => {
   document.getElementById("goalProteinInput").value = state.nutritionGoals.proteinTarget;
   document.getElementById("goalCalorieInput").value = state.nutritionGoals.calorieTarget;
+  document.getElementById("goalCarbInput").value = state.nutritionGoals.carbTarget || 275;
+  document.getElementById("goalFatInput").value = state.nutritionGoals.fatTarget || 70;
   document.getElementById("nutriGoalsModal").classList.add("active");
   hudAudio.select();
 });
@@ -7115,7 +7134,9 @@ document.getElementById("nutriGoalsModal").addEventListener("click", (e) => {
 document.getElementById("nutriGoalsSave").addEventListener("click", async () => {
   const protein = parseFloat(document.getElementById("goalProteinInput").value) || state.nutritionGoals.proteinTarget;
   const calories = parseFloat(document.getElementById("goalCalorieInput").value) || state.nutritionGoals.calorieTarget;
-  state.nutritionGoals = { proteinTarget: protein, calorieTarget: calories };
+  const carbs = parseFloat(document.getElementById("goalCarbInput").value) || state.nutritionGoals.carbTarget || 275;
+  const fat = parseFloat(document.getElementById("goalFatInput").value) || state.nutritionGoals.fatTarget || 70;
+  state.nutritionGoals = { proteinTarget: protein, calorieTarget: calories, carbTarget: carbs, fatTarget: fat };
   await saveState();
   hudAudio.confirm();
   hudLog(`NUTRITION GOALS UPDATED → ${protein}G PROTEIN`);
