@@ -1716,6 +1716,46 @@
     border-radius: 12px;
     padding: 16px;
   }
+
+  /* QUANTITY STEPPER */
+  .qty-stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .qty-input {
+    width: 70px;
+    text-align: center;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 24px;
+    font-weight: 700;
+    -moz-appearance: textfield;
+  }
+
+  .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .qty-input:focus { outline: none; }
+
+  .qty-preview {
+    text-align: center;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
   
   .duration-btn {
     width: 44px;
@@ -4509,6 +4549,24 @@
 </div>
 </div>
 </div>
+<!-- FOOD QUANTITY MODAL -->
+<div class="modal" id="foodQtyModal">
+<div class="modal-content">
+<div class="modal-handle"></div>
+<div class="modal-title" id="qtyModalTitle">Food</div>
+<div class="modal-subtitle" id="qtyModalBase">— per unit</div>
+<div class="qty-stepper">
+<button class="duration-btn" id="qtyMinus">−1</button>
+<input class="qty-input" id="qtyInput" inputmode="decimal" min="0.5" step="0.5" type="number" value="1"/>
+<button class="duration-btn" id="qtyPlus">+1</button>
+</div>
+<div class="qty-preview" id="qtyPreview">— total</div>
+<div class="modal-actions">
+<button class="modal-btn secondary" id="qtyCancel">Cancel</button>
+<button class="modal-btn primary" id="qtyConfirm">Add</button>
+</div>
+</div>
+</div>
 <script>
 // ═══════════════════════════════════════════════════════════
 // STATE
@@ -5275,6 +5333,7 @@ const FOOD_PRESETS = [
   { id: "tuna-can-oil", category: "protein", name: "Canned tuna in oil, drained (100g)", kcal: 190, protein: 25, carbs: 0, fat: 9 },
   { id: "tuna-mayo", category: "protein", name: "Tuna with mayo (100g)", kcal: 210, protein: 20, carbs: 2, fat: 14 },
   { id: "protein-bar", category: "protein", name: "Protein bar, generic (~40g)", kcal: 180, protein: 18, carbs: 18, fat: 6 },
+  { id: "nugo-smarte-carb-pbcrunch", category: "protein", name: "NuGo Smarte Carb bar, Peanut Butter Crunch (52g)", kcal: 160, protein: 20, carbs: 2, fat: 8 },
   { id: "beef-jerky", category: "protein", name: "Beef jerky (30g)", kcal: 90, protein: 15, carbs: 3, fat: 2 },
   { id: "tuna-pouch", category: "protein", name: "Tuna pouch, plain (100g)", kcal: 116, protein: 26, carbs: 0, fat: 1 },
   { id: "greek-yogurt", category: "protein", name: "Greek yogurt / skyr (170g)", kcal: 110, protein: 18, carbs: 6, fat: 1 },
@@ -6669,6 +6728,87 @@ document.getElementById("addActivityModal").addEventListener("click", (e) => {
 // ═══════════════════════════════════════════════════════════
 
 let selectedFoodCategory = "mine";
+
+// ═══════════════════════════════════════════════════════════
+// NUTRITION — quantity modal
+// ═══════════════════════════════════════════════════════════
+
+let pendingQtyItem = null;
+
+function openQtyModal(item) {
+  pendingQtyItem = item;
+  document.getElementById("qtyModalTitle").textContent = item.name;
+  document.getElementById("qtyModalBase").textContent =
+    `${Math.round(item.kcal)} kcal · ${Math.round(item.protein)}P · ${Math.round(item.carbs)}C · ${Math.round(item.fat)}F per unit`;
+  document.getElementById("qtyInput").value = 1;
+  updateQtyPreview();
+  document.getElementById("foodQtyModal").classList.add("active");
+  hudAudio.select();
+}
+
+function updateQtyPreview() {
+  if (!pendingQtyItem) return;
+  let qty = parseFloat(document.getElementById("qtyInput").value);
+  if (!qty || qty <= 0) qty = 1;
+  const preview = document.getElementById("qtyPreview");
+  preview.textContent = `${Math.round(pendingQtyItem.kcal * qty)} kcal · ${Math.round(pendingQtyItem.protein * qty)}P · ${Math.round(pendingQtyItem.carbs * qty)}C · ${Math.round(pendingQtyItem.fat * qty)}F total`;
+}
+
+document.getElementById("qtyInput").addEventListener("input", updateQtyPreview);
+
+document.getElementById("qtyMinus").addEventListener("click", () => {
+  const input = document.getElementById("qtyInput");
+  let qty = parseFloat(input.value) || 1;
+  qty = Math.max(0.5, qty - 1);
+  input.value = qty;
+  hudAudio.tick();
+  updateQtyPreview();
+});
+
+document.getElementById("qtyPlus").addEventListener("click", () => {
+  const input = document.getElementById("qtyInput");
+  let qty = parseFloat(input.value) || 1;
+  qty = qty + 1;
+  input.value = qty;
+  hudAudio.tick();
+  updateQtyPreview();
+});
+
+document.getElementById("qtyCancel").addEventListener("click", () => {
+  document.getElementById("foodQtyModal").classList.remove("active");
+  pendingQtyItem = null;
+  hudAudio.cancel();
+});
+
+document.getElementById("foodQtyModal").addEventListener("click", (e) => {
+  if (e.target.id === "foodQtyModal") {
+    document.getElementById("foodQtyModal").classList.remove("active");
+    pendingQtyItem = null;
+  }
+});
+
+document.getElementById("qtyConfirm").addEventListener("click", async () => {
+  if (!pendingQtyItem) return;
+  let qty = parseFloat(document.getElementById("qtyInput").value);
+  if (!qty || qty <= 0) qty = 1;
+  const base = pendingQtyItem;
+  const finalItem = {
+    name: qty !== 1 ? `${qty}× ${base.name}` : base.name,
+    kcal: base.kcal * qty,
+    protein: base.protein * qty,
+    carbs: base.carbs * qty,
+    fat: base.fat * qty
+  };
+  await logFoodEntry(todayKey(), finalItem, selectedMealSlot);
+  hudAudio.confirm();
+  hudLog(`FOOD LOGGED → ${finalItem.name.toUpperCase()}`);
+  showToast("Food added");
+  document.getElementById("foodQtyModal").classList.remove("active");
+  document.getElementById("addFoodModal").classList.remove("active");
+  pendingQtyItem = null;
+  renderNutrition();
+});
+
 let selectedMealSlot = "breakfast";
 
 function renderMealSlotPicker() {
@@ -6725,14 +6865,8 @@ function renderFoodItemList() {
       </div>
       <span class="food-item-add">+</span>
     `;
-    row.addEventListener("click", async () => {
-      const tk = todayKey();
-      await logFoodEntry(tk, item, selectedMealSlot);
-      hudAudio.confirm();
-      hudLog(`FOOD LOGGED → ${item.name.toUpperCase()}`);
-      showToast("Food added");
-      document.getElementById("addFoodModal").classList.remove("active");
-      renderNutrition();
+    row.addEventListener("click", () => {
+      openQtyModal(item);
     });
     list.appendChild(row);
   });
@@ -6832,13 +6966,8 @@ function renderApiResultRow(apiItem, container) {
     <button class="food-api-star" data-action="star" title="Save as favorite">☆</button>
     <button class="food-item-add" data-action="log" title="Log">+</button>
   `;
-  row.querySelector('[data-action="log"]').addEventListener("click", async () => {
-    await logFoodEntry(todayKey(), item, selectedMealSlot);
-    hudAudio.confirm();
-    hudLog(`FOOD LOGGED (API) → ${item.name.toUpperCase()}`);
-    showToast("Food added");
-    document.getElementById("addFoodModal").classList.remove("active");
-    renderNutrition();
+  row.querySelector('[data-action="log"]').addEventListener("click", () => {
+    openQtyModal(item);
   });
   row.querySelector('[data-action="star"]').addEventListener("click", async (e) => {
     e.stopPropagation();
