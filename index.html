@@ -7991,6 +7991,7 @@ document.getElementById("importFile").addEventListener("change", (e) => {
 
 const GARMIN_URL_KEY = "forge:garmin-url:v1";
 let cockpitPeriodDays = 30;
+let trainingViewCategory = "upper";
 const GARMIN_CACHE_KEY = "forge:garmin-cache:v1";
 let garminData = null;
 
@@ -8142,11 +8143,17 @@ function buildCategoryTotalSeries(category) {
 
 function renderTrainingBlock() {
   const periodLabel = cockpitPeriodDays === "all" ? "all synced data" : `last ${cockpitPeriodDays} days`;
+  const cat = trainingViewCategory;
+  const catLabel = cat === "upper" ? "Upper" : "Lower";
   let h = `
     <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
       <div class="hud-module-head">
         <div class="hud-module-title">Training</div>
         <div class="hud-module-tag">${periodLabel}</div>
+      </div>
+      <div class="period-selector" id="trainingCatSelector">
+        <button class="period-btn${cat === "upper" ? " active" : ""}" data-tcat="upper">Upper</button>
+        <button class="period-btn${cat === "lower" ? " active" : ""}" data-tcat="lower">Lower</button>
       </div>
       <div class="training-log-btns">
         <button class="training-log-btn" id="logUpperBtn">Edit Upper Routine</button>
@@ -8154,23 +8161,22 @@ function renderTrainingBlock() {
       </div>
   `;
 
-  let anyMachineData = false;
-  ["upper", "lower"].forEach(cat => {
-    const series = buildMachineSeries(cat);
-    const totalSeries = buildCategoryTotalSeries(cat);
-    const machineIds = Object.keys(series);
-    if (machineIds.length === 0) return;
-    anyMachineData = true;
+  const series = buildMachineSeries(cat);
+  const totalSeries = buildCategoryTotalSeries(cat);
+  const machineIds = Object.keys(series);
 
-    h += `<div class="machine-block"><div class="machine-block-head"><div class="machine-block-name">${cat === "upper" ? "Upper" : "Lower"} — total volume</div></div>`;
-    if (totalSeries.length >= 2) {
-      const tSpark = cockpitSparkline(totalSeries.map(t => t.total), 300, 32, 4);
-      h += `<svg viewBox="0 0 300 32"><path class="cockpit-trend-line" style="stroke:var(--gold);" d="${tSpark.path}"/></svg><div class="machine-chart-label">kg × sets × reps, summed across machines, per session</div>`;
-    } else {
-      h += `<div class="settings-hint">Log at least 2 ${cat} sessions to see a trend.</div>`;
-    }
-    h += `</div>`;
+  h += `<div class="machine-block"><div class="machine-block-head"><div class="machine-block-name">${catLabel} — total volume</div></div>`;
+  if (totalSeries.length >= 2) {
+    const tSpark = cockpitSparkline(totalSeries.map(t => t.total), 300, 32, 4);
+    h += `<svg viewBox="0 0 300 32"><path class="cockpit-trend-line" style="stroke:var(--gold);" d="${tSpark.path}"/></svg><div class="machine-chart-label">kg × sets × reps, summed across machines, per session</div>`;
+  } else {
+    h += `<div class="settings-hint">Log at least 2 ${cat} sessions (from Add Activity) to see a trend.</div>`;
+  }
+  h += `</div>`;
 
+  if (machineIds.length === 0) {
+    h += `<div class="settings-hint" style="padding:0 14px 14px;">No ${cat} sessions logged yet. Add one from the Today tab, or set up your ${cat} routine here first.</div>`;
+  } else {
     machineIds.forEach(mid => {
       const s = series[mid];
       const latest = s.points[s.points.length - 1];
@@ -8191,10 +8197,6 @@ function renderTrainingBlock() {
       }
       h += `</div>`;
     });
-  });
-
-  if (!anyMachineData) {
-    h += `<div class="settings-hint" style="padding:0 14px 14px;">Log your first session to start tracking progress per machine.</div>`;
   }
 
   h += `</div>`;
@@ -8425,6 +8427,14 @@ function renderCockpit() {
   const logLowerBtn = document.getElementById("logLowerBtn");
   if (logUpperBtn) logUpperBtn.addEventListener("click", () => openWorkoutModal("upper"));
   if (logLowerBtn) logLowerBtn.addEventListener("click", () => openWorkoutModal("lower"));
+
+  document.querySelectorAll("#trainingCatSelector .period-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      trainingViewCategory = btn.dataset.tcat;
+      hudAudio.tick();
+      renderCockpit();
+    });
+  });
 }
 
 document.querySelector('[data-view="cockpit"]').addEventListener("click", () => fetchGarminData(true));
