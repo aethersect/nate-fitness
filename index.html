@@ -3725,59 +3725,33 @@
   .logo { text-shadow: 0 0 12px rgba(255, 36, 56, 0.5); }
   .hud-module-title { text-shadow: 0 0 8px rgba(255, 36, 56, 0.5); }
 
-  
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
+  .holo-btn {
+    background: rgba(255, 36, 56, 0.08);
+    border: 1px solid var(--arc);
+    color: var(--arc);
+    font-family: "Share Tech Mono", monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    padding: 4px 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+    white-space: nowrap;
+    text-shadow: 0 0 6px var(--arc);
   }
+  .holo-btn:active { background: var(--arc); color: #1a0705; text-shadow: none; }
 
-  
-    15%  { opacity: 1; }
-    85%  { opacity: 1; }
-    100% { transform: translate(-50%, -50%) translateY(32vh); opacity: 0; }
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-  
-
-  
-
-  
-    to { opacity: 1; }
-  
-
-  
-    to { opacity: 1; }
-  
-
-  
-
-  
-
-  @media (max-width: 380px) {
-    
+  .scan-figure {
+    position: relative;
+    height: 300px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    background: radial-gradient(ellipse at 50% 45%, rgba(255, 36, 56, 0.07), transparent 68%);
   }
-  
+  .holo-inline-host { position: absolute; inset: 0; }
+  .holo-inline-host canvas { position: absolute; inset: 0; display: block; }
+  .holo-inline-chrome { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
 
   .hi-reticle {
     position: absolute;
@@ -3804,7 +3778,7 @@
     transform: translate(-50%, -50%);
     border-radius: 50%;
     border: 1px dashed rgba(255, 55, 55, 0.26);
-    animation: none;
+    animation: spin 18s linear infinite;
   }
 
   .hi-corner {
@@ -3816,8 +3790,8 @@
   }
 
   .hi-corner.tl { left: 8px; top: 8px; border-width: 2px 0 0 2px; }
-  .hi-corner.tr { right: 8px; top: 8px; border-width: 2px 2px 0 0; }
-  .hi-corner.bl { left: 8px; bottom: 8px; border-width: 0 0 2px 2px; }
+  .hi-corner.tr { right: 8px; top: 8px; border-width: 2px 2px 0 0; border-color: var(--gold); filter: drop-shadow(0 0 4px var(--gold)); }
+  .hi-corner.bl { left: 8px; bottom: 8px; border-width: 0 0 2px 2px; border-color: var(--gold); filter: drop-shadow(0 0 4px var(--gold)); }
   .hi-corner.br { right: 8px; bottom: 8px; border-width: 0 2px 2px 0; }
 
   .hi-rot {
@@ -3829,6 +3803,25 @@
     letter-spacing: 0.12em;
     text-shadow: 0 0 6px var(--arc);
     opacity: 0.75;
+  }
+
+  .scan-beam {
+    position: absolute;
+    left: 0; right: 0;
+    height: 3px;
+    top: 0;
+    background: linear-gradient(90deg, transparent, var(--arc), transparent);
+    box-shadow: 0 0 14px var(--arc), 0 0 28px rgba(255, 36, 56, 0.5);
+    pointer-events: none;
+    animation: scanBeam 3.6s ease-in-out infinite;
+    z-index: 5;
+  }
+  @keyframes scanBeam {
+    0% { top: 0%; opacity: 0; }
+    6% { opacity: 1; }
+    50% { top: 100%; opacity: 1; }
+    56% { opacity: 0; }
+    100% { top: 0%; opacity: 0; }
   }
 
   
@@ -3867,6 +3860,212 @@
     transition: width 0.25s ease;
   }
 
+  .holo-inline-loading {
+    position: absolute; inset: 0; z-index: 6;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    background: rgba(13, 8, 8, 0.9);
+    font-family: "Share Tech Mono", monospace;
+  }
+  .holo-inline-loading.done { display: none; }
+  .hil-txt.err { color: var(--alert); text-shadow: none; letter-spacing: 0.1em; }
+  .hil-track { width: 130px; height: 3px; background: rgba(255, 36, 56, 0.1); }
+
+  /* Fullscreen holo overlay */
+  .holo-overlay {
+    position: fixed; inset: 0; z-index: 500; display: none;
+    background: radial-gradient(circle at center, #1a0d0d 0%, #0d0606 45%, #050202 100%);
+  }
+  .holo-overlay.active { display: block; }
+  .holo-canvas-host { position: absolute; inset: 0; }
+  .holo-canvas-host canvas { position: absolute; inset: 0; display: block; }
+  .holo-hud { position: absolute; inset: 0; pointer-events: none; z-index: 20; font-family: "Share Tech Mono", monospace; color: var(--arc); }
+  .holo-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,36,56,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,36,56,0.045) 1px, transparent 1px);
+    background-size: 45px 45px;
+    -webkit-mask-image: radial-gradient(circle at center, black 20%, transparent 78%);
+    mask-image: radial-gradient(circle at center, black 20%, transparent 78%);
+  }
+  .holo-reticle {
+    position: absolute; left: 50%; top: 50%; width: 76vw; height: 76vw; max-width: 480px; max-height: 480px;
+    transform: translate(-50%, -50%); border: 1px solid rgba(255,36,56,0.15); border-radius: 50%;
+  }
+  .holo-reticle::before, .holo-reticle::after { content: ""; position: absolute; left: 50%; top: 50%; background: rgba(255,36,56,0.22); }
+  .holo-reticle::before { width: 100%; height: 1px; transform: translate(-50%, -50%); }
+  .holo-reticle::after { height: 100%; width: 1px; transform: translate(-50%, -50%); }
+  .holo-ring {
+    position: absolute; left: 50%; top: 50%; width: 68vw; height: 68vw; max-width: 430px; max-height: 430px;
+    transform: translate(-50%, -50%); border-radius: 50%; border: 1px dashed rgba(255,36,56,0.28); animation: spin 18s linear infinite;
+  }
+  .holo-ring::before { content: ""; position: absolute; inset: 22px; border-radius: 50%; border: 1px solid rgba(255,36,56,0.12); }
+  .holo-scan {
+    position: absolute; left: 50%; top: 50%; width: 62vw; max-width: 380px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--arc), #ffcfc7, var(--arc), transparent);
+    box-shadow: 0 0 8px var(--arc), 0 0 25px rgba(255,36,56,0.8);
+    animation: holoScan 4s ease-in-out infinite;
+  }
+  @keyframes holoScan {
+    0% { transform: translate(-50%, -50%) translateY(-32vh); opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { transform: translate(-50%, -50%) translateY(32vh); opacity: 0; }
+  }
+  .holo-corner { position: absolute; width: 44px; height: 44px; border-color: var(--arc); border-style: solid; opacity: 0.75; filter: drop-shadow(0 0 5px rgba(255,36,56,0.6)); }
+  .holo-corner.tl { left: 20px; top: calc(env(safe-area-inset-top) + 20px); border-width: 2px 0 0 2px; }
+  .holo-corner.tr { right: 20px; top: calc(env(safe-area-inset-top) + 20px); border-width: 2px 2px 0 0; border-color: var(--gold); filter: drop-shadow(0 0 5px var(--gold)); }
+  .holo-corner.bl { left: 20px; bottom: calc(env(safe-area-inset-bottom) + 20px); border-width: 0 0 2px 2px; border-color: var(--gold); filter: drop-shadow(0 0 5px var(--gold)); }
+  .holo-corner.br { right: 20px; bottom: calc(env(safe-area-inset-bottom) + 20px); border-width: 0 2px 2px 0; }
+  .holo-header { position: absolute; left: 34px; top: calc(env(safe-area-inset-top) + 30px); }
+  .holo-title { font-size: 12px; letter-spacing: 0.32em; text-shadow: 0 0 8px var(--arc), 0 0 20px rgba(255,36,56,0.5); }
+  .holo-subtitle { margin-top: 6px; font-size: 9px; letter-spacing: 0.14em; opacity: 0.5; color: var(--text-dim); }
+  .holo-markers { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); font-size: 9px; letter-spacing: 0.14em; }
+  .holo-marker { position: relative; margin: 46px 0; width: 130px; color: rgba(255,36,56,0.72); }
+  .holo-marker::after { content: ""; position: absolute; left: 86px; top: 50%; width: 42px; height: 1px; background: rgba(255,36,56,0.5); box-shadow: 0 0 8px var(--arc); }
+  .holo-marker b { color: var(--gold); font-weight: 400; }
+  .holo-panel { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); width: 152px; font-size: 9px; letter-spacing: 0.12em; }
+  .holo-panel-title { font-size: 10px; border-bottom: 1px solid rgba(255,36,56,0.3); padding-bottom: 6px; margin-bottom: 12px; letter-spacing: 0.2em; }
+  .holo-row { margin-bottom: 12px; }
+  .holo-row-label { opacity: 0.45; margin-bottom: 3px; color: var(--text-dim); }
+  .holo-row-value { font-size: 11px; text-shadow: 0 0 7px var(--arc); }
+  .holo-row-value.gold { color: var(--gold); text-shadow: 0 0 7px var(--gold); }
+  .holo-bar { width: 100%; height: 3px; margin-top: 6px; background: rgba(255,36,56,0.08); }
+  .holo-bar span { display: block; height: 100%; background: var(--arc); box-shadow: 0 0 8px var(--arc); transition: width 0.9s ease; }
+  .holo-bar.gold span { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+  .holo-status { position: absolute; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 26px); transform: translateX(-50%); font-size: 9px; letter-spacing: 0.22em; opacity: 0.6; white-space: nowrap; }
+  .holo-dot { display: inline-block; width: 6px; height: 6px; margin-right: 7px; border-radius: 50%; background: var(--arc); box-shadow: 0 0 8px var(--arc); animation: liveBlink 1.2s infinite alternate; }
+  .holo-scanlines { position: absolute; inset: 0; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(255,60,60,0.025) 4px); }
+  .holo-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.65) 100%); }
+  .holo-close {
+    position: absolute; right: 20px; top: calc(env(safe-area-inset-top) + 74px); z-index: 30; pointer-events: auto;
+    background: rgba(255,36,56,0.08); border: 1px solid var(--arc); color: var(--arc);
+    font-family: "Share Tech Mono", monospace; font-size: 11px; letter-spacing: 0.18em;
+    padding: 7px 13px; cursor: pointer; border-radius: 2px; text-shadow: 0 0 6px var(--arc);
+  }
+  .holo-close:active { background: var(--arc); color: #1a0705; }
+  @media (max-width: 380px) { .holo-markers { display: none; } .holo-panel { width: 128px; } }
+
+  /* ═══ SETTINGS GEAR ═══ */
+  .settings-gear {
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255, 36, 56, 0.06);
+    border: 1px solid var(--border-strong);
+    color: var(--arc);
+    font-size: 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .settings-gear:active { background: var(--arc); color: #1a0705; }
+  .settings-field-label {
+    font-family: "Share Tech Mono", monospace; font-size: 9px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.14em; margin: 14px 0 6px;
+  }
+  .settings-input {
+    width: 100%; background: var(--bg-card); border: 1px solid var(--border-strong);
+    color: var(--text); font-family: "Share Tech Mono", monospace; font-size: 11px;
+    padding: 10px 12px; border-radius: 2px; outline: none;
+  }
+  .settings-input:focus { border-color: var(--arc); }
+  .settings-hint { font-family: "Share Tech Mono", monospace; font-size: 9px; color: var(--text-faint); line-height: 1.6; margin-top: 8px; letter-spacing: 0.04em; }
+  .settings-status {
+    margin-top: 10px; font-family: "Share Tech Mono", monospace; font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 8px 10px; border: 1px solid var(--border); border-radius: 2px;
+  }
+  .settings-status.ok { color: var(--green-ok); border-color: var(--green-ok); }
+  .settings-status.err { color: var(--alert); border-color: var(--alert); }
+  .settings-status.idle { color: var(--text-faint); }
+
+  /* ═══ GARMIN COCKPIT ═══ */
+  .cockpit-sub {
+    font-family: "Share Tech Mono", monospace; font-size: 9px; color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.12em; text-align: right; margin: -6px 0 12px;
+  }
+  .cockpit-sub b { color: var(--arc); font-weight: 400; }
+  .cockpit-empty {
+    text-align: center; padding: 40px 20px; background: var(--bg-glass);
+    border: 1px dashed var(--border-strong); border-radius: 3px;
+  }
+  .cockpit-empty-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.5; }
+  .cockpit-empty-title { font-family: "Saira Condensed", sans-serif; font-weight: 700; font-size: 16px; text-transform: uppercase; margin-bottom: 6px; color: var(--text-dim); }
+  .cockpit-empty-text { font-family: "Share Tech Mono", monospace; font-size: 10px; color: var(--text-faint); line-height: 1.7; letter-spacing: 0.04em; max-width: 260px; margin: 0 auto; }
+  .cockpit-empty-btn {
+    margin-top: 16px; background: rgba(255,36,56,0.08); border: 1px solid var(--arc); color: var(--arc);
+    font-family: "Share Tech Mono", monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em;
+    padding: 9px 16px; cursor: pointer; border-radius: 2px;
+  }
+  .cockpit-empty-btn:active { background: var(--arc); color: #1a0705; }
+
+  .gauge-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 12px;
+  }
+  .gauge-cell {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 2px;
+    padding: 10px 8px; text-align: center; position: relative;
+  }
+  .gauge-label { font-family: "Share Tech Mono", monospace; font-size: 7.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 5px; }
+  .gauge-val { font-family: "Saira Condensed", sans-serif; font-weight: 900; font-size: 21px; color: var(--arc); line-height: 1; text-shadow: 0 0 8px rgba(255,36,56,0.4); }
+  .gauge-val.gold { color: var(--gold); text-shadow: 0 0 8px rgba(255,106,46,0.4); }
+  .gauge-val.dim { color: var(--text-faint); text-shadow: none; font-size: 14px; }
+  .gauge-unit { font-family: "Share Tech Mono", monospace; font-size: 8px; color: var(--text-dim); margin-top: 2px; }
+
+  .hr-range-bar {
+    position: relative; height: 22px; margin: 4px 14px 2px;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 3px;
+  }
+  .hr-range-fill {
+    position: absolute; top: 0; bottom: 0; background: linear-gradient(90deg, var(--arc-deep), var(--arc));
+    border-radius: 3px; opacity: 0.55;
+  }
+  .hr-range-avg {
+    position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+  .hr-range-labels {
+    display: flex; justify-content: space-between; margin: 4px 14px 10px;
+    font-family: "Share Tech Mono", monospace; font-size: 8px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em;
+  }
+
+  .cockpit-trend { padding: 4px 14px 14px; }
+  .cockpit-trend svg { width: 100%; height: 44px; display: block; }
+  .cockpit-trend-line { fill: none; stroke: var(--arc); stroke-width: 1.3; filter: drop-shadow(0 0 4px rgba(255,36,56,0.5)); }
+  .cockpit-trend-fill { opacity: 0.5; }
+
+  .comp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 12px 12px; }
+  .comp-cell { background: var(--bg-card); border: 1px solid var(--border); padding: 10px; border-radius: 2px; }
+  .comp-k { font-family: "Share Tech Mono", monospace; font-size: 8px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 4px; }
+  .comp-v { font-family: "Saira Condensed", sans-serif; font-weight: 900; font-size: 22px; color: var(--text); line-height: 1; }
+  .comp-v small { font-family: "Share Tech Mono", monospace; font-size: 10px; color: var(--text-dim); font-weight: 400; }
+  .comp-delta { font-family: "Share Tech Mono", monospace; font-size: 8.5px; margin-top: 3px; }
+  .comp-delta.up { color: var(--gold); }
+  .comp-delta.down { color: var(--green-ok); }
+  .comp-delta.flat { color: var(--text-faint); }
+
+  .sleep-bar-row { display: flex; height: 26px; border-radius: 3px; overflow: hidden; margin: 10px 14px; border: 1px solid var(--border); }
+  .sleep-seg { height: 100%; }
+  .sleep-seg.deep { background: var(--arc-deep); }
+  .sleep-seg.light { background: var(--arc); opacity: 0.65; }
+  .sleep-seg.rem { background: var(--steel); opacity: 0.55; }
+  .sleep-seg.awake { background: var(--text-faint); opacity: 0.3; }
+  .sleep-legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 14px 14px; font-family: "Share Tech Mono", monospace; font-size: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+  .sleep-legend span { display: inline-flex; align-items: center; gap: 4px; }
+  .sleep-legend i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+  .sleep-legend i.deep { background: var(--arc-deep); }
+  .sleep-legend i.light { background: var(--arc); opacity: 0.65; }
+  .sleep-legend i.rem { background: var(--steel); opacity: 0.55; }
+  .sleep-legend i.awake { background: var(--text-faint); opacity: 0.3; }
+
+  .dive-list { display: flex; flex-direction: column; gap: 8px; padding: 12px; }
+  .dive-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--arc);
+    border-radius: 2px; padding: 10px 12px;
+  }
+  .dive-date { font-family: "Share Tech Mono", monospace; font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; display: flex; justify-content: space-between; }
+  .dive-metrics { display: flex; gap: 14px; margin-top: 8px; }
+  .dive-metric-v { font-family: "Saira Condensed", sans-serif; font-weight: 900; font-size: 18px; color: var(--arc); line-height: 1; }
+  .dive-metric-v.gold { color: var(--gold); }
+  .dive-metric-k { font-family: "Share Tech Mono", monospace; font-size: 7.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+  .dive-badge { font-family: "Share Tech Mono", monospace; font-size: 8px; color: var(--arc); border: 1px solid var(--arc-dim); padding: 2px 7px; border-radius: 10px; }
 
 /* RESTAURATION NOYAU DIAGNOSTIC - HUD */
 .reactor-block{
@@ -3903,14 +4102,14 @@
   font-family:"Share Tech Mono",monospace;
 }
 .core-number{font-size:22px;color:#fff0e6;line-height:1;}
-.core-sub{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+.core-sub{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);}
 .reactor-stats{display:flex;flex-direction:column;gap:6px;}
 .r-stat-row{
  display:flex;
  justify-content:space-between;
  font-family:"Share Tech Mono",monospace;
  font-size:12px;
- color:var(--muted);
+ color:var(--text-dim);
  border-bottom:1px solid rgba(255,255,255,.05);
  padding-bottom:4px;
 }
@@ -3929,9 +4128,16 @@
 .donut-track{fill:none;stroke:rgba(255,255,255,.08);}
 .donut-fill{fill:none;stroke:#ff2438;stroke-width:5;stroke-linecap:round;}
 .donut-val{font-size:16px;color:#fff0e6;}
-.donut-label{font-size:8px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;}
+.donut-label{font-size:8px;letter-spacing:.18em;color:var(--text-dim);text-transform:uppercase;}
 </style>
 <script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+  }
+}
+</script>
 {
   "imports": {
     "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
@@ -3958,6 +4164,7 @@
 <div class="active-title empty" id="activeTitle">Choose a title →</div>
 </div>
 <div class="header-rewards">
+<button class="settings-gear" id="settingsGear" title="Settings">⚙</button>
 <div class="gel-counter empty" id="gelCounter">
 <span>❄</span>
 <span id="gelCount">0</span>
@@ -3973,6 +4180,7 @@
 <button class="tab" data-view="nutrition">Nutrition</button>
 <button class="tab" data-view="stats">Stats</button>
 <button class="tab" data-view="titles">Titles</button>
+<button class="tab" data-view="cockpit">Cockpit</button>
 </div>
 <div class="hud-status">
 <span class="dot-live"></span>
@@ -3997,6 +4205,31 @@
 <div class="summary-label" id="todayLabel">activity today</div>
 </div>
 <div class="summary-detail" id="todayDetail">Add your first activity →</div>
+</div>
+<!-- BODY SCAN / HOLOGRAM -->
+<div class="hud-module" id="scanModule"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+<div class="hud-module-head">
+<div class="hud-module-title">Body Scan</div>
+<button class="holo-btn" id="holoBtn">⛶ Fullscreen</button>
+</div>
+<div class="scan-figure" id="holoInlineWrap">
+<div class="holo-inline-host" id="holoInlineHost"></div>
+<div class="holo-inline-chrome">
+<div class="hi-reticle"></div>
+<div class="hi-ring"></div>
+<div class="hi-corner tl"></div>
+<div class="hi-corner tr"></div>
+<div class="hi-corner bl"></div>
+<div class="hi-corner br"></div>
+<div class="hi-rot" id="holoInlineRot">000.0°</div>
+</div>
+<div class="scan-beam"></div>
+<div class="holo-inline-loading" id="holoInlineLoading">
+<div class="hil-txt" id="holoInlineTxt">INITIALIZING BIO-SCAN</div>
+<div class="hil-pct" id="holoInlinePct">0%</div>
+<div class="hil-track"><div class="hil-fill" id="holoInlineFill"></div></div>
+</div>
+</div>
 </div>
 <!-- VITALS -->
 <div class="vitals">
@@ -4384,6 +4617,15 @@
 </div>
 <div class="titles-list" id="titlesList"></div>
 </section>
+<!-- COCKPIT VIEW (Garmin) -->
+<section class="view" id="view-cockpit">
+<div class="date-hero">
+<div class="date-day mono">TELEMETRY</div>
+<h1 class="date-title">Bio <span class="accent">cockpit</span></h1>
+<div class="date-sub" id="cockpitSub">—</div>
+</div>
+<div id="cockpitContent"></div>
+</section>
 </main>
 <div class="toast" id="toast">Nice work</div>
 <!-- ADD ACTIVITY MODAL -->
@@ -4607,6 +4849,61 @@
 </div>
 </div>
 </div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal" id="settingsModal">
+<div class="modal-content">
+<div class="modal-handle"></div>
+<div class="modal-title">Settings</div>
+<div class="modal-subtitle">Garmin cockpit data source</div>
+<div class="settings-field-label">JSON URL (raw GitHub)</div>
+<input type="url" class="settings-input" id="garminUrlInput" placeholder="https://raw.githubusercontent.com/user/repo/main/data/garmin-data.json">
+<div class="settings-hint">From your garmin-bio-sync repo — the raw URL of data/garmin-data.json.</div>
+<div class="settings-status idle" id="garminUrlStatus">No source configured</div>
+<div class="modal-actions">
+<button class="modal-btn secondary" id="settingsClose">Close</button>
+<button class="modal-btn primary" id="settingsSave">Save</button>
+</div>
+</div>
+</div>
+
+<!-- HOLO FULLSCREEN OVERLAY -->
+<div class="holo-overlay" id="holoOverlay">
+<div class="holo-canvas-host" id="holoHost"></div>
+<div class="holo-hud">
+<div class="holo-grid"></div>
+<div class="holo-reticle"></div>
+<div class="holo-ring"></div>
+<div class="holo-scan"></div>
+<div class="holo-header">
+<div class="holo-title">NATE // BIOMETRIC ANALYSIS</div>
+<div class="holo-subtitle">HOLOGRAPHIC VISUALIZATION SYSTEM</div>
+</div>
+<div class="holo-markers">
+<div class="holo-marker">CRANIUM</div>
+<div class="holo-marker">UPPER CHAIN <b id="holoMkUpper"></b></div>
+<div class="holo-marker">LOWER CHAIN <b id="holoMkLower"></b></div>
+</div>
+<div class="holo-panel">
+<div class="holo-panel-title">SUBJECT DATA</div>
+<div class="holo-row"><div class="holo-row-label">SUBJECT</div><div class="holo-row-value">NATE-001</div></div>
+<div class="holo-row"><div class="holo-row-label">LEVEL</div><div class="holo-row-value gold" id="holoLevel">0</div></div>
+<div class="holo-row"><div class="holo-row-label">UPPER CHAIN</div><div class="holo-bar"><span id="holoBarUpper" style="width:0%"></span></div></div>
+<div class="holo-row"><div class="holo-row-label">LOWER CHAIN</div><div class="holo-bar"><span id="holoBarLower" style="width:0%"></span></div></div>
+<div class="holo-row"><div class="holo-row-label">CARDIO</div><div class="holo-bar gold"><span id="holoBarCardio" style="width:0%"></span></div></div>
+<div class="holo-row"><div class="holo-row-label">ROTATION</div><div class="holo-row-value" id="holoRot">000.0°</div></div>
+</div>
+<div class="holo-status"><span class="holo-dot"></span><span id="holoStatusTxt">SYSTEM ONLINE // REAL-TIME 3D RENDER</span></div>
+<div class="holo-corner tl"></div>
+<div class="holo-corner tr"></div>
+<div class="holo-corner bl"></div>
+<div class="holo-corner br"></div>
+<div class="holo-scanlines"></div>
+<div class="holo-vignette"></div>
+</div>
+<button class="holo-close" id="holoClose">✕ CLOSE</button>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════════════════
 // STATE
@@ -6466,6 +6763,7 @@ function renderAll() {
   renderGelCounter();
   document.getElementById("streakDays").textContent = computeCurrentStreak();
   renderHudModules();
+  if (typeof holoTint === "function") holoTint();
 }
 
 
@@ -7517,6 +7815,636 @@ document.getElementById("importFile").addEventListener("change", (e) => {
 
 
 // ═══════════════════════════════════════════════════════════
+// GARMIN COCKPIT — health, sleep, body composition, dives
+// ═══════════════════════════════════════════════════════════
+
+const GARMIN_URL_KEY = "forge:garmin-url:v1";
+const GARMIN_CACHE_KEY = "forge:garmin-cache:v1";
+let garminData = null;
+
+function getGarminUrl() {
+  try { return localStorage.getItem(GARMIN_URL_KEY) || ""; } catch (e) { return ""; }
+}
+function setGarminUrl(url) {
+  try { localStorage.setItem(GARMIN_URL_KEY, url); } catch (e) {}
+}
+function cacheGarminData(data) {
+  try { localStorage.setItem(GARMIN_CACHE_KEY, JSON.stringify(data)); } catch (e) {}
+}
+function loadCachedGarminData() {
+  try { const raw = localStorage.getItem(GARMIN_CACHE_KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; }
+}
+
+async function fetchGarminData(silent) {
+  const url = getGarminUrl();
+  if (!url) { garminData = loadCachedGarminData(); renderCockpit(); return; }
+  try {
+    const res = await fetch(url + (url.includes("?") ? "&" : "?") + "_=" + Date.now());
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    garminData = data;
+    cacheGarminData(data);
+    if (!silent) hudLog("GARMIN DATA SYNCED");
+  } catch (e) {
+    console.warn("Garmin fetch failed", e);
+    garminData = loadCachedGarminData();
+    if (!silent) hudLog("GARMIN FETCH FAILED — USING CACHE");
+  }
+  renderCockpit();
+}
+
+// ═══ Settings modal ═══
+
+const settingsGearEl = document.getElementById("settingsGear");
+const settingsModalEl = document.getElementById("settingsModal");
+const garminUrlInputEl = document.getElementById("garminUrlInput");
+const garminUrlStatusEl = document.getElementById("garminUrlStatus");
+
+function setGarminStatus(kind, txt) {
+  if (!garminUrlStatusEl) return;
+  garminUrlStatusEl.className = "settings-status " + kind;
+  garminUrlStatusEl.textContent = txt;
+}
+
+if (settingsGearEl) {
+  settingsGearEl.addEventListener("click", () => {
+    if (garminUrlInputEl) garminUrlInputEl.value = getGarminUrl();
+    setGarminStatus("idle", getGarminUrl() ? "Source saved" : "No source configured");
+    settingsModalEl.classList.add("active");
+    hudAudio.select();
+  });
+}
+const settingsCloseEl = document.getElementById("settingsClose");
+if (settingsCloseEl) settingsCloseEl.addEventListener("click", () => settingsModalEl.classList.remove("active"));
+if (settingsModalEl) settingsModalEl.addEventListener("click", (e) => { if (e.target.id === "settingsModal") settingsModalEl.classList.remove("active"); });
+
+const settingsSaveEl = document.getElementById("settingsSave");
+if (settingsSaveEl) settingsSaveEl.addEventListener("click", async () => {
+  const url = (garminUrlInputEl.value || "").trim();
+  if (url && !/^https:\/\//.test(url)) { setGarminStatus("err", "URL must start with https://"); return; }
+  setGarminUrl(url);
+  setGarminStatus("idle", "Checking…");
+  hudAudio.tick();
+  await fetchGarminData(true);
+  if (garminData) {
+    setGarminStatus("ok", `Connected — ${(garminData.activities||[]).length} activities, ${(garminData.dives||[]).length} dives`);
+    hudAudio.confirm();
+    hudLog("GARMIN SOURCE SAVED");
+  } else {
+    setGarminStatus("err", "Could not load this URL");
+    hudAudio.cancel();
+  }
+});
+
+// ═══ Rendering ═══
+
+function fmtCockpitDate(iso) {
+  if (!iso) return "—";
+  const d = new Date(iso + "T00:00:00");
+  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+}
+
+function cockpitSparkline(values, w, h, pad) {
+  const nums = values.filter(v => typeof v === "number");
+  if (nums.length < 2) return { path: "", area: "" };
+  const min = Math.min(...nums), max = Math.max(...nums);
+  const range = (max - min) || 1;
+  const step = (w - pad * 2) / (values.length - 1);
+  let path = "";
+  values.forEach((v, i) => {
+    if (typeof v !== "number") return;
+    const x = pad + i * step;
+    const y = pad + (h - pad * 2) * (1 - (v - min) / range);
+    path += (path ? "L" : "M") + x.toFixed(1) + "," + y.toFixed(1);
+  });
+  const area = path + ` L${(pad + (values.length-1)*step).toFixed(1)},${(h-pad).toFixed(1)} L${pad},${(h-pad).toFixed(1)} Z`;
+  return { path, area };
+}
+
+function cockpitEmptyState() {
+  return `
+    <div class="cockpit-empty">
+      <div class="cockpit-empty-icon">📡</div>
+      <div class="cockpit-empty-title">No source connected</div>
+      <div class="cockpit-empty-text">Connect your Garmin feed (Descent · Index S2 · wrist HR) to see heart rate, sleep, body composition and dives here.</div>
+      <button class="cockpit-empty-btn" id="cockpitConnectBtn">⚙ Configure source</button>
+    </div>
+  `;
+}
+
+function renderCockpit() {
+  const el = document.getElementById("cockpitContent");
+  const sub = document.getElementById("cockpitSub");
+  if (!el) return;
+
+  if (!garminData || (!garminData.activities && !garminData.health && !garminData.dives && !garminData.bodyComposition)) {
+    el.innerHTML = cockpitEmptyState();
+    const btn = document.getElementById("cockpitConnectBtn");
+    if (btn) btn.addEventListener("click", () => settingsGearEl.click());
+    if (sub) sub.textContent = "Not connected";
+    return;
+  }
+
+  const health = (garminData.health || []).filter(h => h && h.date).sort((a,b) => a.date.localeCompare(b.date));
+  const bodyComp = (garminData.bodyComposition || []).filter(b => b && b.date).sort((a,b) => a.date.localeCompare(b.date));
+  const dives = (garminData.dives || []).filter(d => d && d.date).sort((a,b) => b.date.localeCompare(a.date));
+
+  const latestHealth = health[health.length - 1] || {};
+  const latestComp = bodyComp[bodyComp.length - 1] || null;
+  const prevComp = bodyComp[bodyComp.length - 2] || null;
+
+  if (sub) {
+    sub.innerHTML = garminData.syncedAt
+      ? `Last sync: ${new Date(garminData.syncedAt).toLocaleString('en-US')}`
+      : "Garmin Descent · Index S2 · wrist HR";
+  }
+
+  const val = (v, unit, cls) => v === null || v === undefined
+    ? `<div class="gauge-val dim">—</div>`
+    : `<div class="gauge-val${cls ? ' ' + cls : ''}">${v}</div><div class="gauge-unit">${unit}</div>`;
+
+  // ── Heart rate ──
+  let html = `
+    <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+      <div class="hud-module-head">
+        <div class="hud-module-title">Heart Rate</div>
+        <div class="hud-module-tag">${latestHealth.date ? fmtCockpitDate(latestHealth.date) : '—'}</div>
+      </div>
+      <div class="gauge-row">
+        <div class="gauge-cell"><div class="gauge-label">Resting</div>${val(latestHealth.restingHr, 'bpm')}</div>
+        <div class="gauge-cell"><div class="gauge-label">24h avg</div>${val(latestHealth.avgHr24h, 'bpm')}</div>
+        <div class="gauge-cell"><div class="gauge-label">24h max</div>${val(latestHealth.maxHr24h, 'bpm', 'gold')}</div>
+      </div>
+  `;
+
+  if (latestHealth.minHr24h != null && latestHealth.maxHr24h != null) {
+    const lo = latestHealth.minHr24h, hi = latestHealth.maxHr24h;
+    const range = Math.max(1, hi - lo);
+    const avgPct = latestHealth.avgHr24h != null ? Math.min(100, Math.max(0, ((latestHealth.avgHr24h - lo) / range) * 100)) : 50;
+    html += `
+      <div class="hr-range-bar"><div class="hr-range-fill" style="left:0%;width:100%;"></div><div class="hr-range-avg" style="left:${avgPct}%;"></div></div>
+      <div class="hr-range-labels"><span>${lo} MIN</span><span>${hi} MAX</span></div>
+    `;
+  }
+
+  const hrSpark = cockpitSparkline(health.map(h => h.restingHr), 300, 44, 6);
+  if (hrSpark.path) {
+    html += `
+      <div class="cockpit-trend">
+        <svg viewBox="0 0 300 44">
+          <defs><linearGradient id="cockpitHrGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff2438" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#ff2438" stop-opacity="0"/>
+          </linearGradient></defs>
+          <path class="cockpit-trend-fill" fill="url(#cockpitHrGrad)" d="${hrSpark.area}"/>
+          <path class="cockpit-trend-line" d="${hrSpark.path}"/>
+        </svg>
+        <div class="settings-hint" style="margin-top:2px;">Resting HR — last ${health.length} days</div>
+      </div>
+    `;
+  }
+  html += `</div>`;
+
+  // ── Sleep ──
+  html += `
+    <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+      <div class="hud-module-head">
+        <div class="hud-module-title">Sleep</div>
+        <div class="hud-module-tag">SCORE <b>${latestHealth.sleepScore ?? '—'}</b></div>
+      </div>
+      <div class="gauge-row">
+        <div class="gauge-cell"><div class="gauge-label">Duration</div>${val(latestHealth.sleepHours, 'h')}</div>
+        <div class="gauge-cell"><div class="gauge-label">HRV</div>${val(latestHealth.hrv, 'ms')}</div>
+        <div class="gauge-cell"><div class="gauge-label">Body battery</div>${val(latestHealth.bodyBattery, '%', 'gold')}</div>
+      </div>
+  `;
+  const sd = latestHealth.sleepDeepMin, sl = latestHealth.sleepLightMin, sr = latestHealth.sleepRemMin, sa = latestHealth.sleepAwakeMin;
+  if ([sd, sl, sr, sa].some(v => typeof v === "number")) {
+    const total = Math.max(1, (sd||0) + (sl||0) + (sr||0) + (sa||0));
+    const pct = (v) => Math.round(((v||0) / total) * 100);
+    html += `
+      <div class="sleep-bar-row">
+        <div class="sleep-seg deep" style="width:${pct(sd)}%"></div>
+        <div class="sleep-seg light" style="width:${pct(sl)}%"></div>
+        <div class="sleep-seg rem" style="width:${pct(sr)}%"></div>
+        <div class="sleep-seg awake" style="width:${pct(sa)}%"></div>
+      </div>
+      <div class="sleep-legend">
+        <span><i class="deep"></i>Deep ${sd||0}m</span>
+        <span><i class="light"></i>Light ${sl||0}m</span>
+        <span><i class="rem"></i>REM ${sr||0}m</span>
+        <span><i class="awake"></i>Awake ${sa||0}m</span>
+      </div>
+    `;
+  } else {
+    html += `<div class="settings-hint" style="padding:0 14px 14px;">No sleep-stage breakdown synced yet.</div>`;
+  }
+  html += `<div class="settings-hint" style="padding: 0 14px 14px;">Avg stress: ${latestHealth.avgStress ?? '—'} · Steps: ${latestHealth.steps ?? '—'} · Calories: ${latestHealth.calories ?? '—'}</div>`;
+  html += `</div>`;
+
+  // ── Body composition ──
+  html += `
+    <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+      <div class="hud-module-head">
+        <div class="hud-module-title">Body Composition</div>
+        <div class="hud-module-tag">${latestComp ? fmtCockpitDate(latestComp.date) : '—'}</div>
+      </div>
+  `;
+  if (!latestComp) {
+    html += `<div class="settings-hint" style="padding:14px;">No Index S2 weigh-in synced yet.</div>`;
+  } else {
+    const delta = (key, unit, invert) => {
+      if (!prevComp || latestComp[key] == null || prevComp[key] == null) return '';
+      const d = latestComp[key] - prevComp[key];
+      if (Math.abs(d) < 0.05) return `<div class="comp-delta flat">= stable</div>`;
+      return `<div class="comp-delta ${d > 0 ? 'up' : 'down'}">${d > 0 ? '▲' : '▼'} ${Math.abs(d).toFixed(1)}${unit} vs last weigh-in</div>`;
+    };
+    html += `
+      <div class="comp-row">
+        <div class="comp-cell"><div class="comp-k">Weight</div><div class="comp-v">${latestComp.weightKg ?? '—'}<small>kg</small></div>${delta('weightKg','kg',true)}</div>
+        <div class="comp-cell"><div class="comp-k">Body fat</div><div class="comp-v">${latestComp.bodyFatPercent ?? '—'}<small>%</small></div>${delta('bodyFatPercent','%',true)}</div>
+        <div class="comp-cell"><div class="comp-k">Muscle mass</div><div class="comp-v">${latestComp.muscleMassKg ?? '—'}<small>kg</small></div>${delta('muscleMassKg','kg',false)}</div>
+        <div class="comp-cell"><div class="comp-k">Body water</div><div class="comp-v">${latestComp.bodyWaterPercent ?? '—'}<small>%</small></div>${delta('bodyWaterPercent','%',false)}</div>
+        <div class="comp-cell"><div class="comp-k">Bone mass</div><div class="comp-v">${latestComp.boneMassKg ?? '—'}<small>kg</small></div></div>
+        <div class="comp-cell"><div class="comp-k">Visceral fat</div><div class="comp-v">${latestComp.visceralFat ?? '—'}</div></div>
+      </div>
+    `;
+    const wSpark = cockpitSparkline(bodyComp.map(b => b.weightKg), 300, 44, 6);
+    const fSpark = cockpitSparkline(bodyComp.map(b => b.bodyFatPercent), 300, 44, 6);
+    if (wSpark.path) {
+      html += `
+        <div class="cockpit-trend">
+          <svg viewBox="0 0 300 44"><path class="cockpit-trend-line" d="${wSpark.path}"/></svg>
+          <div class="settings-hint" style="margin-top:2px;">Weight — ${bodyComp.length} weigh-ins</div>
+        </div>
+      `;
+    }
+    if (fSpark.path) {
+      html += `
+        <div class="cockpit-trend">
+          <svg viewBox="0 0 300 44"><path class="cockpit-trend-line" style="stroke:var(--gold); filter:drop-shadow(0 0 4px rgba(255,106,46,0.5));" d="${fSpark.path}"/></svg>
+          <div class="settings-hint" style="margin-top:2px;">Body fat % — ${bodyComp.length} weigh-ins</div>
+        </div>
+      `;
+    }
+  }
+  html += `</div>`;
+
+  // ── Dives ──
+  html += `
+    <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+      <div class="hud-module-head">
+        <div class="hud-module-title">Dive Log</div>
+        <div class="hud-module-tag">${dives.length} dive${dives.length !== 1 ? 's' : ''}</div>
+      </div>
+  `;
+  if (dives.length === 0) {
+    html += `<div class="settings-hint" style="padding:14px;">No Descent dives synced yet.</div>`;
+  } else {
+    html += `<div class="dive-list">`;
+    dives.slice(0, 12).forEach((d, i) => {
+      html += `
+        <div class="dive-card">
+          <div class="dive-date">
+            <span>${fmtCockpitDate(d.date)}${d.diveNumber ? ' · #' + d.diveNumber : ''}</span>
+            ${i === 0 ? '<span class="dive-badge">Latest</span>' : ''}
+          </div>
+          <div class="dive-metrics">
+            <div><div class="dive-metric-v gold">${d.maxDepthM ?? '—'}</div><div class="dive-metric-k">Max depth (m)</div></div>
+            <div><div class="dive-metric-v">${d.bottomTimeMin ?? '—'}</div><div class="dive-metric-k">Duration (min)</div></div>
+            <div><div class="dive-metric-v">${d.waterTempC ?? '—'}</div><div class="dive-metric-k">Water temp (°C)</div></div>
+          </div>
+        </div>
+      `;
+    });
+    html += `</div>`;
+  }
+  html += `</div>`;
+
+  el.innerHTML = html;
+}
+
+document.querySelector('[data-view="cockpit"]').addEventListener("click", () => fetchGarminData(true));
+
+// ═══════════════════════════════════════════════════════════
+// HOLO 3D — procedural body, lazy-loaded, lit by training load
+// Nothing below downloads until boot fires it in the background.
+// ═══════════════════════════════════════════════════════════
+
+const holo = {
+  booted: false, loading: false, fullscreen: false, inView: true,
+  host: null, THREE: null, renderer: null, composer: null, scene: null,
+  camera: null, human: null, parts: null, particles: null, disc: null,
+  grid: null, t0: 0, raf: null, rotation: 0, tilt: { x: 0, y: 0 }
+};
+
+function holoSetLoading(txt, pctNum) {
+  const t = document.getElementById("holoInlineTxt");
+  const p = document.getElementById("holoInlinePct");
+  const f = document.getElementById("holoInlineFill");
+  if (t) t.textContent = txt;
+  if (p) p.textContent = pctNum === null ? "..." : pctNum + "%";
+  if (f) f.style.width = (pctNum || 0) + "%";
+}
+function holoHideLoading() {
+  const l = document.getElementById("holoInlineLoading");
+  if (l) l.classList.add("done");
+}
+function holoError(msg) {
+  const l = document.getElementById("holoInlineLoading");
+  const t = document.getElementById("holoInlineTxt");
+  const p = document.getElementById("holoInlinePct");
+  const f = document.getElementById("holoInlineFill");
+  if (l) l.classList.remove("done");
+  if (t) { t.className = "hil-txt err"; t.innerHTML = msg; }
+  if (p) p.style.display = "none";
+  if (f) f.parentElement.style.display = "none";
+}
+
+async function holoBoot() {
+  if (holo.booted || holo.loading) return;
+  holo.loading = true;
+  holoSetLoading("LOADING 3D ENGINE", null);
+  try {
+    const THREE = await import("three");
+    const { EffectComposer } = await import("three/addons/postprocessing/EffectComposer.js");
+    const { RenderPass } = await import("three/addons/postprocessing/RenderPass.js");
+    const { UnrealBloomPass } = await import("three/addons/postprocessing/UnrealBloomPass.js");
+    holo.THREE = THREE;
+
+    const host = document.getElementById("holoInlineHost");
+    const W = host.clientWidth || 320, H = host.clientHeight || 300;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0404);
+
+    const camera = new THREE.PerspectiveCamera(42, W / H, 0.01, 100);
+    camera.position.set(0, 1.6, 5.3);
+    camera.lookAt(0, 1.25, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6));
+    renderer.setSize(W, H);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.25;
+    host.appendChild(renderer.domElement);
+    holo.host = host;
+
+    scene.add(new THREE.HemisphereLight(0x551015, 0x0a0202, 2));
+    const l1 = new THREE.PointLight(0xff2438, 8, 8); l1.position.set(2, 3, 3); scene.add(l1);
+    const l2 = new THREE.PointLight(0xff6a2e, 6, 8); l2.position.set(-2, 2, -3); scene.add(l2);
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 1.15, 0.6, 0.05));
+
+    const COUNT = 650;
+    const pos = new Float32Array(COUNT * 3);
+    for (let i = 0; i < COUNT; i++) {
+      const r = 2.2 + Math.random() * 1.7;
+      const a = Math.random() * Math.PI * 2;
+      pos[i*3] = Math.cos(a) * r;
+      pos[i*3+1] = -1 + Math.random() * 4.5;
+      pos[i*3+2] = Math.sin(a) * r;
+    }
+    const pg = new THREE.BufferGeometry();
+    pg.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    const particles = new THREE.Points(pg, new THREE.PointsMaterial({
+      color: 0xff2438, size: 0.012, transparent: true, opacity: 0.6,
+      blending: THREE.AdditiveBlending, depthWrite: false
+    }));
+    scene.add(particles);
+
+    const disc = new THREE.Mesh(
+      new THREE.RingGeometry(1.3, 2.15, 96),
+      new THREE.MeshBasicMaterial({ color: 0xff2438, transparent: true, opacity: 0.10,
+        side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false })
+    );
+    disc.rotation.x = -Math.PI / 2;
+    scene.add(disc);
+
+    const grid = new THREE.GridHelper(7, 32, 0xff2438, 0x330a0a);
+    grid.position.y = -1.75;
+    grid.material.transparent = true;
+    grid.material.opacity = 0.18;
+    scene.add(grid);
+
+    Object.assign(holo, { scene, camera, renderer, composer, particles, disc, grid, t0: performance.now() });
+
+    // Procedural body — built in-engine, no external asset, per-group lightable
+    holoSetLoading("BUILDING MESH", 60);
+    const human = new THREE.Group();
+    holo.parts = { upper: [], lower: [], core: [], neutral: [] };
+
+    function limb(geo, x, y, z, group, rot) {
+      const mat = new THREE.MeshBasicMaterial({
+        color: 0xff2438, transparent: true, opacity: 0.07,
+        side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(x, y, z);
+      if (rot) mesh.rotation.set(rot[0] || 0, rot[1] || 0, rot[2] || 0);
+      const wireMat = new THREE.LineBasicMaterial({ color: 0xff2438, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+      const wire = new THREE.LineSegments(new THREE.WireframeGeometry(geo), wireMat);
+      wire.scale.setScalar(1.002);
+      mesh.add(wire);
+      human.add(mesh);
+      (holo.parts[group] || holo.parts.neutral).push({ mesh, mat, wireMat });
+      return mesh;
+    }
+    const CAP = (r, l, rs = 8, cs = 10) => new THREE.CapsuleGeometry(r, l, rs, cs);
+
+    limb(new THREE.SphereGeometry(0.23, 18, 14), 0, 3.34, 0, 'neutral').scale.set(0.92, 1.12, 1);
+    limb(CAP(0.085, 0.13, 6, 8), 0, 3.06, 0, 'neutral');
+    limb(CAP(0.1, 0.5, 6, 8), 0, 2.93, -0.02, 'upper', [0, 0, Math.PI / 2]);
+    limb(new THREE.SphereGeometry(0.155, 14, 12), 0.44, 2.88, 0, 'upper');
+    limb(new THREE.SphereGeometry(0.155, 14, 12), -0.44, 2.88, 0, 'upper');
+    limb(CAP(0.3, 0.22, 10, 12), 0, 2.62, 0, 'upper').scale.set(1.18, 1, 0.62);
+    limb(CAP(0.245, 0.34, 10, 12), 0, 2.22, 0, 'core').scale.set(1.05, 1, 0.6);
+    limb(CAP(0.26, 0.16, 10, 12), 0, 1.88, 0, 'neutral').scale.set(1.1, 1, 0.62);
+    [1, -1].forEach(sx => {
+      limb(CAP(0.098, 0.5, 8, 10), sx * 0.5, 2.5, 0, 'upper', [0, 0, sx * 0.07]);
+      limb(CAP(0.079, 0.46, 8, 10), sx * 0.55, 1.98, 0, 'upper', [0, 0, sx * 0.05]);
+      limb(new THREE.SphereGeometry(0.082, 10, 8), sx * 0.58, 1.68, 0, 'upper').scale.set(0.85, 1.15, 0.6);
+    });
+    [1, -1].forEach(sx => {
+      limb(CAP(0.145, 0.62, 10, 12), sx * 0.19, 1.44, 0, 'lower', [0, 0, sx * 0.03]);
+      limb(CAP(0.108, 0.56, 8, 10), sx * 0.185, 0.72, 0, 'lower');
+      limb(new THREE.BoxGeometry(0.17, 0.1, 0.34), sx * 0.185, 0.06, 0.07, 'neutral');
+    });
+
+    human.position.y = -1.72;
+    scene.add(human);
+    holo.human = human;
+
+    holo.booted = true;
+    holo.loading = false;
+    holoHideLoading();
+    holoTint();
+    holoResize();
+    if (!holo.raf) holoLoop();
+    hudAudio.scan ? hudAudio.scan() : hudAudio.select();
+    hudLog("BIO-SCAN 3D ONLINE");
+  } catch (e) {
+    console.error(e);
+    holo.loading = false;
+    holoError("3D ENGINE UNAVAILABLE<br><br>Rendering could not start.<br>Your data stays accessible.");
+    hudLog("BIO-SCAN 3D FAILED");
+  }
+}
+
+function holoResize() {
+  if (!holo.booted || !holo.host) return;
+  const W = holo.host.clientWidth, H = holo.host.clientHeight;
+  if (!W || !H) return;
+  holo.camera.aspect = W / H;
+  holo.camera.updateProjectionMatrix();
+  holo.renderer.setSize(W, H);
+  holo.composer.setSize(W, H);
+}
+
+function holoMount(hostId) {
+  if (!holo.booted) return;
+  const host = document.getElementById(hostId);
+  if (!host || holo.host === host) { holoResize(); return; }
+  host.appendChild(holo.renderer.domElement);
+  holo.host = host;
+  requestAnimationFrame(() => requestAnimationFrame(holoResize));
+}
+
+function holoShouldRun() {
+  if (!holo.booted) return false;
+  if (document.hidden) return false;
+  if (holo.fullscreen) return true;
+  const view = document.getElementById("view-today");
+  if (!view || !view.classList.contains("active")) return false;
+  return holo.inView;
+}
+
+function holoLoop() {
+  holo.raf = requestAnimationFrame(holoLoop);
+  if (!holoShouldRun()) return;
+  const t = (performance.now() - holo.t0) / 1000;
+
+  if (holo.human) {
+    holo.rotation += 0.0045;
+    holo.human.rotation.y = holo.rotation;
+    holo.human.position.y = -1.72 + Math.sin(t * 1.2) * 0.025;
+    const deg = (holo.rotation * 180 / Math.PI) % 360;
+    const txt = deg.toFixed(1).padStart(5, "0") + "°";
+    const a = document.getElementById("holoRot");
+    const b = document.getElementById("holoInlineRot");
+    if (a) a.textContent = txt;
+    if (b) b.textContent = txt;
+  }
+  holo.particles.rotation.y = t * 0.03;
+  holo.disc.position.y = Math.sin(t * 1.25) * 2.0;
+  holo.disc.scale.setScalar(0.95 + Math.sin(t * 2) * 0.05);
+  holo.grid.material.opacity = 0.13 + Math.sin(t * 0.8) * 0.04;
+  holo.camera.position.x += (holo.tilt.x * 0.45 - holo.camera.position.x) * 0.08;
+  holo.camera.position.y += ((1.6 - holo.tilt.y * 0.25) - holo.camera.position.y) * 0.08;
+  holo.camera.lookAt(0, 1.2, 0);
+  holo.composer.render();
+}
+
+// Light each muscle group by its own training load: red (idle) → gold (saturated)
+function holoTint() {
+  if (!holo.booted || !holo.parts || !holo.THREE) return;
+  const T = holo.THREE;
+  const upper = countBySubtype("upper");
+  const lower = countBySubtype("lower");
+  const core = Math.round((upper + lower) / 2);
+  const global = totalCompletedSessions();
+
+  const COLD = new T.Color(0xff2438);
+  const HOT = new T.Color(0xff6a2e);
+  const apply = (list, n) => {
+    if (!list) return;
+    const k = Math.min(1, n / 15);
+    const c = COLD.clone().lerp(HOT, k);
+    const meshOpacity = 0.05 + k * 0.11;
+    const wireOpacity = 0.34 + k * 0.42;
+    for (const part of list) {
+      part.mat.color.copy(c); part.mat.opacity = meshOpacity;
+      part.wireMat.color.copy(c); part.wireMat.opacity = wireOpacity;
+    }
+  };
+  apply(holo.parts.upper, upper);
+  apply(holo.parts.lower, lower);
+  apply(holo.parts.core, core);
+  apply(holo.parts.neutral, Math.min(6, global));
+}
+
+function holoFillPanel() {
+  const upper = countBySubtype("upper");
+  const lower = countBySubtype("lower");
+  const cardio = countByType("run");
+  const max = Math.max(1, upper, lower, cardio);
+  const setW = (id, n) => { const e = document.getElementById(id); if (e) e.style.width = Math.round((n / max) * 100) + "%"; };
+  setW("holoBarUpper", upper); setW("holoBarLower", lower); setW("holoBarCardio", cardio);
+  const mu = document.getElementById("holoMkUpper"); const ml = document.getElementById("holoMkLower");
+  if (mu) mu.textContent = upper; if (ml) ml.textContent = lower;
+  const ops = totalCompletedSessions();
+  let lvl = 1, need = 5, acc = 0;
+  while (acc + need <= ops) { acc += need; lvl++; need = Math.round(need * 1.35); }
+  const hl = document.getElementById("holoLevel");
+  if (hl) hl.textContent = lvl;
+}
+
+function holoOpen() {
+  const ov = document.getElementById("holoOverlay");
+  if (!ov || !holo.booted) { if (!holo.booted) showToast("Hologram still loading"); return; }
+  holo.fullscreen = true;
+  ov.classList.add("active");
+  document.body.style.overflow = "hidden";
+  holoFillPanel();
+  holoMount("holoHost");
+  hudAudio.select();
+  hudLog("BIO-SCAN FULLSCREEN");
+}
+function holoClose() {
+  const ov = document.getElementById("holoOverlay");
+  if (!ov) return;
+  holo.fullscreen = false;
+  ov.classList.remove("active");
+  document.body.style.overflow = "";
+  holoMount("holoInlineHost");
+  hudAudio.cancel();
+  hudLog("BODY SCAN MODULE");
+}
+
+const holoBtnEl = document.getElementById("holoBtn");
+if (holoBtnEl) holoBtnEl.addEventListener("click", holoOpen);
+const holoCloseBtnEl = document.getElementById("holoClose");
+if (holoCloseBtnEl) holoCloseBtnEl.addEventListener("click", holoClose);
+const holoInlineWrapEl = document.getElementById("holoInlineWrap");
+if (holoInlineWrapEl) holoInlineWrapEl.addEventListener("click", () => { if (!holo.fullscreen) holoOpen(); });
+
+function holoBindTilt(el) {
+  if (!el) return;
+  const move = (cx, cy) => {
+    holo.tilt.x = (cx / window.innerWidth - 0.5) * 2;
+    holo.tilt.y = (cy / window.innerHeight - 0.5) * 2;
+  };
+  el.addEventListener("touchmove", (e) => {
+    if (e.touches.length) { move(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }
+  }, { passive: false });
+  el.addEventListener("mousemove", (e) => move(e.clientX, e.clientY));
+}
+holoBindTilt(document.getElementById("holoHost"));
+holoBindTilt(document.getElementById("holoInlineWrap"));
+
+if (window.IntersectionObserver && holoInlineWrapEl) {
+  new IntersectionObserver((entries) => { holo.inView = entries[0].isIntersecting; }, { threshold: 0.05 }).observe(holoInlineWrapEl);
+} else { holo.inView = true; }
+
+window.addEventListener("resize", () => holoResize());
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && holo.open) holoLoop();
+});
+
+// ═══════════════════════════════════════════════════════════
 // BOOT
 // ═══════════════════════════════════════════════════════════
 
@@ -7526,6 +8454,10 @@ document.getElementById("importFile").addEventListener("change", (e) => {
   const n = totalCompletedSessions();
   const st = computeCurrentStreak();
   hudLog(`REGISTRY LOADED // ${n} OPS · STREAK ${st}D · SYSTEM NOMINAL`);
+  // Hologram boots in the background — never blocks the UI
+  setTimeout(() => holoBoot(), 250);
+  // Garmin cockpit fetch — non-blocking, uses cache if offline
+  setTimeout(() => fetchGarminData(true), 600);
 })();
 
 // Idle telemetry chatter
