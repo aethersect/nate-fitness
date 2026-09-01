@@ -4204,7 +4204,6 @@
 <div class="hud-module" id="scanModule"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
 <div class="hud-module-head">
 <div class="hud-module-title">Body Scan</div>
-<button class="holo-btn" id="holoBtn">⛶ Fullscreen</button>
 </div>
 <div class="scan-figure" id="holoInlineWrap">
 <div class="holo-inline-host" id="holoInlineHost"></div>
@@ -4223,6 +4222,14 @@
 <div class="hil-pct" id="holoInlinePct">0%</div>
 <div class="hil-track"><div class="hil-fill" id="holoInlineFill"></div></div>
 </div>
+</div>
+<div class="gauge-row">
+<div class="gauge-cell"><div class="gauge-label">Weight</div><div class="gauge-val" id="holoWeight">—</div></div>
+<div class="gauge-cell"><div class="gauge-label">Body fat</div><div class="gauge-val gold" id="holoBodyFat">—</div></div>
+<div class="gauge-cell"><div class="gauge-label">Muscle</div><div class="gauge-val" id="holoMuscle">—</div></div>
+<div class="gauge-cell"><div class="gauge-label">Resting HR</div><div class="gauge-val" id="holoRestHr">—</div></div>
+<div class="gauge-cell"><div class="gauge-label">Sleep</div><div class="gauge-val gold" id="holoSleepScore">—</div></div>
+<div class="gauge-cell"><div class="gauge-label">Battery</div><div class="gauge-val" id="holoBodyBattery">—</div></div>
 </div>
 </div>
 <!-- VITALS -->
@@ -4859,47 +4866,6 @@
 <button class="modal-btn primary" id="settingsSave">Save</button>
 </div>
 </div>
-</div>
-
-<!-- HOLO FULLSCREEN OVERLAY -->
-<div class="holo-overlay" id="holoOverlay">
-<div class="holo-canvas-host" id="holoHost"></div>
-<div class="holo-hud">
-<div class="holo-grid"></div>
-<div class="holo-reticle"></div>
-<div class="holo-ring"></div>
-<div class="holo-scan"></div>
-<div class="holo-header">
-<div class="holo-title">NATE // BIOMETRIC ANALYSIS</div>
-<div class="holo-subtitle">HOLOGRAPHIC VISUALIZATION SYSTEM</div>
-</div>
-<div class="holo-panel left">
-<div class="holo-panel-title">BIO TELEMETRY</div>
-<div class="holo-row"><div class="holo-row-label">WEIGHT</div><div class="holo-row-value" id="holoWeight">—</div></div>
-<div class="holo-row"><div class="holo-row-label">BODY FAT</div><div class="holo-row-value gold" id="holoBodyFat">—</div></div>
-<div class="holo-row"><div class="holo-row-label">MUSCLE MASS</div><div class="holo-row-value" id="holoMuscle">—</div></div>
-<div class="holo-row"><div class="holo-row-label">RESTING HR</div><div class="holo-row-value" id="holoRestHr">—</div></div>
-<div class="holo-row"><div class="holo-row-label">SLEEP SCORE</div><div class="holo-row-value gold" id="holoSleepScore">—</div></div>
-<div class="holo-row"><div class="holo-row-label">BODY BATTERY</div><div class="holo-bar gold"><span id="holoBarBattery" style="width:0%"></span></div></div>
-</div>
-<div class="holo-panel">
-<div class="holo-panel-title">SUBJECT DATA</div>
-<div class="holo-row"><div class="holo-row-label">SUBJECT</div><div class="holo-row-value">NATE-001</div></div>
-<div class="holo-row"><div class="holo-row-label">LEVEL</div><div class="holo-row-value gold" id="holoLevel">0</div></div>
-<div class="holo-row"><div class="holo-row-label">UPPER CHAIN</div><div class="holo-bar"><span id="holoBarUpper" style="width:0%"></span></div></div>
-<div class="holo-row"><div class="holo-row-label">LOWER CHAIN</div><div class="holo-bar"><span id="holoBarLower" style="width:0%"></span></div></div>
-<div class="holo-row"><div class="holo-row-label">CARDIO</div><div class="holo-bar gold"><span id="holoBarCardio" style="width:0%"></span></div></div>
-<div class="holo-row"><div class="holo-row-label">ROTATION</div><div class="holo-row-value" id="holoRot">000.0°</div></div>
-</div>
-<div class="holo-status"><span class="holo-dot"></span><span id="holoStatusTxt">SYSTEM ONLINE // REAL-TIME 3D RENDER</span></div>
-<div class="holo-corner tl"></div>
-<div class="holo-corner tr"></div>
-<div class="holo-corner bl"></div>
-<div class="holo-corner br"></div>
-<div class="holo-scanlines"></div>
-<div class="holo-vignette"></div>
-</div>
-<button class="holo-close" id="holoClose">✕ CLOSE</button>
 </div>
 
 <script>
@@ -7849,7 +7815,7 @@ async function fetchGarminData(silent) {
     if (!silent) hudLog("GARMIN FETCH FAILED — USING CACHE");
   }
   renderCockpit();
-  if (typeof holo !== "undefined" && holo.fullscreen && typeof holoFillPanel === "function") holoFillPanel();
+  if (typeof holoFillPanel === "function") holoFillPanel();
 }
 
 // ═══ Settings modal ═══
@@ -8187,7 +8153,7 @@ async function holoBoot() {
     renderer.setSize(W, H);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
+    renderer.toneMappingExposure = 1.0;
     host.appendChild(renderer.domElement);
     holo.host = host;
 
@@ -8197,7 +8163,7 @@ async function holoBoot() {
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
-    composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 1.15, 0.6, 0.05));
+    composer.addPass(new UnrealBloomPass(new THREE.Vector2(W, H), 0.4, 0.4, 0.25));
 
     const COUNT = 650;
     const pos = new Float32Array(COUNT * 3);
@@ -8276,10 +8242,10 @@ async function holoBoot() {
       if (!node.isMesh) return;
       const geo = node.geometry;
       const mat = new THREE.MeshBasicMaterial({
-        color: 0xff2438, transparent: true, opacity: 0.09,
+        color: 0xff2438, transparent: true, opacity: 0.06,
         side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending
       });
-      const wireMat = new THREE.LineBasicMaterial({ color: 0xff2438, transparent: true, opacity: 0.42, blending: THREE.AdditiveBlending });
+      const wireMat = new THREE.LineBasicMaterial({ color: 0xff2438, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending });
       const wire = new THREE.LineSegments(new THREE.WireframeGeometry(geo), wireMat);
       wire.scale.setScalar(1.003);
       node.material = mat;
@@ -8317,19 +8283,9 @@ function holoResize() {
   holo.composer.setSize(W, H);
 }
 
-function holoMount(hostId) {
-  if (!holo.booted) return;
-  const host = document.getElementById(hostId);
-  if (!host || holo.host === host) { holoResize(); return; }
-  host.appendChild(holo.renderer.domElement);
-  holo.host = host;
-  requestAnimationFrame(() => requestAnimationFrame(holoResize));
-}
-
 function holoShouldRun() {
   if (!holo.booted) return false;
   if (document.hidden) return false;
-  if (holo.fullscreen) return true;
   const view = document.getElementById("view-today");
   if (!view || !view.classList.contains("active")) return false;
   return holo.inView;
@@ -8346,9 +8302,7 @@ function holoLoop() {
     holo.human.position.y = -1.72 + Math.sin(t * 1.2) * 0.025;
     const deg = (holo.rotation * 180 / Math.PI) % 360;
     const txt = deg.toFixed(1).padStart(5, "0") + "°";
-    const a = document.getElementById("holoRot");
     const b = document.getElementById("holoInlineRot");
-    if (a) a.textContent = txt;
     if (b) b.textContent = txt;
   }
   holo.particles.rotation.y = t * 0.03;
@@ -8376,8 +8330,8 @@ function holoTint() {
     if (!list) return;
     const k = Math.min(1, n / 15);
     const c = COLD.clone().lerp(HOT, k);
-    const meshOpacity = 0.05 + k * 0.11;
-    const wireOpacity = 0.34 + k * 0.42;
+    const meshOpacity = 0.04 + k * 0.07;
+    const wireOpacity = 0.22 + k * 0.26;
     for (const part of list) {
       part.mat.color.copy(c); part.mat.opacity = meshOpacity;
       part.wireMat.color.copy(c); part.wireMat.opacity = wireOpacity;
@@ -8390,18 +8344,6 @@ function holoTint() {
 }
 
 function holoFillPanel() {
-  const upper = countBySubtype("upper");
-  const lower = countBySubtype("lower");
-  const cardio = countByType("run");
-  const max = Math.max(1, upper, lower, cardio);
-  const setW = (id, n) => { const e = document.getElementById(id); if (e) e.style.width = Math.round((n / max) * 100) + "%"; };
-  setW("holoBarUpper", upper); setW("holoBarLower", lower); setW("holoBarCardio", cardio);
-  const ops = totalCompletedSessions();
-  let lvl = 1, need = 5, acc = 0;
-  while (acc + need <= ops) { acc += need; lvl++; need = Math.round(need * 1.35); }
-  const hl = document.getElementById("holoLevel");
-  if (hl) hl.textContent = lvl;
-
   // Bio telemetry — pulled straight from the Garmin cockpit data, no re-fetch needed
   const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = (v === null || v === undefined) ? "—" : v; };
   if (garminData) {
@@ -8414,44 +8356,13 @@ function holoFillPanel() {
     setTxt("holoMuscle", latestComp.muscleMassKg != null ? latestComp.muscleMassKg + " KG" : null);
     setTxt("holoRestHr", latestHealth.restingHr != null ? latestHealth.restingHr + " BPM" : null);
     setTxt("holoSleepScore", latestHealth.sleepScore != null ? latestHealth.sleepScore + "/100" : null);
-    const battery = latestHealth.bodyBattery;
-    const bb = document.getElementById("holoBarBattery");
-    if (bb) bb.style.width = (battery != null ? Math.max(0, Math.min(100, battery)) : 0) + "%";
+    setTxt("holoBodyBattery", latestHealth.bodyBattery != null ? latestHealth.bodyBattery + "%" : null);
   } else {
-    ["holoWeight", "holoBodyFat", "holoMuscle", "holoRestHr", "holoSleepScore"].forEach(id => setTxt(id, null));
-    const bb = document.getElementById("holoBarBattery");
-    if (bb) bb.style.width = "0%";
+    ["holoWeight", "holoBodyFat", "holoMuscle", "holoRestHr", "holoSleepScore", "holoBodyBattery"].forEach(id => setTxt(id, null));
   }
 }
 
-function holoOpen() {
-  const ov = document.getElementById("holoOverlay");
-  if (!ov || !holo.booted) { if (!holo.booted) showToast("Hologram still loading"); return; }
-  holo.fullscreen = true;
-  ov.classList.add("active");
-  document.body.style.overflow = "hidden";
-  holoFillPanel();
-  holoMount("holoHost");
-  hudAudio.select();
-  hudLog("BIO-SCAN FULLSCREEN");
-}
-function holoClose() {
-  const ov = document.getElementById("holoOverlay");
-  if (!ov) return;
-  holo.fullscreen = false;
-  ov.classList.remove("active");
-  document.body.style.overflow = "";
-  holoMount("holoInlineHost");
-  hudAudio.cancel();
-  hudLog("BODY SCAN MODULE");
-}
-
-const holoBtnEl = document.getElementById("holoBtn");
-if (holoBtnEl) holoBtnEl.addEventListener("click", holoOpen);
-const holoCloseBtnEl = document.getElementById("holoClose");
-if (holoCloseBtnEl) holoCloseBtnEl.addEventListener("click", holoClose);
 const holoInlineWrapEl = document.getElementById("holoInlineWrap");
-if (holoInlineWrapEl) holoInlineWrapEl.addEventListener("click", () => { if (!holo.fullscreen) holoOpen(); });
 
 function holoBindTilt(el) {
   if (!el) return;
@@ -8464,7 +8375,6 @@ function holoBindTilt(el) {
   }, { passive: false });
   el.addEventListener("mousemove", (e) => move(e.clientX, e.clientY));
 }
-holoBindTilt(document.getElementById("holoHost"));
 holoBindTilt(document.getElementById("holoInlineWrap"));
 
 if (window.IntersectionObserver && holoInlineWrapEl) {
