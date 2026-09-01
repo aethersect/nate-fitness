@@ -7993,10 +7993,11 @@ const GARMIN_URL_KEY = "forge:garmin-url:v1";
 let cockpitPeriodDays = 30;
 let trainingViewCategory = "upper";
 const GARMIN_CACHE_KEY = "forge:garmin-cache:v1";
+const GARMIN_DEFAULT_URL = "https://raw.githubusercontent.com/aethersect/nate-fitness/main/data/garmin-data.json";
 let garminData = null;
 
 function getGarminUrl() {
-  try { return localStorage.getItem(GARMIN_URL_KEY) || ""; } catch (e) { return ""; }
+  try { return localStorage.getItem(GARMIN_URL_KEY) || GARMIN_DEFAULT_URL; } catch (e) { return GARMIN_DEFAULT_URL; }
 }
 function setGarminUrl(url) {
   try { localStorage.setItem(GARMIN_URL_KEY, url); } catch (e) {}
@@ -8043,7 +8044,8 @@ function setGarminStatus(kind, txt) {
 if (settingsGearEl) {
   settingsGearEl.addEventListener("click", () => {
     if (garminUrlInputEl) garminUrlInputEl.value = getGarminUrl();
-    setGarminStatus("idle", getGarminUrl() ? "Source saved" : "No source configured");
+    const isCustom = (() => { try { return !!localStorage.getItem(GARMIN_URL_KEY); } catch (e) { return false; } })();
+    setGarminStatus("idle", isCustom ? "Source saved" : "Using default source (aethersect/nate-fitness)");
     settingsModalEl.classList.add("active");
     hudAudio.select();
   });
