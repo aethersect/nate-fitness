@@ -39,6 +39,29 @@ ACTIVITY_DAYS_BACK = 14   # activités (course, vélo, muscu, plongée...)
 HEALTH_DAYS_BACK = 14     # santé quotidienne (FC, HRV, sommeil, stress, pas)
 BODYCOMP_DAYS_BACK = 90   # composition corporelle (moins fréquent, donc fenêtre large)
 
+
+def load_existing():
+    """Relit le JSON déjà présent dans le repo, s'il existe, pour ne jamais perdre
+    d'historique — chaque run ne récupère qu'une fenêtre récente de Garmin, mais
+    la fusion ci-dessous fait grandir l'historique complet au fil des synchros."""
+    if OUTPUT_FILE.exists():
+        try:
+            return json.loads(OUTPUT_FILE.read_text())
+        except Exception as e:
+            print(f"  ⚠ Historique existant illisible ({e}), on repart de zéro pour ce fichier.")
+    return {"activities": [], "dives": [], "health": [], "bodyComposition": []}
+
+
+def merge_by_key(existing, fresh, key):
+    """Fusionne deux listes de dicts sur un champ clé : les entrées fraîches
+    écrasent les anciennes sur une même clé (ex: même date resynchronisée avec
+    des données plus complètes), tout le reste de l'historique est conservé."""
+    merged = {item[key]: item for item in existing if key in item and item[key] is not None}
+    for item in fresh:
+        if key in item and item[key] is not None:
+            merged[item[key]] = item
+    return list(merged.values())
+
 ACTIVITY_TYPE_MAP = {
     "running": "course",
     "trail_running": "course",
@@ -305,6 +328,18 @@ def main():
 
     print("→ Composition corporelle...")
     body_composition = fetch_body_composition(client)
+
+    print("→ Fusion avec l'historique existant...")
+    existing = load_existing()
+    activities = merge_by_key(existing.get("activities", []), activities, "id")
+    dives = merge_by_key(existing.get("dives", []), dives, "id")
+    health = merge_by_key(existing.get("health", []), health, "date")
+    body_composition = merge_by_key(existing.get("bodyComposition", []), body_composition, "date")
+
+    activities.sort(key=lambda a: a.get("date") or "", reverse=True)
+    dives.sort(key=lambda d: d.get("date") or "", reverse=True)
+    health.sort(key=lambda h: h.get("date") or "")
+    body_composition.sort(key=lambda b: b.get("date") or "")
 
     payload = {
         "syncedAt": datetime.utcnow().isoformat() + "Z",

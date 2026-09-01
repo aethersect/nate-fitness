@@ -4121,6 +4121,16 @@
   .machine-chart-half svg { width: 100%; height: 32px; display: block; }
   .machine-chart-label { font-family: "Share Tech Mono", monospace; font-size: 7.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
 
+  .period-avg-row {
+    display: flex; gap: 8px; padding: 0 12px 12px; flex-wrap: wrap;
+  }
+  .period-avg-chip {
+    flex: 1; min-width: 80px; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 2px; padding: 8px 10px; text-align: center;
+  }
+  .period-avg-chip-label { font-family: "Share Tech Mono", monospace; font-size: 7px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+  .period-avg-chip-val { font-family: "Saira Condensed", sans-serif; font-weight: 900; font-size: 16px; color: var(--gold); line-height: 1; }
+
 /* RESTAURATION NOYAU DIAGNOSTIC - HUD */
 .reactor-block{
   display:grid;
@@ -4683,6 +4693,8 @@
 <button class="period-btn" data-cperiod="7">7d</button>
 <button class="period-btn active" data-cperiod="30">30d</button>
 <button class="period-btn" data-cperiod="90">90d</button>
+<button class="period-btn" data-cperiod="180">180d</button>
+<button class="period-btn" data-cperiod="365">1y</button>
 <button class="period-btn" data-cperiod="all">All</button>
 </div>
 <div id="cockpitContent"></div>
@@ -8080,6 +8092,13 @@ function fmtCockpitDate(iso) {
   return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
 }
 
+function avgOf(arr, field, decimals) {
+  const nums = arr.map(x => x[field]).filter(v => typeof v === "number");
+  if (nums.length === 0) return null;
+  const avg = nums.reduce((a, b) => a + b, 0) / nums.length;
+  return Math.round(avg * Math.pow(10, decimals || 0)) / Math.pow(10, decimals || 0);
+}
+
 function cockpitSparkline(values, w, h, pad) {
   const nums = values.filter(v => typeof v === "number");
   if (nums.length < 2) return { path: "", area: "" };
@@ -8269,6 +8288,14 @@ function renderCockpit() {
     `;
   }
 
+  html += `
+    <div class="period-avg-row">
+      <div class="period-avg-chip"><div class="period-avg-chip-label">Avg resting · ${periodLabel}</div><div class="period-avg-chip-val">${avgOf(healthInPeriod, "restingHr") ?? "—"}</div></div>
+      <div class="period-avg-chip"><div class="period-avg-chip-label">Avg 24h · ${periodLabel}</div><div class="period-avg-chip-val">${avgOf(healthInPeriod, "avgHr24h") ?? "—"}</div></div>
+      <div class="period-avg-chip"><div class="period-avg-chip-label">Avg max · ${periodLabel}</div><div class="period-avg-chip-val">${avgOf(healthInPeriod, "maxHr24h") ?? "—"}</div></div>
+    </div>
+  `;
+
   const hrSpark = cockpitSparkline(healthInPeriod.map(h => h.restingHr), 300, 44, 6);
   if (hrSpark.path) {
     html += `
@@ -8321,6 +8348,13 @@ function renderCockpit() {
   } else {
     html += `<div class="settings-hint" style="padding:0 14px 14px;">No sleep-stage breakdown synced yet.</div>`;
   }
+  html += `
+    <div class="period-avg-row">
+      <div class="period-avg-chip"><div class="period-avg-chip-label">Avg score · ${periodLabel}</div><div class="period-avg-chip-val">${avgOf(healthInPeriod, "sleepScore") ?? "—"}</div></div>
+      <div class="period-avg-chip"><div class="period-avg-chip-label">Avg duration · ${periodLabel}</div><div class="period-avg-chip-val">${avgOf(healthInPeriod, "sleepHours", 1) ?? "—"}${avgOf(healthInPeriod, "sleepHours", 1) != null ? "h" : ""}</div></div>
+      <div class="period-avg-chip"><div class="period-avg-chip-label">Avg HRV · ${periodLabel}</div><div class="period-avg-chip-val">${avgOf(healthInPeriod, "hrv") ?? "—"}</div></div>
+    </div>
+  `;
   const sleepSpark = cockpitSparkline(healthInPeriod.map(h => h.sleepScore), 300, 44, 6);
   if (sleepSpark.path) {
     html += `
@@ -8358,6 +8392,13 @@ function renderCockpit() {
         <div class="comp-cell"><div class="comp-k">Body water</div><div class="comp-v">${latestComp.bodyWaterPercent ?? '—'}<small>%</small></div>${delta('bodyWaterPercent','%',false)}</div>
         <div class="comp-cell"><div class="comp-k">Bone mass</div><div class="comp-v">${latestComp.boneMassKg ?? '—'}<small>kg</small></div></div>
         <div class="comp-cell"><div class="comp-k">Visceral fat</div><div class="comp-v">${latestComp.visceralFat ?? '—'}</div></div>
+      </div>
+    `;
+    html += `
+      <div class="period-avg-row">
+        <div class="period-avg-chip"><div class="period-avg-chip-label">Avg weight · ${periodLabel}</div><div class="period-avg-chip-val">${avgOf(bodyCompInPeriod, "weightKg", 1) ?? "—"}</div></div>
+        <div class="period-avg-chip"><div class="period-avg-chip-label">Avg fat % · ${periodLabel}</div><div class="period-avg-chip-val">${avgOf(bodyCompInPeriod, "bodyFatPercent", 1) ?? "—"}</div></div>
+        <div class="period-avg-chip"><div class="period-avg-chip-label">Avg muscle · ${periodLabel}</div><div class="period-avg-chip-val">${avgOf(bodyCompInPeriod, "muscleMassKg", 1) ?? "—"}</div></div>
       </div>
     `;
     const wSpark = cockpitSparkline(bodyCompInPeriod.map(b => b.weightKg), 300, 44, 6);

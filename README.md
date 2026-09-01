@@ -8,6 +8,15 @@ activités) et les écrit dans `data/garmin-data.json`, que l'onglet **Cockpit**
 imite la connexion de l'app mobile. Usage personnel très répandu, mais pas
 formellement "autorisé" par les CGU Garmin. À toi de voir.
 
+## Historique cumulatif
+
+Chaque run ne récupère qu'une fenêtre récente de Garmin (14 jours santé/activités,
+90 jours composition corporelle), mais **le script fusionne toujours avec le
+`data/garmin-data.json` déjà présent dans le repo** avant d'écrire — rien n'est
+jamais perdu, une même date resynchronisée écrase juste l'ancienne version d'elle-
+même. Au fil des synchros (2×/jour), l'historique complet s'accumule tout seul :
+après quelques semaines/mois, l'app peut filtrer sur 7j/30j/90j/180j/1an/Tout.
+
 ## Ce que ça récupère
 
 - **`activities`** : toutes tes activités Garmin (course, vélo, muscu, plongée...)
