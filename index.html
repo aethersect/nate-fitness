@@ -4679,6 +4679,7 @@
 <div class="date-sub" id="cockpitSub">—</div>
 </div>
 <div class="period-selector" id="cockpitPeriodSelector">
+<button class="period-btn" data-cperiod="1">1d</button>
 <button class="period-btn" data-cperiod="7">7d</button>
 <button class="period-btn active" data-cperiod="30">30d</button>
 <button class="period-btn" data-cperiod="90">90d</button>
@@ -4722,6 +4723,7 @@
         </button>
 </div>
 </div>
+<div id="machinesSection" style="display: none;"></div>
 <div id="slotSection" style="display: none;">
 <div class="modal-label">Time of day</div>
 <div class="slot-picker">
@@ -4932,7 +4934,7 @@
 <div class="modal-content">
 <div class="modal-handle"></div>
 <div class="modal-title" id="workoutModalTitle">Session</div>
-<div class="modal-subtitle">Adjust weights before you validate</div>
+<div class="modal-subtitle">These are your defaults — day-to-day logging happens from Add Activity</div>
 <div id="workoutMachineList"></div>
 <div class="workout-add-row">
 <input type="text" class="workout-input-name" id="workoutNewMachineName" placeholder="Add a machine...">
@@ -4940,7 +4942,7 @@
 </div>
 <div class="modal-actions">
 <button class="modal-btn secondary" id="workoutCancel">Cancel</button>
-<button class="modal-btn primary" id="workoutConfirm">Validate session</button>
+<button class="modal-btn primary" id="workoutConfirm">Save routine</button>
 </div>
 </div>
 </div>
@@ -7108,18 +7110,102 @@ document.querySelectorAll(".title-filter-btn").forEach(btn => {
 // ADD ACTIVITY MODAL
 // ═══════════════════════════════════════════════════════════
 
-let addModalState = { type: null, subtypes: [], slot: null, duration: 30 };
+let addModalState = { type: null, subtypes: [], slot: null, duration: 30, machinesByCategory: {} };
 
 function resetAddModal() {
-  addModalState = { type: null, subtypes: [], slot: null, duration: 30 };
+  addModalState = { type: null, subtypes: [], slot: null, duration: 30, machinesByCategory: {} };
   document.querySelectorAll(".type-btn").forEach(b => b.classList.remove("active"));
   document.querySelectorAll(".subtype-btn").forEach(b => b.classList.remove("selected"));
   document.querySelectorAll(".slot-btn").forEach(b => b.classList.remove("selected"));
   document.getElementById("subtypeSection").style.display = "none";
+  document.getElementById("machinesSection").style.display = "none";
+  document.getElementById("machinesSection").innerHTML = "";
   document.getElementById("slotSection").style.display = "none";
   document.getElementById("durationSection").style.display = "none";
   document.getElementById("durationValue").textContent = "30";
   updateAddSaveButton();
+}
+
+function renderAddActivityMachines() {
+  const el = document.getElementById("machinesSection");
+  const activeCats = addModalState.subtypes.filter(s => s === "upper" || s === "lower");
+  if (activeCats.length === 0) { el.style.display = "none"; el.innerHTML = ""; return; }
+
+  activeCats.forEach(cat => {
+    if (!addModalState.machinesByCategory[cat]) {
+      const defaults = (state.machines && state.machines[cat]) || [];
+      addModalState.machinesByCategory[cat] = defaults.map(m => ({ ...m }));
+    }
+  });
+
+  let h = "";
+  activeCats.forEach(cat => {
+    const list = addModalState.machinesByCategory[cat];
+    h += `<div class="modal-label">${cat === "upper" ? "Upper body" : "Lower body"} machines</div>`;
+    if (list.length === 0) {
+      h += `<div class="settings-hint" style="margin-bottom:10px;">No machines set up yet — add one below, or set your routine defaults from the Cockpit.</div>`;
+    } else {
+      h += `<div class="add-machines-list" data-cat="${cat}">` + list.map((m, i) => `
+        <div class="workout-machine-row">
+          <div class="workout-machine-name">${m.name}</div>
+          <div class="workout-machine-inputs">
+            <input type="number" class="workout-input" min="1" value="${m.sets}" data-cat="${cat}" data-idx="${i}" data-field="sets">×
+            <input type="number" class="workout-input" min="1" value="${m.reps}" data-cat="${cat}" data-idx="${i}" data-field="reps">reps@
+            <input type="number" class="workout-input" min="0" step="0.5" value="${m.weight}" data-cat="${cat}" data-idx="${i}" data-field="weight">kg
+            <button class="workout-remove-btn" data-cat="${cat}" data-idx="${i}" title="Skip for this session">✕</button>
+          </div>
+        </div>
+      `).join("") + `</div>`;
+    }
+    h += `
+      <div class="workout-add-row">
+        <input type="text" class="workout-input-name" data-cat="${cat}" placeholder="Add a machine to ${cat === "upper" ? "upper" : "lower"} body...">
+        <button class="workout-add-btn" data-cat="${cat}" data-action="addMachine">+ Add</button>
+      </div>
+    `;
+  });
+
+  el.innerHTML = h;
+  el.style.display = "block";
+  wireAddActivityMachineInputs();
+}
+
+function wireAddActivityMachineInputs() {
+  const el = document.getElementById("machinesSection");
+  el.querySelectorAll(".workout-input").forEach(inp => {
+    inp.addEventListener("change", () => {
+      const cat = inp.dataset.cat, idx = parseInt(inp.dataset.idx), field = inp.dataset.field;
+      const val = parseFloat(inp.value);
+      if (!isNaN(val) && addModalState.machinesByCategory[cat] && addModalState.machinesByCategory[cat][idx]) {
+        addModalState.machinesByCategory[cat][idx][field] = val;
+      }
+    });
+  });
+  el.querySelectorAll(".workout-remove-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const cat = btn.dataset.cat, idx = parseInt(btn.dataset.idx);
+      addModalState.machinesByCategory[cat].splice(idx, 1);
+      renderAddActivityMachines();
+    });
+  });
+  el.querySelectorAll('.workout-add-btn[data-action="addMachine"]').forEach(btn => {
+    btn.addEventListener("click", () => {
+      const cat = btn.dataset.cat;
+      const nameInput = el.querySelector(`.workout-input-name[data-cat="${cat}"]`);
+      const name = (nameInput.value || "").trim();
+      if (!name) return;
+      const id = "custom_" + name.toLowerCase().replace(/[^a-z0-9]+/g, "") + "_" + Date.now();
+      const newMachine = { id, name, sets: 4, reps: 12, weight: 20 };
+      addModalState.machinesByCategory[cat].push({ ...newMachine });
+      // A brand-new machine also joins the routine defaults, so it's there next time without a Cockpit trip
+      if (state.machines && state.machines[cat] && !state.machines[cat].some(m => m.id === id)) {
+        state.machines[cat].push({ ...newMachine });
+        saveState();
+      }
+      hudAudio.tick();
+      renderAddActivityMachines();
+    });
+  });
 }
 
 function updateAddSaveButton() {
@@ -7652,6 +7738,7 @@ document.querySelectorAll(".subtype-btn").forEach(btn => {
       btn.classList.add("selected");
     }
     hudAudio.tick();
+    renderAddActivityMachines();
     updateAddSaveButton();
   });
 });
@@ -7702,11 +7789,31 @@ document.getElementById("addSave").addEventListener("click", async () => {
   if (!state.startDate) state.startDate = tk;
   
   await addActivity(tk, activity);
+
+  // Log per-machine performance for upper/lower sessions, feeding the Cockpit progress charts.
+  // This never overwrites the routine defaults — those only change from the Cockpit editor.
+  if (s.type === "anytime") {
+    if (!state.workoutLogs[tk]) state.workoutLogs[tk] = [];
+    ["upper", "lower"].forEach(cat => {
+      const list = s.machinesByCategory[cat];
+      if (s.subtypes.includes(cat) && list && list.length > 0) {
+        state.workoutLogs[tk].push({
+          id: "wl-" + Date.now() + "-" + cat,
+          category: cat,
+          loggedAt: new Date().toISOString(),
+          machines: list.map(m => ({ machineId: m.id, name: m.name, sets: m.sets, reps: m.reps, weight: m.weight }))
+        });
+      }
+    });
+    await saveState();
+  }
+
   document.getElementById("addActivityModal").classList.remove("active");
   hudAudio.confirm();
   hudLog(`ACTIVITY LOGGED → ${activityTypeName(activity).toUpperCase()}`);
   showToast("Activity added");
   renderAll();
+  if (typeof renderCockpit === "function") renderCockpit();
 });
 
 // ═══════════════════════════════════════════════════════════
@@ -8042,8 +8149,8 @@ function renderTrainingBlock() {
         <div class="hud-module-tag">${periodLabel}</div>
       </div>
       <div class="training-log-btns">
-        <button class="training-log-btn" id="logUpperBtn">Log Upper</button>
-        <button class="training-log-btn" id="logLowerBtn">Log Lower</button>
+        <button class="training-log-btn" id="logUpperBtn">Edit Upper Routine</button>
+        <button class="training-log-btn" id="logLowerBtn">Edit Lower Routine</button>
       </div>
   `;
 
@@ -8342,7 +8449,9 @@ function openWorkoutModal(category) {
   const defaults = (state.machines && state.machines[category]) || [];
   workoutSessionMachines = defaults.map(m => ({ ...m }));
   const titleEl = document.getElementById("workoutModalTitle");
-  if (titleEl) titleEl.textContent = (category === "upper" ? "Upper" : "Lower") + " Session";
+  const subEl = document.querySelector("#workoutModal .modal-subtitle");
+  if (titleEl) titleEl.textContent = (category === "upper" ? "Upper" : "Lower") + " Routine";
+  if (subEl) subEl.textContent = "These are your defaults — day-to-day logging happens from Add Activity";
   renderWorkoutMachineList();
   document.getElementById("workoutModal").classList.add("active");
   hudAudio.select();
@@ -8358,7 +8467,7 @@ function renderWorkoutMachineList() {
         <input type="number" class="workout-input" min="1" value="${m.sets}" data-idx="${i}" data-field="sets">×
         <input type="number" class="workout-input" min="1" value="${m.reps}" data-idx="${i}" data-field="reps">reps@
         <input type="number" class="workout-input" min="0" step="0.5" value="${m.weight}" data-idx="${i}" data-field="weight">kg
-        <button class="workout-remove-btn" data-idx="${i}" title="Remove for this session">✕</button>
+        <button class="workout-remove-btn" data-idx="${i}" title="Remove from routine">✕</button>
       </div>
     </div>
   `).join("");
@@ -8406,32 +8515,14 @@ if (workoutModalEl) workoutModalEl.addEventListener("click", (e) => { if (e.targ
 
 const workoutConfirmBtn = document.getElementById("workoutConfirm");
 if (workoutConfirmBtn) workoutConfirmBtn.addEventListener("click", async () => {
-  if (workoutSessionMachines.length === 0) { document.getElementById("workoutModal").classList.remove("active"); return; }
-  const dk = todayKey();
-  if (!state.workoutLogs[dk]) state.workoutLogs[dk] = [];
-  state.workoutLogs[dk].push({
-    id: "wl-" + Date.now(),
-    category: workoutSessionCategory,
-    loggedAt: new Date().toISOString(),
-    machines: workoutSessionMachines.map(m => ({ machineId: m.id, name: m.name, sets: m.sets, reps: m.reps, weight: m.weight }))
-  });
   if (state.machines) {
     state.machines[workoutSessionCategory] = workoutSessionMachines.map(m => ({ id: m.id, name: m.name, sets: m.sets, reps: m.reps, weight: m.weight }));
   }
   await saveState();
-  if (!state.startDate) state.startDate = dk;
-  await addActivity(dk, {
-    id: newActivityId(),
-    type: "anytime",
-    subtypes: [workoutSessionCategory],
-    slot: deduceSlot(new Date().toISOString()),
-    completedAt: new Date().toISOString()
-  });
   document.getElementById("workoutModal").classList.remove("active");
   hudAudio.confirm();
-  hudLog(`SESSION LOGGED → ${workoutSessionCategory.toUpperCase()} (${workoutSessionMachines.length} MACHINES)`);
-  showToast("Session logged");
-  renderAll();
+  hudLog(`ROUTINE UPDATED → ${workoutSessionCategory.toUpperCase()} (${workoutSessionMachines.length} MACHINES)`);
+  showToast("Routine updated");
   renderCockpit();
 });
 
