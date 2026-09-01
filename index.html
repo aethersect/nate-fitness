@@ -3923,6 +3923,7 @@
   .holo-marker::after { content: ""; position: absolute; left: 86px; top: 50%; width: 42px; height: 1px; background: rgba(255,36,56,0.5); box-shadow: 0 0 8px var(--arc); }
   .holo-marker b { color: var(--gold); font-weight: 400; }
   .holo-panel { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); width: 152px; font-size: 9px; letter-spacing: 0.12em; }
+  .holo-panel.left { left: 22px; right: auto; }
   .holo-panel-title { font-size: 10px; border-bottom: 1px solid rgba(255,36,56,0.3); padding-bottom: 6px; margin-bottom: 12px; letter-spacing: 0.2em; }
   .holo-row { margin-bottom: 12px; }
   .holo-row-label { opacity: 0.45; margin-bottom: 3px; color: var(--text-dim); }
@@ -3942,7 +3943,7 @@
     padding: 7px 13px; cursor: pointer; border-radius: 2px; text-shadow: 0 0 6px var(--arc);
   }
   .holo-close:active { background: var(--arc); color: #1a0705; }
-  @media (max-width: 380px) { .holo-markers { display: none; } .holo-panel { width: 128px; } }
+  @media (max-width: 380px) { .holo-panel { width: 118px; font-size: 8px; } }
 
   /* ═══ SETTINGS GEAR ═══ */
   .settings-gear {
@@ -4131,13 +4132,6 @@
 .donut-label{font-size:8px;letter-spacing:.18em;color:var(--text-dim);text-transform:uppercase;}
 </style>
 <script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
-  }
-}
-</script>
 {
   "imports": {
     "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
@@ -4879,10 +4873,14 @@
 <div class="holo-title">NATE // BIOMETRIC ANALYSIS</div>
 <div class="holo-subtitle">HOLOGRAPHIC VISUALIZATION SYSTEM</div>
 </div>
-<div class="holo-markers">
-<div class="holo-marker">CRANIUM</div>
-<div class="holo-marker">UPPER CHAIN <b id="holoMkUpper"></b></div>
-<div class="holo-marker">LOWER CHAIN <b id="holoMkLower"></b></div>
+<div class="holo-panel left">
+<div class="holo-panel-title">BIO TELEMETRY</div>
+<div class="holo-row"><div class="holo-row-label">WEIGHT</div><div class="holo-row-value" id="holoWeight">—</div></div>
+<div class="holo-row"><div class="holo-row-label">BODY FAT</div><div class="holo-row-value gold" id="holoBodyFat">—</div></div>
+<div class="holo-row"><div class="holo-row-label">MUSCLE MASS</div><div class="holo-row-value" id="holoMuscle">—</div></div>
+<div class="holo-row"><div class="holo-row-label">RESTING HR</div><div class="holo-row-value" id="holoRestHr">—</div></div>
+<div class="holo-row"><div class="holo-row-label">SLEEP SCORE</div><div class="holo-row-value gold" id="holoSleepScore">—</div></div>
+<div class="holo-row"><div class="holo-row-label">BODY BATTERY</div><div class="holo-bar gold"><span id="holoBarBattery" style="width:0%"></span></div></div>
 </div>
 <div class="holo-panel">
 <div class="holo-panel-title">SUBJECT DATA</div>
@@ -7851,6 +7849,7 @@ async function fetchGarminData(silent) {
     if (!silent) hudLog("GARMIN FETCH FAILED — USING CACHE");
   }
   renderCockpit();
+  if (typeof holo !== "undefined" && holo.fullscreen && typeof holoFillPanel === "function") holoFillPanel();
 }
 
 // ═══ Settings modal ═══
@@ -8180,8 +8179,8 @@ async function holoBoot() {
     scene.background = new THREE.Color(0x0a0404);
 
     const camera = new THREE.PerspectiveCamera(42, W / H, 0.01, 100);
-    camera.position.set(0, 1.6, 5.3);
-    camera.lookAt(0, 1.25, 0);
+    camera.position.set(0, 0.5, 6.6);
+    camera.lookAt(0, 0.23, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6));
@@ -8357,8 +8356,8 @@ function holoLoop() {
   holo.disc.scale.setScalar(0.95 + Math.sin(t * 2) * 0.05);
   holo.grid.material.opacity = 0.13 + Math.sin(t * 0.8) * 0.04;
   holo.camera.position.x += (holo.tilt.x * 0.45 - holo.camera.position.x) * 0.08;
-  holo.camera.position.y += ((1.6 - holo.tilt.y * 0.25) - holo.camera.position.y) * 0.08;
-  holo.camera.lookAt(0, 1.2, 0);
+  holo.camera.position.y += ((0.5 - holo.tilt.y * 0.25) - holo.camera.position.y) * 0.08;
+  holo.camera.lookAt(0, 0.23, 0);
   holo.composer.render();
 }
 
@@ -8397,13 +8396,32 @@ function holoFillPanel() {
   const max = Math.max(1, upper, lower, cardio);
   const setW = (id, n) => { const e = document.getElementById(id); if (e) e.style.width = Math.round((n / max) * 100) + "%"; };
   setW("holoBarUpper", upper); setW("holoBarLower", lower); setW("holoBarCardio", cardio);
-  const mu = document.getElementById("holoMkUpper"); const ml = document.getElementById("holoMkLower");
-  if (mu) mu.textContent = upper; if (ml) ml.textContent = lower;
   const ops = totalCompletedSessions();
   let lvl = 1, need = 5, acc = 0;
   while (acc + need <= ops) { acc += need; lvl++; need = Math.round(need * 1.35); }
   const hl = document.getElementById("holoLevel");
   if (hl) hl.textContent = lvl;
+
+  // Bio telemetry — pulled straight from the Garmin cockpit data, no re-fetch needed
+  const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = (v === null || v === undefined) ? "—" : v; };
+  if (garminData) {
+    const health = (garminData.health || []).filter(h => h && h.date).sort((a, b) => a.date.localeCompare(b.date));
+    const bodyComp = (garminData.bodyComposition || []).filter(b => b && b.date).sort((a, b) => a.date.localeCompare(b.date));
+    const latestHealth = health[health.length - 1] || {};
+    const latestComp = bodyComp[bodyComp.length - 1] || {};
+    setTxt("holoWeight", latestComp.weightKg != null ? latestComp.weightKg + " KG" : null);
+    setTxt("holoBodyFat", latestComp.bodyFatPercent != null ? latestComp.bodyFatPercent + "%" : null);
+    setTxt("holoMuscle", latestComp.muscleMassKg != null ? latestComp.muscleMassKg + " KG" : null);
+    setTxt("holoRestHr", latestHealth.restingHr != null ? latestHealth.restingHr + " BPM" : null);
+    setTxt("holoSleepScore", latestHealth.sleepScore != null ? latestHealth.sleepScore + "/100" : null);
+    const battery = latestHealth.bodyBattery;
+    const bb = document.getElementById("holoBarBattery");
+    if (bb) bb.style.width = (battery != null ? Math.max(0, Math.min(100, battery)) : 0) + "%";
+  } else {
+    ["holoWeight", "holoBodyFat", "holoMuscle", "holoRestHr", "holoSleepScore"].forEach(id => setTxt(id, null));
+    const bb = document.getElementById("holoBarBattery");
+    if (bb) bb.style.width = "0%";
+  }
 }
 
 function holoOpen() {
@@ -8455,8 +8473,13 @@ if (window.IntersectionObserver && holoInlineWrapEl) {
 
 window.addEventListener("resize", () => holoResize());
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden && holo.open) holoLoop();
+  // rAF pauses/resumes the 3D loop on its own — no need to restart it here.
+  // But refresh the cockpit data whenever the app comes back to the foreground.
+  if (!document.hidden) fetchGarminData(true);
 });
+
+// Keep the cockpit fresh on its own while the app stays open, no action needed
+setInterval(() => { if (!document.hidden) fetchGarminData(true); }, 10 * 60 * 1000);
 
 // ═══════════════════════════════════════════════════════════
 // BOOT
