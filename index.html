@@ -4068,6 +4068,59 @@
   .dive-metric-k { font-family: "Share Tech Mono", monospace; font-size: 7.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
   .dive-badge { font-family: "Share Tech Mono", monospace; font-size: 8px; color: var(--arc); border: 1px solid var(--arc-dim); padding: 2px 7px; border-radius: 10px; }
 
+  /* ═══ WORKOUT SESSION MODAL ═══ */
+  .workout-machine-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 10px 4px; border-bottom: 1px solid var(--border);
+  }
+  .workout-machine-row:last-child { border-bottom: none; }
+  .workout-machine-name {
+    font-family: "Saira Condensed", sans-serif; font-weight: 700; font-size: 14px;
+    text-transform: uppercase; color: var(--text); flex: 1; min-width: 0;
+  }
+  .workout-machine-inputs { display: flex; align-items: center; gap: 4px; font-family: "Share Tech Mono", monospace; font-size: 10px; color: var(--text-dim); white-space: nowrap; }
+  .workout-input {
+    width: 38px; background: var(--bg-card); border: 1px solid var(--border-strong);
+    color: var(--arc); font-family: "Share Tech Mono", monospace; font-size: 12px; font-weight: 700;
+    text-align: center; padding: 5px 2px; border-radius: 2px; outline: none;
+  }
+  .workout-input:focus { border-color: var(--arc); }
+  .workout-remove-btn {
+    background: none; border: none; color: var(--text-faint); font-size: 14px; cursor: pointer; padding: 0 4px; line-height: 1;
+  }
+  .workout-remove-btn:active { color: var(--alert); }
+  .workout-add-row { display: flex; gap: 8px; padding: 12px 4px 4px; }
+  .workout-input-name {
+    flex: 1; background: var(--bg-card); border: 1px solid var(--border-strong);
+    color: var(--text); font-family: "Share Tech Mono", monospace; font-size: 11px;
+    padding: 9px 10px; border-radius: 2px; outline: none;
+  }
+  .workout-input-name:focus { border-color: var(--arc); }
+  .workout-add-btn {
+    background: rgba(255,36,56,0.08); border: 1px solid var(--arc); color: var(--arc);
+    font-family: "Share Tech Mono", monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 0 14px; cursor: pointer; border-radius: 2px; white-space: nowrap;
+  }
+  .workout-add-btn:active { background: var(--arc); color: #1a0705; }
+
+  /* ═══ TRAINING SECTION ═══ */
+  .training-log-btns { display: flex; gap: 10px; padding: 12px; }
+  .training-log-btn {
+    flex: 1; background: rgba(255,36,56,0.08); border: 1px solid var(--arc); color: var(--arc);
+    font-family: "Saira Condensed", sans-serif; font-weight: 700; font-size: 13px; text-transform: uppercase;
+    padding: 12px; cursor: pointer; border-radius: 2px; text-align: center;
+  }
+  .training-log-btn:active { background: var(--arc); color: #1a0705; }
+  .machine-block { padding: 10px 14px 14px; border-top: 1px solid var(--border); }
+  .machine-block:first-of-type { border-top: none; }
+  .machine-block-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .machine-block-name { font-family: "Saira Condensed", sans-serif; font-weight: 700; font-size: 13px; text-transform: uppercase; color: var(--text); }
+  .machine-block-latest { font-family: "Share Tech Mono", monospace; font-size: 10px; color: var(--gold); }
+  .machine-charts-row { display: flex; gap: 10px; }
+  .machine-chart-half { flex: 1; }
+  .machine-chart-half svg { width: 100%; height: 32px; display: block; }
+  .machine-chart-label { font-family: "Share Tech Mono", monospace; font-size: 7.5px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+
 /* RESTAURATION NOYAU DIAGNOSTIC - HUD */
 .reactor-block{
   display:grid;
@@ -4470,7 +4523,7 @@
 <div class="heatmap-head">
 <div class="heatmap-title" id="heatmapTitle">Last 30 days</div>
 </div>
-<div class="period-selector">
+<div class="period-selector" id="heatmapPeriodSelector">
 <button class="period-btn active" data-period="30">30d</button>
 <button class="period-btn" data-period="90">90d</button>
 <button class="period-btn" data-period="180">6m</button>
@@ -4624,6 +4677,12 @@
 <div class="date-day mono">TELEMETRY</div>
 <h1 class="date-title">Bio <span class="accent">cockpit</span></h1>
 <div class="date-sub" id="cockpitSub">—</div>
+</div>
+<div class="period-selector" id="cockpitPeriodSelector">
+<button class="period-btn" data-cperiod="7">7d</button>
+<button class="period-btn active" data-cperiod="30">30d</button>
+<button class="period-btn" data-cperiod="90">90d</button>
+<button class="period-btn" data-cperiod="all">All</button>
 </div>
 <div id="cockpitContent"></div>
 </section>
@@ -4868,6 +4927,24 @@
 </div>
 </div>
 
+<!-- WORKOUT SESSION MODAL -->
+<div class="modal" id="workoutModal">
+<div class="modal-content">
+<div class="modal-handle"></div>
+<div class="modal-title" id="workoutModalTitle">Session</div>
+<div class="modal-subtitle">Adjust weights before you validate</div>
+<div id="workoutMachineList"></div>
+<div class="workout-add-row">
+<input type="text" class="workout-input-name" id="workoutNewMachineName" placeholder="Add a machine...">
+<button class="workout-add-btn" id="workoutAddMachineBtn">+ Add</button>
+</div>
+<div class="modal-actions">
+<button class="modal-btn secondary" id="workoutCancel">Cancel</button>
+<button class="modal-btn primary" id="workoutConfirm">Validate session</button>
+</div>
+</div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════════════════
 // STATE
@@ -4890,7 +4967,25 @@ let state = {
   unlockedTitles: {},
   activeTitleId: null,
   startDate: null,
-  titleFilter: "all"
+  titleFilter: "all",
+  machines: null,
+  workoutLogs: {}
+};
+
+const DEFAULT_MACHINES = {
+  upper: [
+    { id: "pecfly", name: "Pec fly", sets: 4, reps: 12, weight: 36 },
+    { id: "reardelt", name: "Rear delt", sets: 4, reps: 12, weight: 27 },
+    { id: "shoulderpress", name: "Shoulder press", sets: 4, reps: 12, weight: 18 },
+    { id: "bicepscurl", name: "Biceps curl", sets: 4, reps: 12, weight: 18 },
+    { id: "chestpress", name: "Chest press", sets: 4, reps: 12, weight: 23 }
+  ],
+  lower: [
+    { id: "legcurl", name: "Leg curl", sets: 4, reps: 12, weight: 36 },
+    { id: "legextension", name: "Leg extension", sets: 4, reps: 12, weight: 38 },
+    { id: "legpress", name: "Leg press", sets: 4, reps: 12, weight: 27 },
+    { id: "multiabductor", name: "Multi abductor", sets: 4, reps: 12, weight: 57 }
+  ]
 };
 
 const DAY_NAMES_LONG = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
@@ -4986,6 +5081,7 @@ async function loadState() {
       applyLoadedData(parsed);
     } catch (e) { console.error("Parse failed", e); }
   }
+  if (!state.machines) state.machines = JSON.parse(JSON.stringify(DEFAULT_MACHINES));
 }
 
 function applyLoadedData(parsed) {
@@ -5001,6 +5097,8 @@ function applyLoadedData(parsed) {
   state.unlockedTitles = parsed.unlockedTitles || {};
   state.activeTitleId = parsed.activeTitleId || null;
   state.startDate = parsed.startDate || null;
+  state.machines = parsed.machines || JSON.parse(JSON.stringify(DEFAULT_MACHINES));
+  state.workoutLogs = parsed.workoutLogs || {};
   rebuildHudTelemetry();
 }
 
@@ -5017,7 +5115,9 @@ async function saveState() {
     unlockedBadges: state.unlockedBadges,
     unlockedTitles: state.unlockedTitles,
     activeTitleId: state.activeTitleId,
-    startDate: state.startDate
+    startDate: state.startDate,
+    machines: state.machines,
+    workoutLogs: state.workoutLogs
   });
   try { localStorage.setItem(STORAGE_KEY, payload); } catch (e) {}
   try { await idbSet(STORAGE_KEY, payload); } catch (e) {}
@@ -6981,9 +7081,9 @@ document.getElementById("weekNavNext").addEventListener("click", () => {
 // PERIOD SELECTOR
 // ═══════════════════════════════════════════════════════════
 
-document.querySelectorAll(".period-btn").forEach(btn => {
+document.querySelectorAll("#heatmapPeriodSelector .period-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".period-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll("#heatmapPeriodSelector .period-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     const p = btn.dataset.period;
     currentPeriod = p === "all" ? "all" : parseInt(p);
@@ -7783,6 +7883,7 @@ document.getElementById("importFile").addEventListener("change", (e) => {
 // ═══════════════════════════════════════════════════════════
 
 const GARMIN_URL_KEY = "forge:garmin-url:v1";
+let cockpitPeriodDays = 30;
 const GARMIN_CACHE_KEY = "forge:garmin-cache:v1";
 let garminData = null;
 
@@ -7897,6 +7998,102 @@ function cockpitEmptyState() {
   `;
 }
 
+function cockpitPeriodCutoff() {
+  if (cockpitPeriodDays === "all") return null;
+  const d = new Date(); d.setDate(d.getDate() - cockpitPeriodDays);
+  return d.toISOString().slice(0, 10);
+}
+
+function buildMachineSeries(category) {
+  const series = {};
+  const cutoff = cockpitPeriodCutoff();
+  Object.entries(state.workoutLogs || {}).forEach(([dk, sessions]) => {
+    if (cutoff && dk < cutoff) return;
+    (sessions || []).filter(s => s.category === category).forEach(s => {
+      (s.machines || []).forEach(m => {
+        if (!series[m.machineId]) series[m.machineId] = { name: m.name, points: [] };
+        series[m.machineId].points.push({ date: dk, weight: m.weight, sets: m.sets, reps: m.reps });
+      });
+    });
+  });
+  Object.values(series).forEach(s => s.points.sort((a, b) => a.date.localeCompare(b.date)));
+  return series;
+}
+
+function buildCategoryTotalSeries(category) {
+  const cutoff = cockpitPeriodCutoff();
+  const totals = {};
+  Object.entries(state.workoutLogs || {}).forEach(([dk, sessions]) => {
+    if (cutoff && dk < cutoff) return;
+    (sessions || []).filter(s => s.category === category).forEach(s => {
+      const vol = (s.machines || []).reduce((sum, m) => sum + (m.weight * m.sets * m.reps), 0);
+      totals[dk] = (totals[dk] || 0) + vol;
+    });
+  });
+  return Object.keys(totals).sort().map(dk => ({ date: dk, total: totals[dk] }));
+}
+
+function renderTrainingBlock() {
+  const periodLabel = cockpitPeriodDays === "all" ? "all synced data" : `last ${cockpitPeriodDays} days`;
+  let h = `
+    <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+      <div class="hud-module-head">
+        <div class="hud-module-title">Training</div>
+        <div class="hud-module-tag">${periodLabel}</div>
+      </div>
+      <div class="training-log-btns">
+        <button class="training-log-btn" id="logUpperBtn">Log Upper</button>
+        <button class="training-log-btn" id="logLowerBtn">Log Lower</button>
+      </div>
+  `;
+
+  let anyMachineData = false;
+  ["upper", "lower"].forEach(cat => {
+    const series = buildMachineSeries(cat);
+    const totalSeries = buildCategoryTotalSeries(cat);
+    const machineIds = Object.keys(series);
+    if (machineIds.length === 0) return;
+    anyMachineData = true;
+
+    h += `<div class="machine-block"><div class="machine-block-head"><div class="machine-block-name">${cat === "upper" ? "Upper" : "Lower"} — total volume</div></div>`;
+    if (totalSeries.length >= 2) {
+      const tSpark = cockpitSparkline(totalSeries.map(t => t.total), 300, 32, 4);
+      h += `<svg viewBox="0 0 300 32"><path class="cockpit-trend-line" style="stroke:var(--gold);" d="${tSpark.path}"/></svg><div class="machine-chart-label">kg × sets × reps, summed across machines, per session</div>`;
+    } else {
+      h += `<div class="settings-hint">Log at least 2 ${cat} sessions to see a trend.</div>`;
+    }
+    h += `</div>`;
+
+    machineIds.forEach(mid => {
+      const s = series[mid];
+      const latest = s.points[s.points.length - 1];
+      h += `<div class="machine-block">
+        <div class="machine-block-head">
+          <div class="machine-block-name">${s.name}</div>
+          <div class="machine-block-latest">${latest.weight}kg × ${latest.sets}×${latest.reps}</div>
+        </div>`;
+      if (s.points.length >= 2) {
+        const wSpark = cockpitSparkline(s.points.map(p => p.weight), 300, 32, 4);
+        const volSpark = cockpitSparkline(s.points.map(p => p.weight * p.sets * p.reps), 300, 32, 4);
+        h += `<div class="machine-charts-row">
+          <div class="machine-chart-half"><svg viewBox="0 0 300 32"><path class="cockpit-trend-line" d="${wSpark.path}"/></svg><div class="machine-chart-label">Weight / session</div></div>
+          <div class="machine-chart-half"><svg viewBox="0 0 300 32"><path class="cockpit-trend-line" style="stroke:var(--steel);" d="${volSpark.path}"/></svg><div class="machine-chart-label">Total volume</div></div>
+        </div>`;
+      } else {
+        h += `<div class="settings-hint">Log this machine again to see progress.</div>`;
+      }
+      h += `</div>`;
+    });
+  });
+
+  if (!anyMachineData) {
+    h += `<div class="settings-hint" style="padding:0 14px 14px;">Log your first session to start tracking progress per machine.</div>`;
+  }
+
+  h += `</div>`;
+  return h;
+}
+
 function renderCockpit() {
   const el = document.getElementById("cockpitContent");
   const sub = document.getElementById("cockpitSub");
@@ -7913,6 +8110,15 @@ function renderCockpit() {
   const health = (garminData.health || []).filter(h => h && h.date).sort((a,b) => a.date.localeCompare(b.date));
   const bodyComp = (garminData.bodyComposition || []).filter(b => b && b.date).sort((a,b) => a.date.localeCompare(b.date));
   const dives = (garminData.dives || []).filter(d => d && d.date).sort((a,b) => b.date.localeCompare(a.date));
+
+  // Latest values always reflect the most recent sync, regardless of the period filter.
+  // Only trend charts below get cut down to the selected window.
+  const periodCutoff = cockpitPeriodDays === "all" ? null : (() => {
+    const d = new Date(); d.setDate(d.getDate() - cockpitPeriodDays); return d.toISOString().slice(0, 10);
+  })();
+  const healthInPeriod = periodCutoff ? health.filter(h => h.date >= periodCutoff) : health;
+  const bodyCompInPeriod = periodCutoff ? bodyComp.filter(b => b.date >= periodCutoff) : bodyComp;
+  const periodLabel = cockpitPeriodDays === "all" ? "all synced data" : `last ${cockpitPeriodDays} days`;
 
   const latestHealth = health[health.length - 1] || {};
   const latestComp = bodyComp[bodyComp.length - 1] || null;
@@ -7952,7 +8158,7 @@ function renderCockpit() {
     `;
   }
 
-  const hrSpark = cockpitSparkline(health.map(h => h.restingHr), 300, 44, 6);
+  const hrSpark = cockpitSparkline(healthInPeriod.map(h => h.restingHr), 300, 44, 6);
   if (hrSpark.path) {
     html += `
       <div class="cockpit-trend">
@@ -7964,7 +8170,7 @@ function renderCockpit() {
           <path class="cockpit-trend-fill" fill="url(#cockpitHrGrad)" d="${hrSpark.area}"/>
           <path class="cockpit-trend-line" d="${hrSpark.path}"/>
         </svg>
-        <div class="settings-hint" style="margin-top:2px;">Resting HR — last ${health.length} days</div>
+        <div class="settings-hint" style="margin-top:2px;">Resting HR — ${periodLabel}</div>
       </div>
     `;
   }
@@ -8004,6 +8210,15 @@ function renderCockpit() {
   } else {
     html += `<div class="settings-hint" style="padding:0 14px 14px;">No sleep-stage breakdown synced yet.</div>`;
   }
+  const sleepSpark = cockpitSparkline(healthInPeriod.map(h => h.sleepScore), 300, 44, 6);
+  if (sleepSpark.path) {
+    html += `
+      <div class="cockpit-trend">
+        <svg viewBox="0 0 300 44"><path class="cockpit-trend-line" style="stroke:var(--gold); filter:drop-shadow(0 0 4px rgba(255,106,46,0.5));" d="${sleepSpark.path}"/></svg>
+        <div class="settings-hint" style="margin-top:2px;">Sleep score — ${periodLabel}</div>
+      </div>
+    `;
+  }
   html += `<div class="settings-hint" style="padding: 0 14px 14px;">Avg stress: ${latestHealth.avgStress ?? '—'} · Steps: ${latestHealth.steps ?? '—'} · Calories: ${latestHealth.calories ?? '—'}</div>`;
   html += `</div>`;
 
@@ -8034,13 +8249,14 @@ function renderCockpit() {
         <div class="comp-cell"><div class="comp-k">Visceral fat</div><div class="comp-v">${latestComp.visceralFat ?? '—'}</div></div>
       </div>
     `;
-    const wSpark = cockpitSparkline(bodyComp.map(b => b.weightKg), 300, 44, 6);
-    const fSpark = cockpitSparkline(bodyComp.map(b => b.bodyFatPercent), 300, 44, 6);
+    const wSpark = cockpitSparkline(bodyCompInPeriod.map(b => b.weightKg), 300, 44, 6);
+    const fSpark = cockpitSparkline(bodyCompInPeriod.map(b => b.bodyFatPercent), 300, 44, 6);
+    const mSpark = cockpitSparkline(bodyCompInPeriod.map(b => b.muscleMassKg), 300, 44, 6);
     if (wSpark.path) {
       html += `
         <div class="cockpit-trend">
           <svg viewBox="0 0 300 44"><path class="cockpit-trend-line" d="${wSpark.path}"/></svg>
-          <div class="settings-hint" style="margin-top:2px;">Weight — ${bodyComp.length} weigh-ins</div>
+          <div class="settings-hint" style="margin-top:2px;">Weight — ${periodLabel} (${bodyCompInPeriod.length} weigh-ins)</div>
         </div>
       `;
     }
@@ -8048,7 +8264,15 @@ function renderCockpit() {
       html += `
         <div class="cockpit-trend">
           <svg viewBox="0 0 300 44"><path class="cockpit-trend-line" style="stroke:var(--gold); filter:drop-shadow(0 0 4px rgba(255,106,46,0.5));" d="${fSpark.path}"/></svg>
-          <div class="settings-hint" style="margin-top:2px;">Body fat % — ${bodyComp.length} weigh-ins</div>
+          <div class="settings-hint" style="margin-top:2px;">Body fat % — ${periodLabel}</div>
+        </div>
+      `;
+    }
+    if (mSpark.path) {
+      html += `
+        <div class="cockpit-trend">
+          <svg viewBox="0 0 300 44"><path class="cockpit-trend-line" style="stroke:var(--steel);" d="${mSpark.path}"/></svg>
+          <div class="settings-hint" style="margin-top:2px;">Muscle mass — ${periodLabel}</div>
         </div>
       `;
     }
@@ -8086,10 +8310,130 @@ function renderCockpit() {
   }
   html += `</div>`;
 
+  html += renderTrainingBlock();
+
   el.innerHTML = html;
+
+  const logUpperBtn = document.getElementById("logUpperBtn");
+  const logLowerBtn = document.getElementById("logLowerBtn");
+  if (logUpperBtn) logUpperBtn.addEventListener("click", () => openWorkoutModal("upper"));
+  if (logLowerBtn) logLowerBtn.addEventListener("click", () => openWorkoutModal("lower"));
 }
 
 document.querySelector('[data-view="cockpit"]').addEventListener("click", () => fetchGarminData(true));
+
+document.querySelectorAll("#cockpitPeriodSelector .period-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#cockpitPeriodSelector .period-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const p = btn.dataset.cperiod;
+    cockpitPeriodDays = p === "all" ? "all" : parseInt(p);
+    renderCockpit();
+  });
+});
+
+// ═══ Workout session logging ═══
+
+let workoutSessionCategory = null;
+let workoutSessionMachines = [];
+
+function openWorkoutModal(category) {
+  workoutSessionCategory = category;
+  const defaults = (state.machines && state.machines[category]) || [];
+  workoutSessionMachines = defaults.map(m => ({ ...m }));
+  const titleEl = document.getElementById("workoutModalTitle");
+  if (titleEl) titleEl.textContent = (category === "upper" ? "Upper" : "Lower") + " Session";
+  renderWorkoutMachineList();
+  document.getElementById("workoutModal").classList.add("active");
+  hudAudio.select();
+}
+
+function renderWorkoutMachineList() {
+  const el = document.getElementById("workoutMachineList");
+  if (!el) return;
+  el.innerHTML = workoutSessionMachines.map((m, i) => `
+    <div class="workout-machine-row">
+      <div class="workout-machine-name">${m.name}</div>
+      <div class="workout-machine-inputs">
+        <input type="number" class="workout-input" min="1" value="${m.sets}" data-idx="${i}" data-field="sets">×
+        <input type="number" class="workout-input" min="1" value="${m.reps}" data-idx="${i}" data-field="reps">reps@
+        <input type="number" class="workout-input" min="0" step="0.5" value="${m.weight}" data-idx="${i}" data-field="weight">kg
+        <button class="workout-remove-btn" data-idx="${i}" title="Remove for this session">✕</button>
+      </div>
+    </div>
+  `).join("");
+  el.querySelectorAll(".workout-input").forEach(inp => {
+    inp.addEventListener("change", () => {
+      const idx = parseInt(inp.dataset.idx);
+      const field = inp.dataset.field;
+      const val = parseFloat(inp.value);
+      if (!isNaN(val) && workoutSessionMachines[idx]) workoutSessionMachines[idx][field] = val;
+    });
+  });
+  el.querySelectorAll(".workout-remove-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = parseInt(btn.dataset.idx);
+      workoutSessionMachines.splice(idx, 1);
+      renderWorkoutMachineList();
+    });
+  });
+}
+
+const workoutAddMachineBtn = document.getElementById("workoutAddMachineBtn");
+if (workoutAddMachineBtn) workoutAddMachineBtn.addEventListener("click", () => {
+  const nameInput = document.getElementById("workoutNewMachineName");
+  const name = (nameInput.value || "").trim();
+  if (!name) return;
+  const id = "custom_" + name.toLowerCase().replace(/[^a-z0-9]+/g, "") + "_" + Date.now();
+  const newMachine = { id, name, sets: 4, reps: 12, weight: 20 };
+  workoutSessionMachines.push(newMachine);
+  if (state.machines && state.machines[workoutSessionCategory]) {
+    state.machines[workoutSessionCategory].push({ ...newMachine });
+    saveState();
+  }
+  nameInput.value = "";
+  renderWorkoutMachineList();
+  hudAudio.tick();
+});
+
+const workoutCancelBtn = document.getElementById("workoutCancel");
+if (workoutCancelBtn) workoutCancelBtn.addEventListener("click", () => {
+  document.getElementById("workoutModal").classList.remove("active");
+  hudAudio.cancel();
+});
+const workoutModalEl = document.getElementById("workoutModal");
+if (workoutModalEl) workoutModalEl.addEventListener("click", (e) => { if (e.target.id === "workoutModal") workoutModalEl.classList.remove("active"); });
+
+const workoutConfirmBtn = document.getElementById("workoutConfirm");
+if (workoutConfirmBtn) workoutConfirmBtn.addEventListener("click", async () => {
+  if (workoutSessionMachines.length === 0) { document.getElementById("workoutModal").classList.remove("active"); return; }
+  const dk = todayKey();
+  if (!state.workoutLogs[dk]) state.workoutLogs[dk] = [];
+  state.workoutLogs[dk].push({
+    id: "wl-" + Date.now(),
+    category: workoutSessionCategory,
+    loggedAt: new Date().toISOString(),
+    machines: workoutSessionMachines.map(m => ({ machineId: m.id, name: m.name, sets: m.sets, reps: m.reps, weight: m.weight }))
+  });
+  if (state.machines) {
+    state.machines[workoutSessionCategory] = workoutSessionMachines.map(m => ({ id: m.id, name: m.name, sets: m.sets, reps: m.reps, weight: m.weight }));
+  }
+  await saveState();
+  if (!state.startDate) state.startDate = dk;
+  await addActivity(dk, {
+    id: newActivityId(),
+    type: "anytime",
+    subtypes: [workoutSessionCategory],
+    slot: deduceSlot(new Date().toISOString()),
+    completedAt: new Date().toISOString()
+  });
+  document.getElementById("workoutModal").classList.remove("active");
+  hudAudio.confirm();
+  hudLog(`SESSION LOGGED → ${workoutSessionCategory.toUpperCase()} (${workoutSessionMachines.length} MACHINES)`);
+  showToast("Session logged");
+  renderAll();
+  renderCockpit();
+});
 
 // ═══════════════════════════════════════════════════════════
 // HOLO 3D — procedural body, lazy-loaded, lit by training load
