@@ -4105,6 +4105,10 @@
 
   /* ═══ TRAINING SECTION ═══ */
   .training-log-btns { display: flex; gap: 10px; padding: 12px; }
+  .training-section-label {
+    font-family: "Share Tech Mono", monospace; font-size: 9px; color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.14em; padding: 10px 14px 0;
+  }
   .training-log-btn {
     flex: 1; background: rgba(255,36,56,0.08); border: 1px solid var(--arc); color: var(--arc);
     font-family: "Saira Condensed", sans-serif; font-weight: 700; font-size: 13px; text-transform: uppercase;
@@ -8075,7 +8079,7 @@ if (settingsSaveEl) settingsSaveEl.addEventListener("click", async () => {
   hudAudio.tick();
   await fetchGarminData(true);
   if (garminData) {
-    setGarminStatus("ok", `Connected — ${(garminData.activities||[]).length} activities, ${(garminData.dives||[]).length} dives`);
+    setGarminStatus("ok", `Connected — ${(garminData.activities||[]).length} activities synced`);
     hudAudio.confirm();
     hudLog("GARMIN SOURCE SAVED");
   } else {
@@ -8121,7 +8125,7 @@ function cockpitEmptyState() {
     <div class="cockpit-empty">
       <div class="cockpit-empty-icon">📡</div>
       <div class="cockpit-empty-title">No source connected</div>
-      <div class="cockpit-empty-text">Connect your Garmin feed (Descent · Index S2 · wrist HR) to see heart rate, sleep, body composition and dives here.</div>
+      <div class="cockpit-empty-text">Connect your Garmin feed (Descent · Index S2 · wrist HR) to see heart rate, sleep and body composition here.</div>
       <button class="cockpit-empty-btn" id="cockpitConnectBtn">⚙ Configure source</button>
     </div>
   `;
@@ -8169,16 +8173,13 @@ function renderTrainingBlock() {
   let h = `
     <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
       <div class="hud-module-head">
-        <div class="hud-module-title">Training</div>
+        <div class="hud-module-title">Training progress</div>
         <div class="hud-module-tag">${periodLabel}</div>
       </div>
+      <div class="training-section-label">Tirage par zone et par machine</div>
       <div class="period-selector" id="trainingCatSelector">
         <button class="period-btn${cat === "upper" ? " active" : ""}" data-tcat="upper">Upper</button>
         <button class="period-btn${cat === "lower" ? " active" : ""}" data-tcat="lower">Lower</button>
-      </div>
-      <div class="training-log-btns">
-        <button class="training-log-btn" id="logUpperBtn">Edit Upper Routine</button>
-        <button class="training-log-btn" id="logLowerBtn">Edit Lower Routine</button>
       </div>
   `;
 
@@ -8196,7 +8197,7 @@ function renderTrainingBlock() {
   h += `</div>`;
 
   if (machineIds.length === 0) {
-    h += `<div class="settings-hint" style="padding:0 14px 14px;">No ${cat} sessions logged yet. Add one from the Today tab, or set up your ${cat} routine here first.</div>`;
+    h += `<div class="settings-hint" style="padding:0 14px 14px;">No ${cat} sessions logged yet. Go to Today → Add Activity → Anytime Fitness → ${catLabel} body to log your first one.</div>`;
   } else {
     machineIds.forEach(mid => {
       const s = series[mid];
@@ -8220,6 +8221,14 @@ function renderTrainingBlock() {
     });
   }
 
+  h += `
+      <div class="training-section-label">Manage routine defaults</div>
+      <div class="training-log-btns">
+        <button class="training-log-btn" id="logUpperBtn">Edit Upper</button>
+        <button class="training-log-btn" id="logLowerBtn">Edit Lower</button>
+      </div>
+  `;
+
   h += `</div>`;
   return h;
 }
@@ -8239,7 +8248,6 @@ function renderCockpit() {
 
   const health = (garminData.health || []).filter(h => h && h.date).sort((a,b) => a.date.localeCompare(b.date));
   const bodyComp = (garminData.bodyComposition || []).filter(b => b && b.date).sort((a,b) => a.date.localeCompare(b.date));
-  const dives = (garminData.dives || []).filter(d => d && d.date).sort((a,b) => b.date.localeCompare(a.date));
 
   // Latest values always reflect the most recent sync, regardless of the period filter.
   // Only trend charts below get cut down to the selected window.
@@ -8312,11 +8320,11 @@ function renderCockpit() {
         <div class="settings-hint" style="margin-top:2px;">Resting HR — ${periodLabel}</div>
       </div>
     `;
+  } else if (cockpitPeriodDays === 1) {
+    if (hrPoints === 0) html += `<div class="settings-hint" style="padding:0 14px 12px;">No resting HR synced yet.</div>`;
   } else if (hrPoints === 1) {
     const v = healthInPeriod.find(h => typeof h.restingHr === "number").restingHr;
-    html += cockpitPeriodDays === 1
-      ? `<div class="settings-hint" style="padding:0 14px 12px;">A single day never draws a trend — resting HR today is ${v} bpm (see above). Pick 7D+ to see it move over time.</div>`
-      : `<div class="settings-hint" style="padding:0 14px 12px;">Resting HR: ${v} bpm. One more synced day and a trend line appears.</div>`;
+    html += `<div class="settings-hint" style="padding:0 14px 12px;">Resting HR: ${v} bpm. One more synced day and a trend line appears.</div>`;
   } else {
     html += `<div class="settings-hint" style="padding:0 14px 12px;">No resting HR synced for ${periodLabel} yet.</div>`;
   }
@@ -8372,11 +8380,11 @@ function renderCockpit() {
         <div class="settings-hint" style="margin-top:2px;">Sleep score — ${periodLabel}</div>
       </div>
     `;
+  } else if (cockpitPeriodDays === 1) {
+    if (sleepPoints === 0) html += `<div class="settings-hint" style="padding:0 14px 12px;">No sleep score synced yet.</div>`;
   } else if (sleepPoints === 1) {
     const v = healthInPeriod.find(h => typeof h.sleepScore === "number").sleepScore;
-    html += cockpitPeriodDays === 1
-      ? `<div class="settings-hint" style="padding:0 14px 12px;">A single day never draws a trend — last sleep score is ${v}/100 (see above). Pick 7D+ to see it move over time.</div>`
-      : `<div class="settings-hint" style="padding:0 14px 12px;">Sleep score: ${v}/100. One more synced night and a trend line appears.</div>`;
+    html += `<div class="settings-hint" style="padding:0 14px 12px;">Sleep score: ${v}/100. One more synced night and a trend line appears.</div>`;
   } else {
     html += `<div class="settings-hint" style="padding:0 14px 12px;">No sleep score synced for ${periodLabel} yet.</div>`;
   }
@@ -8430,11 +8438,11 @@ function renderCockpit() {
           <div class="settings-hint" style="margin-top:2px;">Weight — ${periodLabel} (${bodyCompInPeriod.length} weigh-ins)</div>
         </div>
       `;
+    } else if (cockpitPeriodDays === 1) {
+      if (wPoints === 0) html += `<div class="settings-hint" style="padding:0 14px 12px;">No weigh-in synced yet.</div>`;
     } else if (wPoints === 1) {
       const v = bodyCompInPeriod.find(b => typeof b.weightKg === "number").weightKg;
-      html += cockpitPeriodDays === 1
-        ? `<div class="settings-hint" style="padding:0 14px 12px;">A single day never draws a trend — latest weigh-in is ${v} kg (see above). A trend needs at least 2 weigh-ins.</div>`
-        : `<div class="settings-hint" style="padding:0 14px 12px;">Weight: ${v} kg. One more weigh-in and a trend line appears.</div>`;
+      html += `<div class="settings-hint" style="padding:0 14px 12px;">Weight: ${v} kg. One more weigh-in and a trend line appears.</div>`;
     } else {
       html += `<div class="settings-hint" style="padding:0 14px 12px;">No weigh-in synced for ${periodLabel} yet.</div>`;
     }
@@ -8458,37 +8466,6 @@ function renderCockpit() {
     } else if (mPoints === 0) {
       html += `<div class="settings-hint" style="padding:0 14px 12px;">No muscle mass synced yet — needs a full Index S2 reading.</div>`;
     }
-  }
-  html += `</div>`;
-
-  // ── Dives ──
-  html += `
-    <div class="hud-module"><span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
-      <div class="hud-module-head">
-        <div class="hud-module-title">Dive Log</div>
-        <div class="hud-module-tag">${dives.length} dive${dives.length !== 1 ? 's' : ''}</div>
-      </div>
-  `;
-  if (dives.length === 0) {
-    html += `<div class="settings-hint" style="padding:14px;">No Descent dives synced yet.</div>`;
-  } else {
-    html += `<div class="dive-list">`;
-    dives.slice(0, 12).forEach((d, i) => {
-      html += `
-        <div class="dive-card">
-          <div class="dive-date">
-            <span>${fmtCockpitDate(d.date)}${d.diveNumber ? ' · #' + d.diveNumber : ''}</span>
-            ${i === 0 ? '<span class="dive-badge">Latest</span>' : ''}
-          </div>
-          <div class="dive-metrics">
-            <div><div class="dive-metric-v gold">${d.maxDepthM ?? '—'}</div><div class="dive-metric-k">Max depth (m)</div></div>
-            <div><div class="dive-metric-v">${d.bottomTimeMin ?? '—'}</div><div class="dive-metric-k">Duration (min)</div></div>
-            <div><div class="dive-metric-v">${d.waterTempC ?? '—'}</div><div class="dive-metric-k">Water temp (°C)</div></div>
-          </div>
-        </div>
-      `;
-    });
-    html += `</div>`;
   }
   html += `</div>`;
 
