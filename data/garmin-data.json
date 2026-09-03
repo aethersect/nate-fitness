@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-09-03T01:14:11.868127Z",
+  "syncedAt": "2026-09-03T16:35:05.407304Z",
   "activities": [],
   "dives": [],
   "health": [
@@ -291,13 +291,13 @@
     {
       "date": "2026-09-03",
       "restingHr": 47,
-      "steps": 208,
-      "calories": 665.0,
-      "avgStress": 18,
-      "bodyBattery": 70,
+      "steps": 2594,
+      "calories": 1274.0,
+      "avgStress": 20,
+      "bodyBattery": 57,
       "minHr24h": 46,
-      "maxHr24h": 97,
-      "avgHr24h": 55,
+      "maxHr24h": 117,
+      "avgHr24h": 59,
       "sleepHours": 6.65,
       "sleepScore": 49,
       "sleepDeepMin": 55,
