@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-09-15T17:10:35.481502Z",
+  "syncedAt": "2026-09-16T01:29:33.378600Z",
   "activities": [],
   "dives": [],
   "health": [
@@ -534,6 +534,25 @@
       "sleepAwakeMin": null,
       "hrv": null,
       "hrvStatus": null
+    },
+    {
+      "date": "2026-09-16",
+      "restingHr": null,
+      "steps": null,
+      "calories": null,
+      "avgStress": null,
+      "bodyBattery": null,
+      "minHr24h": null,
+      "maxHr24h": null,
+      "avgHr24h": null,
+      "sleepHours": null,
+      "sleepScore": null,
+      "sleepDeepMin": null,
+      "sleepLightMin": null,
+      "sleepRemMin": null,
+      "sleepAwakeMin": null,
+      "hrv": null,
+      "hrvStatus": null
     }
   ],
   "bodyComposition": [
@@ -581,6 +600,18 @@
       "bodyWaterPercent": 61.9,
       "muscleMassKg": 30.0,
       "boneMassKg": 4.35,
+      "visceralFat": null,
+      "metabolicAge": null,
+      "source": "garmin"
+    },
+    {
+      "date": "2026-09-16",
+      "weightKg": 65.8,
+      "bmi": 20.799999237060547,
+      "bodyFatPercent": 15.4,
+      "bodyWaterPercent": 61.8,
+      "muscleMassKg": 30.1,
+      "boneMassKg": 4.36,
       "visceralFat": null,
       "metabolicAge": null,
       "source": "garmin"
